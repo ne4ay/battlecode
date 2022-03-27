@@ -1,0 +1,10 @@
+npm run serve
+
+// to build the bundle
+docker build -t bfront .
+
+docker run -v ${PWD}:/bfront -v /bfront/node_modules -p 8082:8082 --rm bfront
+
+docker build -t bfront .
+
+docker run -it -p 8080:8080 --rm --name bfront bfront

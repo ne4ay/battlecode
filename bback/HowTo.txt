@@ -1,0 +1,11 @@
+./mvnw spring-boot:run
+
+// to build the bundle
+docker build -t bback .
+
+// to create and run the container
+// -p - publish container ports
+docker run -it -p 8081:8080 bback
+
+// to create and run the container with db
+docker run --name battlecode_db -p 5432:5432 -e POSTGRES_PASSWORD=markiz08 -d postgres:14.2

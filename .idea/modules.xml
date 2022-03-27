@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/battlecode.iml" filepath="$PROJECT_DIR$/battlecode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bback/bback.iml" filepath="$PROJECT_DIR$/bback/bback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bfront/bfront.iml" filepath="$PROJECT_DIR$/bfront/bfront.iml" />
+    </modules>
+  </component>
+</project>

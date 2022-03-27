@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  bback:
+    image: bback
+    build: bback/
+    ports:
+      - "8090:8090"
+  bfront:
+    image: bfront
+    build: bfront/
+    ports:
+      - "8080:8080"
