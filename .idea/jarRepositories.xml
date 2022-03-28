@@ -7,6 +7,16 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="github-extra-lang" />
+      <option name="name" value="github-extra-lang" />
+      <option name="url" value="https://github.com/ne4ay/extra-lang" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jitpack.io" />
+      <option name="name" value="jitpack.io" />
+      <option name="url" value="https://jitpack.io" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Maven Central repository" />
       <option name="url" value="https://repo1.maven.org/maven2" />
