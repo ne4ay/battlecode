@@ -3,9 +3,15 @@
     <div id="logo-wrapper">
       <MainLogo/>
     </div>
-    <div>
-
-    </div>
+    <a class="header-link">
+      Главная
+    </a>
+    <a class="header-link">
+      Задачи
+    </a>
+    <a class="header-link">
+      Рейтинг
+    </a>
   </div>
 </template>
 
@@ -21,6 +27,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 .container {
   margin: 0;
   padding: 0;
@@ -31,7 +38,14 @@ export default {
   align-items: center;
 }
 #logo-wrapper {
-  margin-left: 30pt;
+  margin-left: 20pt;
+}
+.header-link {
+  margin: 20pt;
+  font-family: 'Ubuntu', sans-serif;
+  font-stretch: condensed;
+  font-size: 22pt;
+  color: #e5e5e5;
 }
 
 

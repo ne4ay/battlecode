@@ -1,11 +1,13 @@
 <template>
   <GlobalHeader />
-  <img alt="Vue logo" src="./assets/logo.png">
+  <MotivationSlider class="slider"/>
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+
 </template>
 
 <script>
-import GlobalHeader from '@/components/GlobalHeader.vue'
+import MotivationSlider from "@/components/slider/MotivationSlider";
+import GlobalHeader from '@/components/header/GlobalHeader.vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
@@ -13,6 +15,7 @@ export default {
   components: {
     GlobalHeader,
     HelloWorld,
+    MotivationSlider
   }
 }
 </script>
@@ -30,5 +33,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.slider {
+  height: 100pt;
 }
 </style>
