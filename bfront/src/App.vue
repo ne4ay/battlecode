@@ -1,6 +1,6 @@
 <template>
   <GlobalHeader />
-  <MotivationSlider class="slider"/>
+  <MotivationSlider class="slider" :images="images"/>
   <HelloWorld msg="Welcome to Your Vue.js App"/>
 
 </template>
@@ -16,6 +16,11 @@ export default {
     GlobalHeader,
     HelloWorld,
     MotivationSlider
+  },
+  data() {
+    return {
+      images: ['slider/slider_1.jpg', 'slider/slider_2.jpg', 'slider/slider_3.jpg']
+    }
   }
 }
 </script>
@@ -27,7 +32,6 @@ export default {
 }
 
 #app {
-
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

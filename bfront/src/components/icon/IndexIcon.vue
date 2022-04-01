@@ -32,8 +32,8 @@ export default {
 
 <style>
 svg {
-  height: 80%;
-  width: 60%;
+  height: 70%;
+  width: 74%;
 }
 polyline {
   fill: none;
