@@ -1,6 +1,6 @@
 <template>
-  <GlobalHeader />
-  <MotivationSlider class="slider" :images="images"/>
+  <GlobalHeader/>
+  <MotivationSlider class="slider" :slides="slides"/>
   <HelloWorld msg="Welcome to Your Vue.js App"/>
 
 </template>
@@ -19,7 +19,9 @@ export default {
   },
   data() {
     return {
-      images: ['slider/slider_1.jpg', 'slider/slider_2.jpg', 'slider/slider_3.jpg']
+      slides: [{path: 'slider/slider_1.jpg', label: "Достигни мастерства"},
+        {path: 'slider/slider_2.jpg', label: "Брось вызов"},
+        {path: 'slider/slider_3.jpg', label: "Отточи свои навыки"}]
     }
   }
 }
@@ -38,6 +40,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 .slider {
   height: 100pt;
 }

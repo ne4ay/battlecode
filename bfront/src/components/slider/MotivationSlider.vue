@@ -1,11 +1,16 @@
 <template>
-  <div class="container" id="slide">
-  <div class="button" id="left-button" @click="turnLeft">
-    <IndexIcon iconName="left-arrow" class="icon" />
-  </div>
-  <div class="button" id="right-button" @click="turnRight">
-    <IndexIcon iconName="right-arrow" class="icon"/>
-  </div>
+  <div class="container">
+    <div class="button" id="left-button" @click="turnLeft">
+      <IndexIcon iconName="left-arrow" class="icon"/>
+    </div>
+    <div class="button" id="right-button" @click="turnRight">
+      <IndexIcon iconName="right-arrow" class="icon"/>
+    </div>
+    <div class="image-container">
+      <div id="slide">
+        <span id="slide-label">{{this.slides[0].label}}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,7 +23,7 @@ export default {
     IndexIcon
   },
   props: {
-    images: {
+    slides: {
       type: Array,
       default: () => []
     },
@@ -30,7 +35,8 @@ export default {
   },
   methods: {
     turn(n) {
-      const arraySize = this.images.length;
+      console.log(n);
+      const arraySize = this.slides.length;
       if (this.currentIndex + n >= arraySize) {
         this.currentIndex = (this.currentIndex + n) % arraySize;
       } else if (this.currentIndex + n < 0) {
@@ -38,10 +44,7 @@ export default {
       } else {
         this.currentIndex += n;
       }
-      const imageName = this.images[this.currentIndex];
-      const imagePath = require('@/assets/' +imageName);
-      const elem = document.getElementById('slide');
-      elem.setAttribute('style', 'background: url("' + imagePath + '") no-repeat center top #222');
+      this.animationOfTurningSlide();
     },
     turnRight(event) {
       console.log(event)
@@ -49,32 +52,63 @@ export default {
     },
     turnLeft() {
       this.turn(-1);
+    },
+    animationOfTurningSlide() {
+      const slideObj = this.slides[this.currentIndex];
+      const imageName = slideObj.path;
+      const imagePath = require('@/assets/' + imageName);
+      const slideElem = document.getElementById('slide');
+      const slideLabelElem = document.getElementById('slide-label');
+      var percent = 0;
+      let unFadeFun = () => {
+        setInterval(function () {
+          if (percent <= 0){
+            clearInterval(fadeTimer);
+          }
+          slideElem.style.backgroundColor = "rgba(0,0,0,"+ percent +")";
+          percent -= 0.07;
+        }, 10);
+      }
+      let fadeTimer = setInterval(function () {
+        if (percent >= 1){
+          clearInterval(fadeTimer);
+          slideElem.style.background = "url(" + imagePath + ") no-repeat center top";
+          slideLabelElem.innerHTML = slideObj.label;
+          unFadeFun();
+        }
+        slideElem.style.backgroundColor = "rgba(0,0,0,"+ percent +")";
+        percent += 0.07;
+      }, 10, unFadeFun);
+
     }
   }
 }
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 .container {
-  background: url("@/assets/slider/slider_1.jpg") no-repeat center top #222;
   display: flex;
   justify-content: space-between;
   height: 400pt;
 }
+
 .button {
   display: flex;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   align-items: center;
   width: 13%;
 }
+
 .button:hover {
-  background: rgba(0, 0, 0, 0.52);
+  background: rgba(0, 0, 0, 0.57);
 }
 
 .icon {
   padding: 0;
   margin-bottom: 40pt;
 }
+
 .icon polyline {
   height: 30pt;
 }
@@ -82,9 +116,35 @@ export default {
 #left-button {
   justify-content: left;
 }
+
 #right-button {
   justify-content: right;
 }
 
+.image-container {
+  background: #222;
+  height: inherit;
+  width: 100%;
+  position: absolute;
+  z-index: -3;
+}
+#slide {
+  background-blend-mode: multiply;
+  background: url("@/assets/slider/slider_1.jpg") no-repeat center top;
+  background-color: rgba(0,0,0,0);
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+#slide-label {
+  background: rgba(0,0,0,0.5);
+  font-family: 'Russo One', sans-serif;
+  padding: 5pt 15pt;
+  border-radius: 20pt;
+  font-size: 60pt;
+  color: rgba(255, 153, 68, 0.6);
+}
 
 </style>
