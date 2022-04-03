@@ -27,6 +27,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 .container {
   margin: 0;
@@ -42,7 +43,7 @@ export default {
 }
 .header-link {
   margin: 20pt;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Russo One', sans-serif;
   font-stretch: condensed;
   font-size: 22pt;
   color: #e5e5e5;

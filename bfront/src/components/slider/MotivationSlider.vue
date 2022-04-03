@@ -61,24 +61,26 @@ export default {
       const slideLabelElem = document.getElementById('slide-label');
       var percent = 0;
       let unFadeFun = () => {
-        setInterval(function () {
+        let unFadeTimer = setInterval(function () {
           if (percent <= 0){
-            clearInterval(fadeTimer);
+            console.log(percent);
+            clearInterval(unFadeTimer);
           }
           slideElem.style.backgroundColor = "rgba(0,0,0,"+ percent +")";
-          percent -= 0.07;
-        }, 10);
+          percent -= 0.08;
+        }, 7);
       }
       let fadeTimer = setInterval(function () {
         if (percent >= 1){
           clearInterval(fadeTimer);
           slideElem.style.background = "url(" + imagePath + ") no-repeat center top";
           slideLabelElem.innerHTML = slideObj.label;
+          console.log(percent);
           unFadeFun();
         }
         slideElem.style.backgroundColor = "rgba(0,0,0,"+ percent +")";
-        percent += 0.07;
-      }, 10, unFadeFun);
+        percent += 0.08;
+      }, 7, unFadeFun);
 
     }
   }
@@ -87,6 +89,9 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+* {
+  --width-of-button: 14%;
+}
 .container {
   display: flex;
   justify-content: space-between;
@@ -97,7 +102,7 @@ export default {
   display: flex;
   background: rgba(0, 0, 0, 0.4);
   align-items: center;
-  width: 13%;
+  width: var(--width-of-button);
 }
 
 .button:hover {
@@ -141,6 +146,7 @@ export default {
 #slide-label {
   background: rgba(0,0,0,0.5);
   font-family: 'Russo One', sans-serif;
+  width: calc(100% - var(--width-of-button) * 2 - 6%);
   padding: 5pt 15pt;
   border-radius: 20pt;
   font-size: 60pt;

@@ -1,25 +1,26 @@
 <template>
   <GlobalHeader/>
   <MotivationSlider class="slider" :slides="slides"/>
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <HomeContent/>
 
 </template>
 
 <script>
 import MotivationSlider from "@/components/slider/MotivationSlider";
 import GlobalHeader from '@/components/header/GlobalHeader.vue'
-import HelloWorld from '@/components/HelloWorld.vue'
+import HomeContent from "@/components/home/HomeContent";
 
 export default {
   name: 'App',
   components: {
+    HomeContent,
     GlobalHeader,
-    HelloWorld,
-    MotivationSlider
+    MotivationSlider,
   },
   data() {
     return {
-      slides: [{path: 'slider/slider_1.jpg', label: "Достигни мастерства"},
+      slides: [
+        {path: 'slider/slider_1.jpg', label: "Достигни мастерства"},
         {path: 'slider/slider_2.jpg', label: "Брось вызов"},
         {path: 'slider/slider_3.jpg', label: "Отточи свои навыки"}]
     }

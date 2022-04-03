@@ -13,12 +13,13 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;600;700&display=swap');
 * {
   --size-of-logo: 28pt;
 }
 #label {
-  font-family: 'Roboto Mono', sans-serif;
+  font-family: 'Russo One', sans-serif;
   font-size: var(--size-of-logo);
   display: flex;
   align-items: center;

@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
+.tab-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.content-block {
+    width: 360pt;
+}
+
+#tab-image {
+    padding: 20pt;
+}
+
+#tab-text {
+    padding: 20pt;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 17pt;
+    color: #ead1c6;
+    text-align: left;
+}
