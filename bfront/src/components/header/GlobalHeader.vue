@@ -1,4 +1,5 @@
 <template>
+
   <div class="container">
     <div class="content-wrapper">
       <div id="logo-wrapper">
@@ -16,8 +17,10 @@
     </div>
 
     <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog"/>
+  </div>
+  <div id="dialog-wrapper">
     <FormDialog class="reg-form" v-model:show="dialogVisible">
-     <RegistrationForm />
+      <RegistrationForm/>
     </FormDialog>
   </div>
 </template>
@@ -44,7 +47,7 @@ export default {
   methods: {
     showAuthDialog() {
       this.dialogVisible = true;
-      console.log("kz");
+      document.getElementById('dialog-wrapper').style.display='flex';
     }
   }
 }
@@ -53,13 +56,16 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
-
+* {
+  --height-of-header: 65pt;
+}
 .container {
   margin: 0;
   padding: 0;
   background: linear-gradient(#000000, #202020);
   box-shadow: 0 5pt 5pt black;
-  height: 65pt;
+  height: var(--height-of-header);
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -87,13 +93,17 @@ export default {
 #auth {
   margin-right: 14pt;
 }
-.reg-form {
-  position: absolute;
+
+#dialog-wrapper {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  left: 50%;
-  top: 50%;
-  z-index: 5  ;
-  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  position: fixed;
+  display: none;
 }
 </style>

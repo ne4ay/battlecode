@@ -5,7 +5,7 @@
 <script>
 import LeftArrow from '@/components/icon/src/LeftArrow';
 import RightArrow from "@/components/icon/src/RightArrow";
-
+import XCross from "@/components/icon/src/XCross";
 export default {
   props: {
     iconName: {
@@ -20,6 +20,8 @@ export default {
           return LeftArrow;
         case 'right-arrow':
           return RightArrow;
+        case 'x-cross':
+          return XCross;
         default:
           return null;
       }

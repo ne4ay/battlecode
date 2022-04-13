@@ -1,9 +1,9 @@
 <template>
-  <div class="dialog" v-if="show">
-    <div @click.stop class="dialog-content">
-      <slot></slot>
-    </div>
-  </div>
+  <transition name="swim" id="trans">
+        <div class="dialog-content" v-if="show">
+          <slot></slot>
+        </div>
+  </transition>
 </template>
 
 <script>
@@ -19,22 +19,25 @@ export default {
 </script>
 
 <style scoped>
-.dialog {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  display: flex;
-}
 
 .dialog-content {
+  z-index: 2;
   margin: auto;
+  margin-top: 150pt;
   background: white;
-  border-radius: 12px;
-  min-height: 50px;
-  min-width: 300px;
-  padding: 20px;
+  border-radius: 12pt;
+  min-height: 50pt;
+  min-width: 300pt;
+  padding: 20pt;
+}
+
+.swim-enter-active ,
+.swim-leave-active {
+  transition: all 0.6s cubic-bezier(.42,0,.77,1.53);
+}
+
+.swim-enter-from ,
+.swim-leave-to {
+  transform: translateY(-400pt);
 }
 </style>
