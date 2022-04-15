@@ -8,5 +8,4 @@ public class BbackApplication {
     public static void main(String[] args) {
         SpringApplication.run(BbackApplication.class, args);
     }
-
 }
