@@ -38,17 +38,20 @@ export default {
 .dialog-container {
   z-index: 2;
   margin: 150pt   auto auto;
-  background: #222222;
+  background: #181818;
   border-radius: 12pt;
   min-height: 50pt;
   min-width: 300pt;
   font-family: 'Ubuntu', sans-serif;
   font-size: 17pt;
+  box-shadow: 0 5pt 5pt black;
 }
 
 .dialog-title {
+  font-size: 18pt;
   color: #f7a36a;
-  padding: 15pt 15pt 5pt 15pt;
+  padding: 10pt 15pt 10pt 15pt;
+  border-bottom: 2px solid #ead1c6;
 }
 
 .dialog-content {

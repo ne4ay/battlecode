@@ -54,6 +54,7 @@ export default {
   color: #e5e5e5;
   margin: 0 5pt;
 }
+
 .delimiter {
   font-family: 'Ubuntu', sans-serif;
   font-stretch: condensed;
@@ -62,4 +63,11 @@ export default {
   margin: 0 5pt;
 }
 
+.auth:hover {
+  color: #f7a36a;
+}
+
+.auth:active {
+  color: #e36815;
+}
 </style>

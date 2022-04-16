@@ -1,10 +1,10 @@
 export default {
-    REGISTRATION : {
+    REGISTRATION: {
         name: 'Registration',
-        title: 'Регистрация'
+        title: 'Регистрация',
     },
     AUTHORIZATION: {
         name: 'Authorization',
-        title: 'Авторизация'
+        title: 'Авторизация',
     }
 }

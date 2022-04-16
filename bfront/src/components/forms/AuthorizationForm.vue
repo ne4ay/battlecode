@@ -1,31 +1,20 @@
 <template>
   <form @submit.prevent>
     <span id="message-label">
-      {{messageLabel}}
+        {{messageLabel}}
     </span>
     <TextInput
-        id="top-input"
-        v-model="reg.eMail"
-        type="text"
-        placeholder-text="Электронная почта"
-    />
-    <TextInput
-        v-model="reg.login"
+        v-model="auth.login"
         type="text"
         placeholder-text="Логин"
     />
     <TextInput
-        v-model="reg.pass"
+        v-model="auth.pass"
         type="text"
         placeholder-text="Пароль"
     />
-    <TextInput
-        v-model="reg.checkPass"
-        type="text"
-        placeholder-text="Повторите пароль"
-    />
-    <SimpleSingleButton type="submit" class="reg-button" @click="tryToReg">
-      Зарегистрироваться
+    <SimpleSingleButton type="submit" class="auth-button">
+      Войти
     </SimpleSingleButton>
   </form>
 </template>
@@ -35,25 +24,18 @@ import TextInput from "@/components/forms/TextInput";
 import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 
 export default {
-  name: "RegistrationForm",
+  name: "AuthorizationForm",
   components: {
     TextInput,
     SimpleSingleButton
   },
   data() {
     return {
-      reg: {
-        eMail: '',
+      auth: {
         login: '',
-        pass: '',
-        checkPass: '',
+        pass: ''
       },
       messageLabel: ''
-    }
-  },
-  methods: {
-    tryToReg() {
-
     }
   },
 }
@@ -68,8 +50,7 @@ form {
   height: 20pt;
   margin: 5pt 15pt 5pt 7pt;
 }
-
-.reg-button {
+.auth-button {
   margin-top: 10pt;
   align-self: end;
 }

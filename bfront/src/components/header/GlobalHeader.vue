@@ -18,9 +18,11 @@
 
     <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog"/>
   </div>
-  <div id="dialog-wrapper" @click.self="hideDialog" >
-    <FormDialog class="reg-form" v-model:is-showing="dialogVisible" v-model:title="titleOfTheDialog">
-      <RegistrationForm/>
+  <div id="dialog-wrapper" @click.self="hideDialog">
+    <FormDialog class="reg-form"
+                v-model:is-showing="dialogVisible"
+                v-model:title="typeOfTheDialog.title">
+      <component :is="DialogContentAuthComponent"/>
     </FormDialog>
   </div>
 </template>
@@ -29,6 +31,7 @@
 import MainLogo from "@/components/MainLogo";
 import UnAuthLinks from "@/components/header/UnAuthLinks";
 import RegistrationForm from "@/components/forms/RegistrationForm";
+import AuthorizationForm from "@/components/forms/AuthorizationForm";
 import FormDialog from "@/components/dialogs/FormDialog";
 
 export default {
@@ -37,27 +40,38 @@ export default {
     FormDialog,
     MainLogo,
     UnAuthLinks,
+    AuthorizationForm,
     RegistrationForm
   },
   data() {
     return {
       dialogVisible: false,
-      titleOfTheDialog: String,
+      typeOfTheDialog: {
+        name: String,
+        title: String
+      },
     }
   },
   methods: {
     showAuthDialog(dialogType) {
       this.dialogVisible = true;
-      this.titleOfTheDialog = dialogType.title;
-      document.getElementById('dialog-wrapper').style.display='flex';
+      this.typeOfTheDialog = dialogType;
+      document.getElementById('dialog-wrapper').style.display = 'flex';
     },
     hideDialog() {
       if (this.dialogVisible) {
         this.dialogVisible = false;
         setTimeout(() => {
-          document.getElementById('dialog-wrapper').style.display='none';
+          document.getElementById('dialog-wrapper').style.display = 'none';
         }, 380);
       }
+    },
+  },
+  computed: {
+    DialogContentAuthComponent() {
+      const componentName = this.typeOfTheDialog.name + 'Form';
+      console.log(componentName);
+      return componentName;
     }
   }
 }
@@ -66,9 +80,11 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
+
 * {
   --height-of-header: 65pt;
 }
+
 .container {
   margin: 0;
   padding: 0;
