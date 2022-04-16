@@ -31,7 +31,7 @@ export default {
 .input-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 .input-member{
   margin: 5pt;
@@ -46,6 +46,7 @@ input {
   color: #f3ece4;
   border: none;
   border-radius: 50pt;
+
 }
 input:focus {
   outline: none !important;

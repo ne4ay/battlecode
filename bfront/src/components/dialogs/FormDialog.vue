@@ -37,7 +37,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 .dialog-container {
   z-index: 2;
-  margin: 150pt   auto auto;
+  margin: 150pt auto auto;
   background: #181818;
   border-radius: 12pt;
   min-height: 50pt;
@@ -56,7 +56,7 @@ export default {
 
 .dialog-content {
   color: #ead1c6;
-  padding: 5pt 15pt 15pt 15pt;
+  padding: 5pt 10pt 10pt 15pt;
 }
 
 .swim-enter-active,

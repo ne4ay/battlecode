@@ -70,7 +70,7 @@ form {
 }
 
 .reg-button {
-  margin-top: 10pt;
   align-self: end;
+  margin: 5pt 10pt 5pt 10pt;
 }
 </style>

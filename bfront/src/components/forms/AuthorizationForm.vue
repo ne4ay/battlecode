@@ -48,10 +48,11 @@ form {
 }
 #message-label {
   height: 20pt;
-  margin: 5pt 15pt 5pt 7pt;
+  margin: 5pt 15pt 5pt 15pt;
 }
+
 .auth-button {
-  margin-top: 10pt;
   align-self: end;
+  margin: 5pt 10pt 5pt 15pt;
 }
 </style>
