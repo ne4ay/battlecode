@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent>
-    <h4>Регистрация</h4>
     <TextInput
         v-model="auth.title"
         type="text"

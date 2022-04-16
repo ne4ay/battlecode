@@ -1,32 +1,40 @@
 <template>
   <div class="auth-wrapper">
-    <a class="auth">
+    <a class="auth"
+      @click="showDialog(DialogType.AUTHORIZATION)">
       Войти
     </a>
     <span class="delimiter">
       |
     </span>
     <a class="auth"
-      @click="showDialog">
+      @click="showDialog(DialogType.REGISTRATION)">
       Регистрация
     </a>
   </div>
 </template>
 
 <script>
+import AuthDialogType from "@/components/header/AuthDialogType";
+
 export default {
   name: "UnAuthLinks",
   props: {
     authListener: {
       type: Function,
-      required: true
+      required: true,
+    }
+  },
+  data() {
+    return {
+      DialogType: AuthDialogType
     }
   },
   components: {
   },
   methods: {
-    showDialog() {
-      this.authListener();
+    showDialog(dialogType) {
+      this.authListener(dialogType);
     }
   }
 }

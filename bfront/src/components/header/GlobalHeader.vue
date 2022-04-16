@@ -18,8 +18,8 @@
 
     <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog"/>
   </div>
-  <div id="dialog-wrapper">
-    <FormDialog class="reg-form" v-model:show="dialogVisible">
+  <div id="dialog-wrapper" @click.self="hideDialog" >
+    <FormDialog class="reg-form" v-model:is-showing="dialogVisible" v-model:title="titleOfTheDialog">
       <RegistrationForm/>
     </FormDialog>
   </div>
@@ -42,12 +42,22 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      titleOfTheDialog: String,
     }
   },
   methods: {
-    showAuthDialog() {
+    showAuthDialog(dialogType) {
       this.dialogVisible = true;
+      this.titleOfTheDialog = dialogType.title;
       document.getElementById('dialog-wrapper').style.display='flex';
+    },
+    hideDialog() {
+      if (this.dialogVisible) {
+        this.dialogVisible = false;
+        setTimeout(() => {
+          document.getElementById('dialog-wrapper').style.display='none';
+        }, 380);
+      }
     }
   }
 }
@@ -105,5 +115,6 @@ export default {
   z-index: 1;
   position: fixed;
   display: none;
+  transition: 0.7s;
 }
 </style>
