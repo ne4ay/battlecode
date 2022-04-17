@@ -1,4 +1,4 @@
-package ua.nechay.bback;
+package ua.nechay.bback.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
