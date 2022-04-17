@@ -4,22 +4,25 @@
       {{messageLabel}}
     </span>
     <TextInput
-        id="top-input"
+        id="input-email"
         v-model="reg.eMail"
         type="text"
         placeholder-text="Электронная почта"
     />
     <TextInput
+        id="input-login"
         v-model="reg.login"
         type="text"
         placeholder-text="Логин"
     />
     <TextInput
+        id="input-pass"
         v-model="reg.pass"
         type="text"
         placeholder-text="Пароль"
     />
     <TextInput
+        id="input-check-pass"
         v-model="reg.checkPass"
         type="text"
         placeholder-text="Повторите пароль"
@@ -53,7 +56,25 @@ export default {
   },
   methods: {
     tryToReg() {
+      const isSomeFieldIsNotFilled = this.fieldIsEmpty(this.eMail)
+          || this.fieldIsEmpty(this.login)
+          || this.fieldIsEmpty(this.pass)
+          || this.fieldIsEmpty(this.checkPass)
+      if (isSomeFieldIsNotFilled) {
+        this.messageLabel = 'Заполните все необходимые поля!'
+      }
+    },
+    fieldIsEmpty(field, fieldId) {
+      if (field !== null && field !== '') {
+        return false;
+      }
+      const fieldElem = document.getElementById(fieldId);
+      if (fieldElem == null) {
+        console.warn('Unable to find element with such id: ' + fieldId);
+        return false;
+      }
 
+      return true;
     }
   },
 }

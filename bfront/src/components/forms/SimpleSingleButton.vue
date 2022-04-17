@@ -17,7 +17,6 @@ export default {
   background: none;
   color: #f3ece4;
   padding: 5pt 10pt;
-
   border-radius: 50pt;
   border: none;
   background: rgba(0, 0, 0, .2);
