@@ -43,8 +43,8 @@ public class TaskModel {
     @JoinColumn(name = "complexity_id")
     private ComplexityModel complexity;
 
-    @OneToMany(mappedBy = "task")
-    private Set<AttitudeChangeModel> attitudeChanges;
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
+    private Set<AttitudeChangeModel> attitudes;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -68,13 +68,15 @@ public class TaskModel {
     }
 
     public TaskModel(Integer version, String title, String description, Integer cost,
-        ComplexityModel complexity, Set<LanguageModel> languages, Set<CategoryModel> categories)
+        ComplexityModel complexity, Set<AttitudeChangeModel> attitudes,
+        Set<LanguageModel> languages, Set<CategoryModel> categories)
     {
         this.version = version;
         this.title = title;
         this.description = description;
         this.cost = cost;
         this.complexity = complexity;
+        this.attitudes = attitudes;
         this.languages = languages;
         this.categories = categories;
     }
