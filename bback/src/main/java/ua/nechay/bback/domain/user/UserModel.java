@@ -1,4 +1,4 @@
-package ua.nechay.bback.domain;
+package ua.nechay.bback.domain.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
