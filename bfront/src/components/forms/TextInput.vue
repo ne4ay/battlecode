@@ -3,7 +3,7 @@
 <!--    <span class="input-member">-->
 <!--      {{placeholderText}}-->
 <!--    </span>-->
-    <input :value="modelValue" @input="updateInput" class="input-member" type="text" :placeholder="placeholderText">
+    <input :value="modelValue" @input="updateInput" :class="'input-member ' + this.inputCssClass" type="text" :placeholder="placeholderText">
   </div>
 </template>
 
@@ -16,11 +16,21 @@ export default {
     },
     placeholderText: {
       type: String
+    },
+    inputCssClass: {
+      type: String
+    },
+    isCorrectValidationPredicate: {
+      type: Function
     }
   },
   methods: {
     updateInput(event) {
-      this.$emit('update:modelValue', event.target.value)
+      const newValue = event.target.value;
+      this.$emit('update:modelValue', newValue);
+      if (this.isCorrectValidationPredicate(newValue)) {
+        this.$emit('update:inputCssClass', '');
+      }
     }
   }
 }
@@ -51,6 +61,10 @@ input {
 input:focus {
   outline: none !important;
   border: 1pt solid #f7a36a;
+}
+
+.wrong-input {
+  outline: 1pt solid red;
 }
 
 </style>

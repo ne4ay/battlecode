@@ -38,8 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping
-    public @ResponseBody
-    GenericResponse<LoginResponse, LoginException> login(@RequestBody LoginRequest request) {
+    public @ResponseBody GenericResponse<LoginResponse, LoginException> login(@RequestBody LoginRequest request) {
         String login = request.getLogin();
         String password = request.getPassword();
         Optional<UserModel> maybeUser = userService.findByLogin(login);

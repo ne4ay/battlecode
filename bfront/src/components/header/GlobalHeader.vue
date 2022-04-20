@@ -18,11 +18,11 @@
 
     <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog"/>
   </div>
-  <div id="dialog-wrapper" @click.self="hideDialog">
+  <div :class="dialogWrapperBackgroundClass" @click.self="hideDialog">
     <FormDialog class="reg-form"
                 v-model:is-showing="dialogVisible"
                 v-model:title="typeOfTheDialog.title">
-      <component :is="DialogContentAuthComponent"/>
+      <component :is="DialogContentAuthComponent" v-model:action-on-success="hideDialog"/>
     </FormDialog>
   </div>
 </template>
@@ -50,28 +50,27 @@ export default {
         name: String,
         title: String
       },
+      dialogWrapperBackgroundClass : 'none-display',
     }
   },
   methods: {
     showAuthDialog(dialogType) {
       this.dialogVisible = true;
       this.typeOfTheDialog = dialogType;
-      document.getElementById('dialog-wrapper').style.display = 'flex';
+      this.dialogWrapperBackgroundClass = 'dialog-wrapper';
     },
     hideDialog() {
       if (this.dialogVisible) {
         this.dialogVisible = false;
         setTimeout(() => {
-          document.getElementById('dialog-wrapper').style.display = 'none';
+          this.dialogWrapperBackgroundClass = 'none-display';
         }, 380);
       }
     },
   },
   computed: {
     DialogContentAuthComponent() {
-      const componentName = this.typeOfTheDialog.name + 'Form';
-      console.log(componentName);
-      return componentName;
+      return this.typeOfTheDialog.name + 'Form';
     }
   }
 }
@@ -120,7 +119,11 @@ export default {
   margin-right: 14pt;
 }
 
-#dialog-wrapper {
+.none-display {
+  display: none;
+}
+
+.dialog-wrapper {
   top: 0;
   bottom: 0;
   right: 0;
@@ -130,7 +133,7 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   z-index: 1;
   position: fixed;
-  display: none;
+  display: flex;
   transition: 0.7s;
 }
 </style>

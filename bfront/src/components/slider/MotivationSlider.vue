@@ -35,7 +35,6 @@ export default {
   },
   methods: {
     turn(n) {
-      console.log(n);
       const arraySize = this.slides.length;
       if (this.currentIndex + n >= arraySize) {
         this.currentIndex = (this.currentIndex + n) % arraySize;
@@ -46,8 +45,7 @@ export default {
       }
       this.animationOfTurningSlide();
     },
-    turnRight(event) {
-      console.log(event)
+    turnRight() {
       this.turn(1);
     },
     turnLeft() {
@@ -63,7 +61,6 @@ export default {
       let unFadeFun = () => {
         let unFadeTimer = setInterval(function () {
           if (percent <= 0){
-            console.log(percent);
             clearInterval(unFadeTimer);
           }
           slideElem.style.backgroundColor = "rgba(0,0,0,"+ percent +")";
@@ -75,7 +72,6 @@ export default {
           clearInterval(fadeTimer);
           slideElem.style.background = "url(" + imagePath + ") no-repeat center top";
           slideLabelElem.innerHTML = slideObj.label;
-          console.log(percent);
           unFadeFun();
         }
         slideElem.style.backgroundColor = "rgba(0,0,0,"+ percent +")";

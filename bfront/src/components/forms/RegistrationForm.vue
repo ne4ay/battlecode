@@ -6,26 +6,35 @@
     <TextInput
         id="input-email"
         v-model="reg.eMail"
+        v-model:input-css-class="emailCssClass"
+        v-model:is-correct-validation-predicate="isNotEmpty"
         type="text"
         placeholder-text="Электронная почта"
     />
     <TextInput
         id="input-login"
         v-model="reg.login"
+        v-model:input-css-class="loginCssClass"
+        v-model:is-correct-validation-predicate="isNotEmpty"
         type="text"
         placeholder-text="Логин"
     />
     <TextInput
         id="input-pass"
         v-model="reg.pass"
+        v-model:input-css-class="passCssClass"
+        v-model:is-correct-validation-predicate="isNotEmpty"
         type="text"
         placeholder-text="Пароль"
     />
     <TextInput
         id="input-check-pass"
         v-model="reg.checkPass"
+        v-model:input-css-class="checkPassCssClass"
+        v-model:is-correct-validation-predicate="isNotEmpty"
         type="text"
         placeholder-text="Повторите пароль"
+
     />
     <SimpleSingleButton type="submit" class="reg-button" @click="tryToReg">
       Зарегистрироваться
@@ -34,14 +43,22 @@
 </template>
 
 <script>
+import axios from 'axios';
 import TextInput from "@/components/forms/TextInput";
 import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
+import FormValidationUtils from "@/components/forms/FormValidationUtils";
+import Properties from "@/Properties";
 
 export default {
   name: "RegistrationForm",
   components: {
     TextInput,
     SimpleSingleButton
+  },
+  props: {
+    actionOnSuccess: {
+      type: Function
+    }
   },
   data() {
     return {
@@ -51,31 +68,46 @@ export default {
         pass: '',
         checkPass: '',
       },
-      messageLabel: ''
+      messageLabel: '',
+      isNotEmpty: FormValidationUtils.fieldIsNotEmpty,
+      emailCssClass: '',
+      loginCssClass: '',
+      passCssClass: '',
+      checkPassCssClass: '',
     }
   },
   methods: {
     tryToReg() {
-      const isSomeFieldIsNotFilled = this.fieldIsEmpty(this.eMail)
-          || this.fieldIsEmpty(this.login)
-          || this.fieldIsEmpty(this.pass)
-          || this.fieldIsEmpty(this.checkPass)
+      const wrongInputClass = 'wrong-input';
+      let isSomeFieldIsNotFilled = false;
+      if (FormValidationUtils.fieldIsEmpty(this.reg.eMail)) {
+        this.emailCssClass = wrongInputClass;
+        isSomeFieldIsNotFilled = true;
+      }
+      if (FormValidationUtils.fieldIsEmpty(this.reg.login)) {
+        this.loginCssClass = wrongInputClass;
+        isSomeFieldIsNotFilled = true;
+      }
+      if (FormValidationUtils.fieldIsEmpty(this.reg.pass)) {
+        this.passCssClass = wrongInputClass;
+        isSomeFieldIsNotFilled = true;
+      }
+      if (FormValidationUtils.fieldIsEmpty(this.reg.checkPass)) {
+        this.checkPassCssClass = wrongInputClass;
+        isSomeFieldIsNotFilled = true;
+      }
       if (isSomeFieldIsNotFilled) {
-        this.messageLabel = 'Заполните все необходимые поля!'
+        this.messageLabel = 'Заполните все необходимые поля!';
+        return;
       }
+      const backAddress = Properties.BBACK_ADDRESS;
+      axios.post(backAddress + '/register', this.reg)
+          .then(() => {
+            this.actionOnSuccess();
+          }).catch(error => {
+            this.messageLabel = error;
+          })
     },
-    fieldIsEmpty(field, fieldId) {
-      if (field !== null && field !== '') {
-        return false;
-      }
-      const fieldElem = document.getElementById(fieldId);
-      if (fieldElem == null) {
-        console.warn('Unable to find element with such id: ' + fieldId);
-        return false;
-      }
-
-      return true;
-    }
   },
 }
 </script>
