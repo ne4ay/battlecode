@@ -3,7 +3,11 @@
 <!--    <span class="input-member">-->
 <!--      {{placeholderText}}-->
 <!--    </span>-->
-    <input :value="modelValue" @input="updateInput" :class="'input-member ' + this.inputCssClass" type="text" :placeholder="placeholderText">
+    <input :value="modelValue"
+           @input="updateInput"
+           :class="'input-member ' + this.inputCssClass"
+           :placeholder="placeholderText"
+           :type="inputType">
   </div>
 </template>
 
@@ -22,6 +26,9 @@ export default {
     },
     isCorrectValidationPredicate: {
       type: Function
+    },
+    inputType: {
+      type: String
     }
   },
   methods: {

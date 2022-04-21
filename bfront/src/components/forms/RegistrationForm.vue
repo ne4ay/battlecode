@@ -8,7 +8,7 @@
         v-model="reg.eMail"
         v-model:input-css-class="emailCssClass"
         v-model:is-correct-validation-predicate="isNotEmpty"
-        type="text"
+        :inputType="'text'"
         placeholder-text="Электронная почта"
     />
     <TextInput
@@ -16,7 +16,7 @@
         v-model="reg.login"
         v-model:input-css-class="loginCssClass"
         v-model:is-correct-validation-predicate="isNotEmpty"
-        type="text"
+        :inputType="'text'"
         placeholder-text="Логин"
     />
     <TextInput
@@ -24,7 +24,7 @@
         v-model="reg.pass"
         v-model:input-css-class="passCssClass"
         v-model:is-correct-validation-predicate="isNotEmpty"
-        type="text"
+        :inputType="'password'"
         placeholder-text="Пароль"
     />
     <TextInput
@@ -32,7 +32,7 @@
         v-model="reg.checkPass"
         v-model:input-css-class="checkPassCssClass"
         v-model:is-correct-validation-predicate="isNotEmpty"
-        type="text"
+        :inputType="'password'"
         placeholder-text="Повторите пароль"
 
     />
@@ -100,10 +100,29 @@ export default {
         this.messageLabel = 'Заполните все необходимые поля!';
         return;
       }
+      if (this.reg.pass !== this.reg.checkPass) {
+        this.messageLabel = 'Пароли должны совпадать!';
+        this.passCssClass = wrongInputClass;
+        this.checkPassCssClass = wrongInputClass;
+        return;
+      }
+      this.emailCssClass = '';
+      this.loginCssClass = '';
+      this.passCssClass = '';
+      this.checkPassCssClass = '';
       const backAddress = Properties.BBACK_ADDRESS;
       axios.post(backAddress + '/register', this.reg)
-          .then(() => {
-            this.actionOnSuccess();
+          .then(response => {
+            const respModel = response.data;
+            if (!respModel.exception) {
+              this.actionOnSuccess();
+            }
+            const exception = respModel.exception;
+            if (exception === 'USER_WITH_DUPLICATED_LOGIN') {
+              this.messageLabel = 'Пользователь с таким логином уже существует!';
+              return;
+            }
+            this.messageLabel = 'Неизвестная ошибка';
           }).catch(error => {
             this.messageLabel = error;
           })
@@ -118,7 +137,11 @@ form {
   flex-direction: column;
 }
 #message-label {
-  height: 20pt;
+  align-self: center;
+  font-size: 16pt;
+  justify-self: center;
+  text-align: center;
+  min-height: 20pt;
   margin: 5pt 15pt 5pt 7pt;
 }
 

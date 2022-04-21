@@ -47,7 +47,7 @@ public class UserModel implements UserDetails {
     private Boolean isActive;
 
     @ElementCollection(targetClass = BBackUserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name= "user_id"))
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<BBackUserRole> roles;
 
@@ -57,11 +57,11 @@ public class UserModel implements UserDetails {
     @Column(name = "level")
     private Integer level;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "users_done_task",
-        joinColumns = { @JoinColumn(name = "user_id") },
-        inverseJoinColumns = { @JoinColumn(name = "task_id") }
+        joinColumns = {@JoinColumn(name = "user_id")},
+        inverseJoinColumns = {@JoinColumn(name = "task_id")}
     )
     private Set<TaskModel> tasks;
 

@@ -41,7 +41,7 @@ export default {
   background: #181818;
   border-radius: 12pt;
   min-height: 50pt;
-  min-width: 300pt;
+  width: 320pt;
   font-family: 'Ubuntu', sans-serif;
   font-size: 17pt;
   box-shadow: 0 5pt 5pt black;
