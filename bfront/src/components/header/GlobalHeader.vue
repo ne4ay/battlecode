@@ -5,7 +5,7 @@
       <div id="logo-wrapper">
         <MainLogo/>
       </div>
-      <a class="header-link">
+      <a href="/" class="header-link">
         Главная
       </a>
       <a class="header-link">
@@ -16,14 +16,16 @@
       </a>
     </div>
 
-    <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog"/>
+    <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog" v-if="isNeededToDisplayProfileInfo"/>
   </div>
-  <div :class="dialogWrapperBackgroundClass" @click.self="hideDialog">
-    <FormDialog class="reg-form"
-                v-model:is-showing="dialogVisible"
-                v-model:title="typeOfTheDialog.title">
-      <component :is="DialogContentAuthComponent" v-model:action-on-success="hideDialog"/>
-    </FormDialog>
+  <div v-if="true" :class="dialogWrapperBackgroundClass" @click.self="hideDialog">
+    <KeepAlive>
+      <FormDialog class="reg-form"
+                  v-model:is-showing="dialogVisible"
+                  v-model:title="typeOfTheDialog.title">
+        <component :is="dialogContentAuthComponent" v-model:action-on-success="hideDialog"/>
+      </FormDialog>
+    </KeepAlive>
   </div>
 </template>
 
@@ -33,6 +35,7 @@ import UnAuthLinks from "@/components/header/UnAuthLinks";
 import RegistrationForm from "@/components/forms/RegistrationForm";
 import AuthorizationForm from "@/components/forms/AuthorizationForm";
 import FormDialog from "@/components/dialogs/FormDialog";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "GlobalHeader",
@@ -42,6 +45,15 @@ export default {
     UnAuthLinks,
     AuthorizationForm,
     RegistrationForm
+  },
+  mixins: [
+    authenticationMixin
+  ],
+  props: {
+    isNeededToDisplayProfileInfo: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
@@ -69,10 +81,10 @@ export default {
     },
   },
   computed: {
-    DialogContentAuthComponent() {
+    dialogContentAuthComponent() {
       return this.typeOfTheDialog.name + 'Form';
     }
-  }
+  },
 }
 </script>
 
@@ -113,6 +125,14 @@ export default {
   font-stretch: condensed;
   font-size: 22pt;
   color: #e5e5e5;
+  text-decoration: none;
+}
+
+.header-link:hover {
+  color: #f7a36a;
+}
+.header-link:active {
+  color: #e36815;
 }
 
 #auth {

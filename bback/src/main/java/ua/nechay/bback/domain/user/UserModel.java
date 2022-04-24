@@ -2,6 +2,7 @@ package ua.nechay.bback.domain.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.nechay.bback.domain.TaskCompletionModel;
 import ua.nechay.bback.domain.TaskModel;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Set;
@@ -57,19 +59,14 @@ public class UserModel implements UserDetails {
     @Column(name = "level")
     private Integer level;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "users_done_task",
-        joinColumns = {@JoinColumn(name = "user_id")},
-        inverseJoinColumns = {@JoinColumn(name = "task_id")}
-    )
-    private Set<TaskModel> tasks;
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    private Set<TaskCompletionModel> taskCompletions;
 
     public UserModel() {
     }
 
     public UserModel(String login, String password, String eMail, Boolean isActive,
-        Set<BBackUserRole> roles, Integer experience, Integer level, Set<TaskModel> tasks)
+        Set<BBackUserRole> roles, Integer experience, Integer level, Set<TaskCompletionModel> taskCompletions)
     {
         this.login = login;
         this.password = password;
@@ -78,7 +75,7 @@ public class UserModel implements UserDetails {
         this.roles = roles;
         this.experience = experience;
         this.level = level;
-        this.tasks = tasks;
+        this.taskCompletions = taskCompletions;
     }
 
     @Override
@@ -131,7 +128,7 @@ public class UserModel implements UserDetails {
         private Set<BBackUserRole> roles;
         private Integer experience;
         private Integer level;
-        private Set<TaskModel> tasks;
+        private Set<TaskCompletionModel> tasks;
 
         public Builder() {
 
@@ -172,7 +169,7 @@ public class UserModel implements UserDetails {
             return this;
         }
 
-        public Builder setTasks(Set<TaskModel> tasks) {
+        public Builder setTasks(Set<TaskCompletionModel> tasks) {
             this.tasks = tasks;
             return this;
         }

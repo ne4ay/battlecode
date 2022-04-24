@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import AuthDialogType from "@/components/header/AuthDialogType";
+import AuthDialogType from "@/components/header/AuthFormType";
 
 export default {
   name: "UnAuthLinks",
@@ -50,7 +50,7 @@ export default {
 .auth {
   font-family: 'Russo One', sans-serif;
   font-stretch: condensed;
-  font-size: 22pt;
+  font-size: 21pt;
   color: #e5e5e5;
   margin: 0 5pt;
 }

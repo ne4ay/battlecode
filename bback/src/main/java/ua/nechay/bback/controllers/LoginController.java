@@ -27,12 +27,12 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/login")
-public class AuthenticationController {
+public class LoginController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationController(@Nonnull UserService service, @Nonnull AuthenticationManager authenticationManager) {
+    public LoginController(@Nonnull UserService service, @Nonnull AuthenticationManager authenticationManager) {
         this.userService = service;
         this.authenticationManager = authenticationManager;
     }

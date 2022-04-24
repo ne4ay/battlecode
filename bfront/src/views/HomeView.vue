@@ -1,5 +1,5 @@
 <template>
-  <GlobalHeader/>
+  <GlobalHeader :is-needed-to-display-profile-info="true"/>
   <MotivationSlider class="slider" :slides="slides"/>
   <HomeContent/>
 </template>

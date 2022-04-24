@@ -46,6 +46,9 @@ public class TaskModel {
     @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
     private Set<AttitudeChangeModel> attitudes;
 
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    private Set<TaskCompletionModel> taskCompletions;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "language_to_task",
@@ -67,9 +70,9 @@ public class TaskModel {
     public TaskModel() {
     }
 
-    public TaskModel(Integer version, String title, String description, Integer cost,
-        ComplexityModel complexity, Set<AttitudeChangeModel> attitudes,
-        Set<LanguageModel> languages, Set<CategoryModel> categories)
+    public TaskModel(Integer version, String title, String description, Integer cost, ComplexityModel complexity,
+        Set<AttitudeChangeModel> attitudes, Set<LanguageModel> languages, Set<CategoryModel> categories,
+        Set<TaskCompletionModel> taskCompletions)
     {
         this.version = version;
         this.title = title;
@@ -79,6 +82,7 @@ public class TaskModel {
         this.attitudes = attitudes;
         this.languages = languages;
         this.categories = categories;
+        this.taskCompletions = taskCompletions;
     }
 
     public long getId() {
