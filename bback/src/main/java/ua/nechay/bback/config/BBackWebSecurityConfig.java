@@ -8,8 +8,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import ua.nechay.bback.service.UserService;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author anechaev
@@ -20,7 +24,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class BBackWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired private UserService userService;
     @Autowired private AuthenticationProvider authenticationProvider;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -34,15 +40,36 @@ public class BBackWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/register", "/login")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             .and()
-                .formLogin().disable()
+                .cors()
+//            .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
                 .authorizeRequests()
                 .antMatchers("/", "/register", "/login")
                 .permitAll()
                 .anyRequest().authenticated()
             .and()
-                .logout()
-                .permitAll()
+                .rememberMe()
+                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1))
+                .key("somethingverysecured")
+                .rememberMeParameter("remember-me")
             .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+            .formLogin().disable()
+                .logout()
+                .permitAll();
     }
+
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+//        corsConfiguration.setAllowedMethods(Arrays.asList("*"));
+//        corsConfiguration.setMaxAge(Duration.ofMinutes(10));
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//        return new CorsFilter(source);
+//    }
 }

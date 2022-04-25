@@ -31,6 +31,7 @@ import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import FormValidationUtils from "@/components/forms/FormValidationUtils";
 import Properties from "@/Properties";
 import axios from "axios";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "AuthorizationForm",
@@ -43,6 +44,9 @@ export default {
       type: Function
     }
   },
+  mixins: [
+    authenticationMixin
+  ],
   data() {
     return {
       auth: {
@@ -71,13 +75,13 @@ export default {
         this.messageLabel = 'Заполните все необходимые поля!';
         return;
       }
+
       this.loginCssClass = '';
       this.passCssClass = '';
       const backAddress = Properties.BBACK_ADDRESS;
       axios.post(backAddress + '/login', this.auth)
           .then(response => {
             const respModel = response.data;
-            console.log(respModel);
             if (!respModel.exception) {
               this.actionOnSuccess();
             }

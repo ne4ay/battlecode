@@ -18,11 +18,7 @@ public class RegistrationResponse implements ResponseTO {
         this.isSuccessful = isSuccessful;
     }
 
-    public static GenericResponse<RegistrationResponse, RegistrationException> createGenericResponse(
-        boolean isSuccessful, @Nullable RegistrationException exception)
-    {
-        return new GenericResponse<>(
-            new RegistrationResponse(isSuccessful),
-            exception);
+    public static GenericResponse<RegistrationResponse, RegistrationResponseException> createGenericResponse(boolean isSuccessful) {
+        return GenericResponse.fromResponse(new RegistrationResponse(isSuccessful));
     }
 }

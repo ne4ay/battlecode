@@ -1,16 +1,13 @@
 import axios from "axios";
+import Properties from "@/Properties";
 
 export default {
-    data() {
-        return {
-            isAuthenticated: true
-        }
-    },
     methods: {
-
+        async getBasicProfileInfo() {
+            return await axios.get(Properties.BBACK_ADDRESS + "/profile/basic", {
+                withCredentials: true,
+            });
+        },
     },
-    beforeCreate() {
-        axios.get();
-    }
 
 }

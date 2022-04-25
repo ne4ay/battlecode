@@ -100,6 +100,14 @@ public class UserModel implements UserDetails {
         return eMail;
     }
 
+    public Integer getExperience() {
+        return experience;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

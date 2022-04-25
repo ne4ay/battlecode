@@ -48,6 +48,7 @@ import TextInput from "@/components/forms/TextInput";
 import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import FormValidationUtils from "@/components/forms/FormValidationUtils";
 import Properties from "@/Properties";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "RegistrationForm",
@@ -60,6 +61,9 @@ export default {
       type: Function
     }
   },
+  mixins: [
+    authenticationMixin
+  ],
   data() {
     return {
       reg: {
@@ -114,7 +118,9 @@ export default {
       axios.post(backAddress + '/register', this.reg)
           .then(response => {
             const respModel = response.data;
+
             if (!respModel.exception) {
+              authenticationMixin.methods.updateBasicProfileInfo();
               this.actionOnSuccess();
             }
             const exception = respModel.exception;

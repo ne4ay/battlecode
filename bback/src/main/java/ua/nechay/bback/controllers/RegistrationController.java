@@ -1,7 +1,6 @@
 package ua.nechay.bback.controllers;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ua.nechay.bback.domain.user.BBackUserRole;
 import ua.nechay.bback.domain.user.UserModel;
-import ua.nechay.bback.dto.responses.RegistrationException;
-import ua.nechay.bback.dto.responses.RegistrationResponse;
 import ua.nechay.bback.dto.base.GenericResponse;
 import ua.nechay.bback.dto.requests.RegistrationRequest;
+import ua.nechay.bback.dto.responses.RegistrationResponseException;
+import ua.nechay.bback.dto.responses.RegistrationResponse;
 import ua.nechay.bback.service.UserService;
 
 import java.util.Collections;
@@ -33,10 +32,10 @@ public class RegistrationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<RegistrationResponse, RegistrationException> register(@RequestBody RegistrationRequest request) {
+    public @ResponseBody GenericResponse<RegistrationResponse, RegistrationResponseException> register(@RequestBody RegistrationRequest request) {
         Optional<UserModel> existingUser = userService.findByLogin(request.getLogin());
         if (existingUser.isPresent()) {
-            return RegistrationResponse.createGenericResponse(false, RegistrationException.USER_WITH_DUPLICATED_LOGIN);
+            return GenericResponse.fromException(RegistrationResponseException.USER_WITH_DUPLICATED_LOGIN);
         }
         UserModel user = new UserModel.Builder()
             .setLogin(request.getLogin())
@@ -47,6 +46,6 @@ public class RegistrationController {
             .setRoles(Collections.singleton(BBackUserRole.DEFAULT_USER))
             .build();
         userService.save(user);
-        return RegistrationResponse.createGenericResponse(true, null);
+        return RegistrationResponse.createGenericResponse(true);
     }
 }

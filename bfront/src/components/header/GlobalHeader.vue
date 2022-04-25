@@ -15,15 +15,19 @@
         Рейтинг
       </a>
     </div>
-
-    <UnAuthLinks class="content-wrapper" id="auth" :auth-listener="showAuthDialog" v-if="isNeededToDisplayProfileInfo"/>
+    <div id="auth" v-if="isNeededToDisplayProfileInfo">
+      <ProfileInfo v-if=" this.$store.state.auth.isAuth "/>
+      <UnAuthLinks v-else
+                   class="content-wrapper"
+                   :auth-listener="showAuthDialog" />
+    </div>
   </div>
   <div v-if="true" :class="dialogWrapperBackgroundClass" @click.self="hideDialog">
     <KeepAlive>
       <FormDialog class="reg-form"
                   v-model:is-showing="dialogVisible"
                   v-model:title="typeOfTheDialog.title">
-        <component :is="dialogContentAuthComponent" v-model:action-on-success="hideDialog"/>
+        <component :is="dialogContentAuthComponent" v-model:action-on-success="successfulAuth"/>
       </FormDialog>
     </KeepAlive>
   </div>
@@ -35,20 +39,19 @@ import UnAuthLinks from "@/components/header/UnAuthLinks";
 import RegistrationForm from "@/components/forms/RegistrationForm";
 import AuthorizationForm from "@/components/forms/AuthorizationForm";
 import FormDialog from "@/components/dialogs/FormDialog";
+import ProfileInfo from "@/components/header/ProfileInfo";
 import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "GlobalHeader",
   components: {
+    ProfileInfo,
     FormDialog,
     MainLogo,
     UnAuthLinks,
     AuthorizationForm,
     RegistrationForm
   },
-  mixins: [
-    authenticationMixin
-  ],
   props: {
     isNeededToDisplayProfileInfo: {
       type: Boolean,
@@ -70,6 +73,20 @@ export default {
       this.dialogVisible = true;
       this.typeOfTheDialog = dialogType;
       this.dialogWrapperBackgroundClass = 'dialog-wrapper';
+    },
+    successfulAuth() {
+      this.$store.state.auth.isAuth = true;
+      authenticationMixin.methods.getBasicProfileInfo().then(response => {
+        if (response.data.exception) {
+          this.$store.state.auth.isAuth  = false;
+        }
+        const responseModel = response.data.response;
+        this.$store.state.basicProfileInfo.login = responseModel.login;
+        this.$store.state.basicProfileInfo.experience = responseModel.experience;
+        this.$store.state.basicProfileInfo.level = responseModel.level;
+        this.isAuth = true;
+      })
+      this.hideDialog();
     },
     hideDialog() {
       if (this.dialogVisible) {
