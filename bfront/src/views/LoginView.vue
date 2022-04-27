@@ -1,7 +1,6 @@
 <template>
   <div class="main">
-    <GlobalHeader id="header"
-    :is-needed-to-display-profile-info="false"/>
+    <GlobalHeader id="header" :is-needed-to-display-profile-info="false"/>
     <div class="content">
       <MainBackground>
         <AuthWindow id="window" :tabs="tabs"/>
@@ -36,12 +35,15 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 template {
   background: #202020;
 }
+
 .main {
   height: max-content;
 }
+
 .content {
   position: absolute;
   z-index: -1;

@@ -76,11 +76,7 @@ export default {
       this.dialogWrapperBackgroundClass = 'dialog-wrapper';
     },
     successfulAuth() {
-      const authModel = {
-        jSessionId: this.$store.state.auth.jSessionId
-      }
-      console.log('AuthModel' + authModel.jSessionId);
-      authenticationMixin.methods.getBasicProfileInfo(authModel).then(response => {
+      authenticationMixin.methods.getBasicProfileInfo().then(response => {
         if (response.data.exception) {
           this.$store.state.isAuth = false;
           return;
