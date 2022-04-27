@@ -128,6 +128,11 @@ public class UserModel implements UserDetails {
         return isActive;
     }
 
+    public UserModel setActive(Boolean active) {
+        this.isActive = active;
+        return this;
+    }
+
     public static class Builder {
         private String login;
         private String password;

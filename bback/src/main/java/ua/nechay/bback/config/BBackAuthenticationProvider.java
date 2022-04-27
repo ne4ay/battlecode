@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  * @author anechaev
  * @since 20.04.2022
  */
-@Component
 public class BBackAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired private AuthenticationManager authenticationManager;

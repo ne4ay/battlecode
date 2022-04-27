@@ -2,11 +2,7 @@ import {createStore} from "vuex";
 
 export default createStore({
     state: {
-        auth: {
-            isAuth: false,
-            xsrfToken: '',
-            jSessionId: '',
-        },
+        isAuth: false,
         basicProfileInfo: {
             login: null,
             experience: null,

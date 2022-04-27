@@ -79,8 +79,11 @@ export default {
       this.loginCssClass = '';
       this.passCssClass = '';
       const backAddress = Properties.BBACK_ADDRESS;
-      axios.post(backAddress + '/login', this.auth)
+      axios.post(backAddress + '/login', this.auth, {
+        withCredentials: true
+      })
           .then(response => {
+            console.log(response);
             const respModel = response.data;
             if (!respModel.exception) {
               this.actionOnSuccess();

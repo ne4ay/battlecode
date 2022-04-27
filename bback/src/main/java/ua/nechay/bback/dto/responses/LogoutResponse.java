@@ -6,19 +6,19 @@ import ua.nechay.bback.dto.base.ResponseTO;
 
 /**
  * @author anechaev
- * @since 20.04.2022
+ * @since 28.04.2022
  */
-public class LoginResponse implements ResponseTO {
+public class LogoutResponse implements ResponseTO {
 
     @JsonProperty private final boolean isSuccessful;
 
-    public LoginResponse(boolean isSuccessful) {
+    public LogoutResponse(boolean isSuccessful) {
         this.isSuccessful = isSuccessful;
     }
 
-    public static GenericResponse<LoginResponse, LoginResponseException> createGenericResponse(boolean isSuccessful) {
+    public static GenericResponse<LogoutResponse, GeneralResponseException> createGenericResponse(boolean isSuccessful) {
         return GenericResponse.fromResponse(
-            new LoginResponse(isSuccessful)
+            new LogoutResponse(isSuccessful)
         );
     }
 }

@@ -16,10 +16,11 @@
       </a>
     </div>
     <div id="auth" v-if="isNeededToDisplayProfileInfo">
-      <ProfileInfo v-if=" this.$store.state.auth.isAuth "/>
+      <ProfileInfo v-if="this.$store.state.isAuth"
+                   class="content-wrapper"/>
       <UnAuthLinks v-else
                    class="content-wrapper"
-                   :auth-listener="showAuthDialog" />
+                   :auth-listener="showAuthDialog"/>
     </div>
   </div>
   <div v-if="true" :class="dialogWrapperBackgroundClass" @click.self="hideDialog">
@@ -65,7 +66,7 @@ export default {
         name: String,
         title: String
       },
-      dialogWrapperBackgroundClass : 'none-display',
+      dialogWrapperBackgroundClass: 'none-display',
     }
   },
   methods: {
@@ -75,16 +76,21 @@ export default {
       this.dialogWrapperBackgroundClass = 'dialog-wrapper';
     },
     successfulAuth() {
-      this.$store.state.auth.isAuth = true;
-      authenticationMixin.methods.getBasicProfileInfo().then(response => {
+      const authModel = {
+        jSessionId: this.$store.state.auth.jSessionId
+      }
+      console.log('AuthModel' + authModel.jSessionId);
+      authenticationMixin.methods.getBasicProfileInfo(authModel).then(response => {
         if (response.data.exception) {
-          this.$store.state.auth.isAuth  = false;
+          this.$store.state.isAuth = false;
+          return;
         }
         const responseModel = response.data.response;
+        console.log(responseModel);
         this.$store.state.basicProfileInfo.login = responseModel.login;
         this.$store.state.basicProfileInfo.experience = responseModel.experience;
         this.$store.state.basicProfileInfo.level = responseModel.level;
-        this.isAuth = true;
+        this.$store.state.isAuth = true;
       })
       this.hideDialog();
     },
@@ -148,6 +154,7 @@ export default {
 .header-link:hover {
   color: #f7a36a;
 }
+
 .header-link:active {
   color: #e36815;
 }
