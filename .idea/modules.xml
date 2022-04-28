@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/battlecode.iml" filepath="$PROJECT_DIR$/battlecode.iml" />
       <module fileurl="file://$PROJECT_DIR$/bback/bback.iml" filepath="$PROJECT_DIR$/bback/bback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bevaluator/bevaluator.iml" filepath="$PROJECT_DIR$/bevaluator/bevaluator.iml" />
       <module fileurl="file://$PROJECT_DIR$/bfront/bfront.iml" filepath="$PROJECT_DIR$/bfront/bfront.iml" />
     </modules>
   </component>

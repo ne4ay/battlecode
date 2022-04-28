@@ -49,13 +49,8 @@ public class TaskModel {
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private Set<TaskCompletionModel> taskCompletions;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "language_to_task",
-        joinColumns = { @JoinColumn(name = "task_id") },
-        inverseJoinColumns = { @JoinColumn(name = "lang_id") }
-    )
-    private Set<LanguageModel> languages;
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
+    private Set<LanguageToTaskModel> languages;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -71,7 +66,7 @@ public class TaskModel {
     }
 
     public TaskModel(Integer version, String title, String description, Integer cost, ComplexityModel complexity,
-        Set<AttitudeChangeModel> attitudes, Set<LanguageModel> languages, Set<CategoryModel> categories,
+        Set<AttitudeChangeModel> attitudes, Set<LanguageToTaskModel> languages, Set<CategoryModel> categories,
         Set<TaskCompletionModel> taskCompletions)
     {
         this.version = version;
