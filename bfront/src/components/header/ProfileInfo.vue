@@ -16,6 +16,7 @@
 import axios from "axios";
 import Properties from "@/Properties";
 import authenticationMixin from "@/mixins/authenticationMixin";
+import router from "@/router/router";
 
 export default {
   name: "ProfileInfo",
@@ -32,6 +33,7 @@ export default {
               return;
             }
             authenticationMixin.methods.resetProfileInfo();
+            router.go('/');
           })
           .catch(error => {
             console.log(error);

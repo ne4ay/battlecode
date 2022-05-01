@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "@/views/HomeView";
 import LoginView from "@/views/LoginView";
 import LanguagesView from "@/views/LanguagesView";
+import TasksView from "@/views/TasksView";
 
 const routes = [
     {
@@ -15,6 +16,10 @@ const routes = [
     {
         path: '/langs',
         component: LanguagesView
+    },
+    {
+        path: '/tasks/:langName',
+        component: TasksView
     }
 ]
 

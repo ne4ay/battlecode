@@ -16,7 +16,7 @@
       </a>
     </div>
     <div id="auth" v-if="isNeededToDisplayProfileInfo">
-      <ProfileInfo v-if="isAuth"
+      <ProfileInfo v-if="isAuthenticated"
                    class="content-wrapper"/>
       <UnAuthLinks v-else
                    class="content-wrapper"
@@ -70,6 +70,7 @@ export default {
         title: String
       },
       dialogWrapperBackgroundClass: 'none-display',
+      isAuthenticated: authenticationMixin.methods.getAuth(),
     }
   },
   methods: {
@@ -85,6 +86,7 @@ export default {
           return;
         }
         authenticationMixin.methods.updateProfileInfo(response);
+        this.isAuthenticated = true;
       })
       this.hideDialog();
     },
@@ -101,9 +103,6 @@ export default {
     dialogContentAuthComponent() {
       return this.typeOfTheDialog.name + 'Form';
     },
-    isAuth() {
-      return authenticationMixin.methods.getAuth();
-    }
   },
   created() {
   }

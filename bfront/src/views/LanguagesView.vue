@@ -35,7 +35,7 @@ export default {
     }
   },
   created() {
-    if (this.$store.state.isAuth) {
+    if (!this.isAuth) {
       router.push('auth');
     }
     axios.get(Properties.BBACK_ADDRESS + '/languages', {
@@ -51,6 +51,11 @@ export default {
             router.push('auth');
           }
         })
+  },
+  computed: {
+    isAuth() {
+      return authenticationMixin.methods.getAuth();
+    }
   }
 }
 </script>
