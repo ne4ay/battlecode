@@ -8,7 +8,7 @@
       <a href="/" class="header-link">
         Главная
       </a>
-      <a class="header-link">
+      <a href="/langs" class="header-link">
         Задачи
       </a>
       <a class="header-link">
@@ -16,7 +16,7 @@
       </a>
     </div>
     <div id="auth" v-if="isNeededToDisplayProfileInfo">
-      <ProfileInfo v-if="this.$store.state.isAuth"
+      <ProfileInfo v-if="isAuth"
                    class="content-wrapper"/>
       <UnAuthLinks v-else
                    class="content-wrapper"
@@ -53,6 +53,9 @@ export default {
     AuthorizationForm,
     RegistrationForm
   },
+  mixins: [
+    authenticationMixin
+  ],
   props: {
     isNeededToDisplayProfileInfo: {
       type: Boolean,
@@ -78,15 +81,10 @@ export default {
     successfulAuth() {
       authenticationMixin.methods.getBasicProfileInfo().then(response => {
         if (response.data.exception) {
-          this.$store.state.isAuth = false;
+          localStorage.setItem('isAuth', false);
           return;
         }
-        const responseModel = response.data.response;
-        console.log(responseModel);
-        this.$store.state.basicProfileInfo.login = responseModel.login;
-        this.$store.state.basicProfileInfo.experience = responseModel.experience;
-        this.$store.state.basicProfileInfo.level = responseModel.level;
-        this.$store.state.isAuth = true;
+        authenticationMixin.methods.updateProfileInfo(response);
       })
       this.hideDialog();
     },
@@ -102,8 +100,13 @@ export default {
   computed: {
     dialogContentAuthComponent() {
       return this.typeOfTheDialog.name + 'Form';
+    },
+    isAuth() {
+      return authenticationMixin.methods.getAuth();
     }
   },
+  created() {
+  }
 }
 </script>
 

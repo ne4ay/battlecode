@@ -3,6 +3,8 @@ services:
   bback:
     image: bback
     build: bback/
+    environment:
+      - JAVA_REST_PORT=8091
     ports:
       - "8090:8090"
   bfront:
@@ -10,3 +12,10 @@ services:
     build: bfront/
     ports:
       - "8080:8080"
+  bevaluator:
+    image: bevaluator
+    build: bevaluator/
+    environment:
+      - REST_PORT=8091
+    ports:
+      - "8091:8091"

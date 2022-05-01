@@ -14,6 +14,7 @@ import GlobalHeader from "@/components/header/GlobalHeader";
 import AuthFormType from "@/components/header/AuthFormType";
 import AuthWindow from "@/components/AuthWindow";
 import MainBackground from "@/components/home/MainBackground";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "AuthView",
@@ -22,6 +23,9 @@ export default {
     MainBackground,
     AuthWindow
   },
+  mixins: [
+    authenticationMixin
+  ],
   data() {
     return {
       tabs: [AuthFormType.AUTHORIZATION, AuthFormType.REGISTRATION],

@@ -7,7 +7,7 @@
     </ul>
     <div class="window-content">
       <KeepAlive>
-        <component :is="dialogContentAuthComponent"/>
+        <component :is="dialogContentAuthComponent" v-model:action-on-success="successfulAuth"/>
       </KeepAlive>
     </div>
   </div>
@@ -17,6 +17,8 @@
 import RegistrationForm from "@/components/forms/RegistrationForm";
 import AuthorizationForm from "@/components/forms/AuthorizationForm";
 import AuthFormType from "@/components/header/AuthFormType";
+import router from "@/router/router";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "AuthWindow",
@@ -24,6 +26,9 @@ export default {
     AuthorizationForm,
     RegistrationForm,
   },
+  mixins : [
+    authenticationMixin
+  ],
   props: {
     tabs: {
       type: Array,
@@ -32,11 +37,22 @@ export default {
   data() {
     return {
       activeComponent: AuthFormType.AUTHORIZATION,
+      lastPath: ''
     }
   },
   methods: {
     changeActiveForm(formType) {
       this.activeComponent = formType;
+    },
+    successfulAuth() {
+      authenticationMixin.methods.getBasicProfileInfo().then(response => {
+        if (response.data.exception) {
+          this.$store.state.isAuth = false;
+          return;
+        }
+        authenticationMixin.methods.updateProfileInfo(response);
+      })
+      router.push(this.lastPath);
     }
   },
   computed: {
@@ -44,6 +60,9 @@ export default {
       return this.activeComponent.name + 'Form';
     }
   },
+  created() {
+    this.lastPath = this.$router.options.history.state.back
+  }
 }
 </script>
 

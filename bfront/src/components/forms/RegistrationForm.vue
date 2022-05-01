@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent>
     <span id="message-label">
-      {{messageLabel}}
+      {{ messageLabel }}
     </span>
     <TextInput
         id="input-email"
@@ -48,7 +48,6 @@ import TextInput from "@/components/forms/TextInput";
 import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import FormValidationUtils from "@/components/forms/FormValidationUtils";
 import Properties from "@/Properties";
-import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "RegistrationForm",
@@ -61,9 +60,6 @@ export default {
       type: Function
     }
   },
-  mixins: [
-    authenticationMixin
-  ],
   data() {
     return {
       reg: {
@@ -118,10 +114,8 @@ export default {
       axios.post(backAddress + '/register', this.reg)
           .then(response => {
             const respModel = response.data;
-
             if (!respModel.exception) {
-              authenticationMixin.methods.updateBasicProfileInfo();
-              this.actionOnSuccess();
+              this.actionOnSuccess(response);
             }
             const exception = respModel.exception;
             if (exception === 'USER_WITH_DUPLICATED_LOGIN') {
@@ -130,8 +124,8 @@ export default {
             }
             this.messageLabel = 'Неизвестная ошибка';
           }).catch(error => {
-            this.messageLabel = error;
-          })
+        this.messageLabel = error;
+      })
     },
   },
 }
@@ -142,6 +136,7 @@ form {
   display: flex;
   flex-direction: column;
 }
+
 #message-label {
   align-self: center;
   font-size: 16pt;

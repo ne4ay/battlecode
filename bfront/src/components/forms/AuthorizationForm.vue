@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent>
     <span id="message-label">
-        {{messageLabel}}
+        {{ messageLabel }}
     </span>
     <TextInput
         id="input-login"
@@ -31,7 +31,6 @@ import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import FormValidationUtils from "@/components/forms/FormValidationUtils";
 import Properties from "@/Properties";
 import axios from "axios";
-import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "AuthorizationForm",
@@ -44,9 +43,6 @@ export default {
       type: Function
     }
   },
-  mixins: [
-    authenticationMixin
-  ],
   data() {
     return {
       auth: {
@@ -85,8 +81,8 @@ export default {
           .then(response => {
             console.log(response);
             const respModel = response.data;
-            if (!respModel.exception) {
-              this.actionOnSuccess();
+            if (!respModel.exception && respModel.response.isSuccessful) {
+              this.actionOnSuccess(response);
             }
             const exception = respModel.exception;
             if (exception === 'WRONG_CREDENTIALS') {
@@ -95,7 +91,7 @@ export default {
             }
             this.messageLabel = 'Неизвестная ошибка';
           }).catch(error => {
-            this.messageLabel = error;
+        this.messageLabel = error;
       })
     }
   },
@@ -107,6 +103,7 @@ form {
   display: flex;
   flex-direction: column;
 }
+
 #message-label {
   align-self: center;
   font-size: 16pt;
@@ -115,6 +112,7 @@ form {
   min-height: 20pt;
   margin: 5pt 15pt 5pt 7pt;
 }
+
 .auth-button {
   align-self: end;
   margin: 5pt 10pt 5pt 15pt;

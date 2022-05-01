@@ -9,7 +9,10 @@ export default createStore({
             level: null
         }
     },
+    mutations: {
+    },
     actions: {
-
+    },
+    getters: {
     }
 })

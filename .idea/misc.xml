@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/bback/pom.xml" />
         <option value="$PROJECT_DIR$/bevaluator/pom.xml" />
+        <option value="$PROJECT_DIR$/internal-api/pom.xml" />
       </list>
     </option>
   </component>

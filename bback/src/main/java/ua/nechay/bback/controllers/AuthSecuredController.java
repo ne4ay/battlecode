@@ -30,7 +30,6 @@ public class AuthSecuredController {
     @GetMapping(value = "/basic")
     public @ResponseBody GenericResponse<ProfileInfoResponse, GeneralResponseException> getBasicInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("principal: " + authentication.getPrincipal());
         if (!authentication.isAuthenticated()) {
             return GenericResponse.fromException(GeneralResponseException.UNAUTHORIZED);
         }

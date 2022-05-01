@@ -16,7 +16,8 @@ export default {
   name: "FormDialog",
   props: {
     title: {
-      type: String
+      type: String,
+      default: ''
     },
     isShowing: {
       type: Boolean,

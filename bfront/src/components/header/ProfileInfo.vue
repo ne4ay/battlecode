@@ -1,7 +1,7 @@
 <template>
   <div class="profile-info-wrapper">
     <a class="profile-label">
-      {{ this.$store.state.basicProfileInfo.login }}
+      {{ getName }}
     </a>
     <span class="delimiter">
       |
@@ -15,9 +15,13 @@
 <script>
 import axios from "axios";
 import Properties from "@/Properties";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "ProfileInfo",
+  mixins: [
+      authenticationMixin
+  ],
   methods: {
     logout() {
       const backAddress = Properties.BBACK_ADDRESS;
@@ -27,14 +31,16 @@ export default {
             if (!respModel.response.isSuccessful) {
               return;
             }
-            this.$store.state.basicProfileInfo.login = null;
-            this.$store.state.basicProfileInfo.level = null;
-            this.$store.state.basicProfileInfo.experience = null;
-            this.$store.state.isAuth = false;
+            authenticationMixin.methods.resetProfileInfo();
           })
           .catch(error => {
             console.log(error);
           })
+    }
+  },
+  computed: {
+    getName() {
+      return authenticationMixin.methods.getProfileInfo().login;
     }
   }
 }
