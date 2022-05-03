@@ -1,7 +1,5 @@
 package ua.nechay.bback.controllers;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,29 +11,26 @@ import ua.nechay.bback.service.UserService;
 
 import javax.annotation.Nonnull;
 
+import static ua.nechay.bback.utils.BBackAuthUtils.getUserFromAuthentication;
+
 /**
  * @author anechaev
  * @since 24.04.2022
  */
 @RestController
 @RequestMapping("/profile")
-public class AuthSecuredController {
+public class ProfileInfoController {
 
     private final UserService userService;
 
-    public AuthSecuredController(@Nonnull UserService service) {
+    public ProfileInfoController(@Nonnull UserService service) {
         this.userService = service;
     }
 
     @GetMapping(value = "/basic")
     public @ResponseBody GenericResponse<ProfileInfoResponse, GeneralResponseException> getBasicInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return GenericResponse.fromException(GeneralResponseException.UNAUTHORIZED);
-        }
-        String authName = authentication.getName();
-        return userService.findByLogin(authName)
+        return getUserFromAuthentication()
             .map(ProfileInfoResponse::createGenericResponse)
-            .orElse(GenericResponse.fromException(GeneralResponseException.SERVER_ERROR));
+            .orElse(GenericResponse.fromException(GeneralResponseException.UNAUTHORIZED));
     }
 }

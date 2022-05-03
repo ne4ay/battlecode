@@ -2,6 +2,8 @@ package ua.nechay.bback.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class LanguageToTaskModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Enumerated(value= EnumType.STRING)
     @Column
     private BBackLanguage language;
 
@@ -31,4 +34,8 @@ public class LanguageToTaskModel {
     @JoinColumn(name = "task_id")
     private TaskModel task;
 
+
+    public BBackLanguage getLanguage() {
+        return language;
+    }
 }

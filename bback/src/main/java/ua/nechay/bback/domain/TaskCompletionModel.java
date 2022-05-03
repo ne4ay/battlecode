@@ -24,14 +24,15 @@ public class TaskCompletionModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     private TaskModel task;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserModel user;
+
+    private BBackLanguage language;
 
     @Column(name = "time_of_completion")
     private long timeOfCompletion;
@@ -43,5 +44,9 @@ public class TaskCompletionModel {
         this.task = task;
         this.user = user;
         this.timeOfCompletion = timeOfCompletion;
+    }
+
+    public TaskModel getTask() {
+        return task;
     }
 }

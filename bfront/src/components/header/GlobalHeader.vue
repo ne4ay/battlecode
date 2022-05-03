@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <div class="content-wrapper">
       <div id="logo-wrapper">
@@ -127,6 +126,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 10;
 }
 
 .content-wrapper {

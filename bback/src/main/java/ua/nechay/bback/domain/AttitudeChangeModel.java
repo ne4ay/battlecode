@@ -1,7 +1,11 @@
 package ua.nechay.bback.domain;
 
+import ua.nechay.bback.domain.user.UserModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,10 +26,13 @@ public class AttitudeChangeModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Enumerated(value= EnumType.STRING)
     @Column
     private AttitudeType type;
 
-    //TODO: add user id here;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")

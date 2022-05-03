@@ -1,18 +1,111 @@
 <template>
   <GlobalHeader :is-needed-to-display-profile-info="true"/>
+  <div class="content">
+    <MainBackground>
+      <div id="tasks-wrapper">
+        <ShortTaskItem v-for="(task, index) in tasks"
+                       :key="index" class="task-item"/>
+      </div>
+      <RowPagination v-model:active-page-num="activePage"
+                    v-model:count-of-pages="countOfPages"
+                      :changing-listener="paginatorListener"/>
+    </MainBackground>
+  </div>
 </template>
 
 <script>
 import GlobalHeader from "@/components/header/GlobalHeader";
+import MainBackground from "@/components/home/MainBackground";
+import ShortTaskItem from "@/components/tasks/ShortTaskItem";
+import authenticationMixin from "@/mixins/authenticationMixin";
+import router from "@/router/router";
+// import axios from "axios";
+// import Properties from "@/Properties";
+import RowPagination from "@/components/pagination/RowPagination";
 
 export default {
   name: "TasksView",
   components: {
     GlobalHeader,
+    MainBackground,
+    ShortTaskItem,
+    RowPagination
   },
+  mixins: [
+    authenticationMixin
+  ],
+  data() {
+    return {
+      lang: '',
+      pageSize: 20,
+      countOfPages: 6,
+      activePage: 1,
+      tasks: [],
+    }
+  },
+  created() {
+    if (!authenticationMixin.methods.getAuth()) {
+      router.push('/auth');
+    }
+    this.lang = this.$route.path.replace('/tasks/', '');
+    // axios.get(Properties.BBACK_ADDRESS + '/tasks/count/' + this.lang, {
+    //   withCredentials: true,
+    //   params: {
+    //     size: this.pageSize,
+    //   }
+    // }).then(response => {
+    //   const data = response.data;
+    //   if (response.exception) {
+    //     router.push('/error?error=' + response.exception);
+    //     return;
+    //   }
+    //   this.countOfPages = data.response.countOfPages;
+    // }).catch(exception => {
+    //   if (exception.response.status === 401) {
+    //     authenticationMixin.methods.resetProfileInfo();
+    //     router.push('auth');
+    //     return;
+    //   }
+    //   router.push('/error?error=' + exception);
+    // })
+  },
+  methods: {
+    paginatorListener(page) {
+      this.activePage = page;
+      this.$forceUpdate();
+    }
+  }
 }
 </script>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+template {
+  background: #202020;
+}
+
+.content {
+  position: absolute;
+  z-index: -1;
+  height: calc(100% - 65pt);
+  width: 100%;
+  background-color: #202020;
+}
+
+#tasks-wrapper {
+  margin-top: 12pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.task-item {
+  margin: 8pt;
+  align-self: center;
+}
 
 </style>

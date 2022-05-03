@@ -51,8 +51,8 @@ export default {
           return;
         }
         authenticationMixin.methods.updateProfileInfo(response);
+        router.push(this.lastPath);
       })
-      router.push(this.lastPath);
     }
   },
   computed: {
@@ -61,7 +61,8 @@ export default {
     }
   },
   created() {
-    this.lastPath = this.$router.options.history.state.back
+    const back = this.$router.options.history.state.back;
+    this.lastPath = back ? back : '/';
   }
 }
 </script>
@@ -100,6 +101,8 @@ ul li {
   width: 100%;
   text-align: center;
   list-style: none;
+  border-top-right-radius: 12pt;
+  border-top-left-radius: 12pt;
   color: #ead1c6;
 }
 ul li:hover {

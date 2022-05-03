@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface LanguageToTaskRepo extends JpaRepository<LanguageToTaskModel, Long> {
 
-    List<LanguageToTaskModel> findLanguageToTaskModelsByLanguage(BBackLanguage language);
+    List<LanguageToTaskModel> findAllByLanguage(BBackLanguage language);
 
     int countLanguageToTaskModelByLanguage(BBackLanguage language);
 }

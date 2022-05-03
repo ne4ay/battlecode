@@ -1,43 +1,33 @@
 <template>
-  <a :href="'/tasks/' + languageName">
-    <div class="lang-container">
-    <span>
-      {{ languageName }}
-    </span>
-      <span>
-      {{ countOfTasks }} задач
-    </span>
+  <a :href="href">
+    <div class="link-container">
+      {{ text }}
     </div>
   </a>
 </template>
 
 <script>
 export default {
-  name: "LanguageItem",
+  name: "SimpleAdminLinkItem",
   props: {
-    languageName: {
+    href: {
+      type: String,
+      default: '/'
+    },
+    text: {
       type: String,
       default: ''
-    },
-    countOfTasks: {
-      type: Number,
-      default: 0
     }
-  },
-  data() {
-    return {}
   }
 }
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 a {
   text-decoration: none;
   border-radius: 15pt;
 }
-
-.lang-container {
+.link-container {
   width: 350pt;
   background: #272727;
   font-family: 'Ubuntu', sans-serif;
@@ -50,14 +40,13 @@ a {
   padding: 15pt 12pt 15pt 12pt;
 }
 
-.lang-container:hover {
+.link-container:hover {
   color: #f7a36a;
   background: #303030;
 }
 
-.lang-container:active {
+.link-container:active {
   color: #e36815;
   background-color: #080808;
 }
-
 </style>

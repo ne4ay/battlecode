@@ -1,5 +1,5 @@
 <template>
-  <transition name="swim" id="tr  ans">
+  <transition name="swim">
     <div class="dialog-container" v-if="isShowing">
       <div class="dialog-title">
         {{title}}

@@ -32,12 +32,8 @@ public class LanguagesController {
 
     @GetMapping
     public @ResponseBody GenericResponse<LanguagesResponse, GeneralResponseException> getAllLanguages() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return GenericResponse.fromException(GeneralResponseException.UNAUTHORIZED);
-        }
         List<LanguageTO> langs = Arrays.stream(BBackLanguage.values())
-            .map(lang -> new LanguageTO(lang.getName(), taskService.getCountOfTheTasksOnLanguage(lang)))
+            .map(lang -> new LanguageTO(lang.getLanguageName(), taskService.getCountOfTheTasksOnLanguage(lang)))
             .toList();
         return LanguagesResponse.createGenericResponse(langs);
     }

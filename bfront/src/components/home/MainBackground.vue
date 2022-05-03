@@ -12,6 +12,6 @@ export default {
 
 <style scoped>
 .main {
-  height: 100%;
+  height: 95%;
 }
 </style>

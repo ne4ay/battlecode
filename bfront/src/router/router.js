@@ -3,6 +3,9 @@ import HomeView from "@/views/HomeView";
 import LoginView from "@/views/LoginView";
 import LanguagesView from "@/views/LanguagesView";
 import TasksView from "@/views/TasksView";
+import ErrorView from "@/views/ErrorView";
+import AdminTasksView from "@/views/admin/AdminTasksView";
+import AdminPanelView from "@/views/AdminPanelView";
 
 const routes = [
     {
@@ -20,6 +23,18 @@ const routes = [
     {
         path: '/tasks/:langName',
         component: TasksView
+    },
+    {
+        path: '/error',
+        component: ErrorView
+    },
+    {
+        path: '/admin',
+        component: AdminPanelView,
+    },
+    {
+        path: '/admin/tasks',
+        component: AdminTasksView
     }
 ]
 

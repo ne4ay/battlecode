@@ -1,5 +1,7 @@
 package ua.nechay.bback.domain;
 
+import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.Optional;
 
 public enum BBackLanguage {
@@ -15,7 +17,8 @@ public enum BBackLanguage {
         this.defaultPort = defaultPort;
     }
 
-    public String getName() {
+    @Nonnull
+    public String getLanguageName() {
         return name;
     }
 
@@ -23,5 +26,11 @@ public enum BBackLanguage {
         return Optional.ofNullable(System.getenv(portEnvVariableName))
             .map(Integer::parseInt)
             .orElse(defaultPort);
+    }
+
+    public static Optional<BBackLanguage> fromName(@Nonnull String name) {
+        return Arrays.stream(BBackLanguage.values())
+            .filter(langName -> langName.getLanguageName().equals(name))
+            .findFirst();
     }
 }

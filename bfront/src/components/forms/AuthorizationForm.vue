@@ -79,10 +79,10 @@ export default {
         withCredentials: true
       })
           .then(response => {
-            console.log(response);
             const respModel = response.data;
             if (!respModel.exception && respModel.response.isSuccessful) {
-              this.actionOnSuccess(response);
+              this.actionOnSuccess();
+              return;
             }
             const exception = respModel.exception;
             if (exception === 'WRONG_CREDENTIALS') {

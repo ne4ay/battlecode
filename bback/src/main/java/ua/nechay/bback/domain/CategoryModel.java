@@ -2,6 +2,7 @@ package ua.nechay.bback.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,9 +25,13 @@ public class CategoryModel {
     @Column
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<TaskModel> tasks;
 
     public CategoryModel() {
+    }
+
+    public String getName() {
+        return name;
     }
 }

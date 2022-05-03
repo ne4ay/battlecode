@@ -21,7 +21,7 @@
     />
     <TextInput
         id="input-pass"
-        v-model="reg.pass"
+        v-model="reg.password"
         v-model:input-css-class="passCssClass"
         v-model:is-correct-validation-predicate="isNotEmpty"
         :inputType="'password'"
@@ -65,7 +65,7 @@ export default {
       reg: {
         eMail: '',
         login: '',
-        pass: '',
+        password: '',
         checkPass: '',
       },
       messageLabel: '',
@@ -88,7 +88,7 @@ export default {
         this.loginCssClass = wrongInputClass;
         isSomeFieldIsNotFilled = true;
       }
-      if (FormValidationUtils.fieldIsEmpty(this.reg.pass)) {
+      if (FormValidationUtils.fieldIsEmpty(this.reg.password)) {
         this.passCssClass = wrongInputClass;
         isSomeFieldIsNotFilled = true;
       }
@@ -100,7 +100,7 @@ export default {
         this.messageLabel = 'Заполните все необходимые поля!';
         return;
       }
-      if (this.reg.pass !== this.reg.checkPass) {
+      if (this.reg.password !== this.reg.checkPass) {
         this.messageLabel = 'Пароли должны совпадать!';
         this.passCssClass = wrongInputClass;
         this.checkPassCssClass = wrongInputClass;
@@ -111,11 +111,14 @@ export default {
       this.passCssClass = '';
       this.checkPassCssClass = '';
       const backAddress = Properties.BBACK_ADDRESS;
-      axios.post(backAddress + '/register', this.reg)
+      axios.post(backAddress + '/register', this.reg, {
+        withCredentials: true
+      })
           .then(response => {
             const respModel = response.data;
             if (!respModel.exception) {
-              this.actionOnSuccess(response);
+              this.actionOnSuccess();
+              return;
             }
             const exception = respModel.exception;
             if (exception === 'USER_WITH_DUPLICATED_LOGIN') {

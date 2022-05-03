@@ -91,4 +91,24 @@ public class TaskModel {
     public String getDescription() {
         return description;
     }
+
+    public Integer getCost() {
+        return cost;
+    }
+
+    public ComplexityModel getComplexity() {
+        return complexity;
+    }
+
+    public Set<AttitudeChangeModel> getAttitudes() {
+        return attitudes;
+    }
+
+    public Set<LanguageToTaskModel> getLanguages() {
+        return languages;
+    }
+
+    public Set<CategoryModel> getCategories() {
+        return categories;
+    }
 }

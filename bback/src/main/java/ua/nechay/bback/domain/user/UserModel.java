@@ -133,6 +133,10 @@ public class UserModel implements UserDetails {
         return this;
     }
 
+    public Set<BBackUserRole> getRoles() {
+        return roles;
+    }
+
     public static class Builder {
         private String login;
         private String password;

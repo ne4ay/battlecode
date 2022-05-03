@@ -9,5 +9,6 @@ import ua.nechay.bback.dto.base.ResponsePlainExceptionTO;
 public enum GeneralResponseException implements ResponsePlainExceptionTO {
     NOT_ENOUGH_PERMISSIONS,
     UNAUTHORIZED,
-    SERVER_ERROR
+    SERVER_ERROR,
+    WRONG_REQUEST
 }

@@ -16,12 +16,14 @@ export default {
             localStorage.setItem('login', responseModel.login);
             localStorage.setItem('experience', responseModel.experience);
             localStorage.setItem('level', responseModel.level);
+            localStorage.setItem('roles', JSON.stringify(responseModel.roles));
             localStorage.setItem('isAuth', true);
         },
         resetProfileInfo() {
             localStorage.removeItem('login');
             localStorage.removeItem('experience');
             localStorage.removeItem('level');
+            localStorage.removeItem('roles');
             localStorage.setItem('isAuth', false);
         },
         getProfileInfo() {
@@ -29,6 +31,7 @@ export default {
                 login: localStorage.getItem('login'),
                 experience: localStorage.getItem('experience'),
                 level: localStorage.getItem('level'),
+                roles: JSON.parse(localStorage.getItem('roles')),
             }
         }
     },

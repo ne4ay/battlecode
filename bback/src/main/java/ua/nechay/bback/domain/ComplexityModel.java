@@ -23,4 +23,8 @@ public class ComplexityModel {
 
     public ComplexityModel() {
     }
+
+    public String getName() {
+        return name;
+    }
 }

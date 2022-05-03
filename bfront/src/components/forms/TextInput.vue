@@ -52,8 +52,6 @@ export default {
 }
 .input-member{
   margin: 5pt;
-  /*padding: 5pt 10pt;*/
-  /*margin-top: 5pt;*/
 }
 input {
   font-family: 'Ubuntu', sans-serif;

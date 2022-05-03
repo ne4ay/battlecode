@@ -19,7 +19,6 @@ import ua.nechay.bback.dto.responses.LogoutResponse;
 import ua.nechay.bback.service.UserService;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 /**
@@ -28,8 +27,8 @@ import java.util.Optional;
  */
 @RestController
 public class LoginController {
-    private static final String LOGIN_PATH = "/login";
-    private static final String LOGOUT_PATH = "/getout";
+    public static final String LOGIN_PATH = "/login";
+    public static final String LOGOUT_PATH = "/getout";
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
@@ -47,7 +46,7 @@ public class LoginController {
             return GenericResponse.fromException(LoginResponseException.WRONG_CREDENTIALS);
         }
         UserModel userModel = maybeUser.get();
-        if (!userModel.getPassword().equals(password)) {
+        if (password == null || !password.equals(userModel.getPassword())) {
             return GenericResponse.fromException(LoginResponseException.WRONG_CREDENTIALS);
         }
         Authentication authentication = authenticationManager.authenticate(
@@ -57,15 +56,10 @@ public class LoginController {
     }
 
     @PostMapping(LOGOUT_PATH)
-    public @ResponseBody GenericResponse<LogoutResponse, GeneralResponseException> logout(HttpSession session) {
-        if (session == null) {
-            return LogoutResponse.createGenericResponse(true);
-        }
+    public @ResponseBody GenericResponse<LogoutResponse, GeneralResponseException> logout() {
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();
         context.setAuthentication(null);
         return LogoutResponse.createGenericResponse(true);
-
     }
-
 }

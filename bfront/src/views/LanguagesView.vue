@@ -6,7 +6,7 @@
         <LanguageItem v-for="(lang, index) in langs"
                       :key="index"
                       :language-name="lang.name"
-                      :count-of-tasks="lang.countOfTasks"/>
+                      :count-of-tasks="lang.countOfTasks" class="lang-item"/>
       </div>
     </MainBackground>
   </div>
@@ -79,8 +79,14 @@ template {
 }
 
 #langs-wrapper {
-  margin-top: 10pt;
+  margin-top: 12pt;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+.lang-item {
+  margin: 8pt;
+  align-self: center;
 }
 </style>

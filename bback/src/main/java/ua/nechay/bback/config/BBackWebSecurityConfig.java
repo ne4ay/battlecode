@@ -2,18 +2,16 @@ package ua.nechay.bback.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ua.nechay.bback.controllers.AdminController;
+import ua.nechay.bback.controllers.LoginController;
+import ua.nechay.bback.controllers.RegistrationController;
+import ua.nechay.bback.domain.user.BBackUserRole;
 import ua.nechay.bback.service.UserService;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author anechaev
@@ -37,8 +35,13 @@ public class BBackWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
             .and()
                 .authorizeRequests()
-                .antMatchers("/", "/register", "/login", "/getout")
+                .antMatchers("/",
+                    RegistrationController.REGISTER_PATH,
+                    LoginController.LOGIN_PATH,
+                    LoginController.LOGOUT_PATH)
                 .permitAll()
+                .antMatchers(AdminController.ADMIN_PATH + "/**")
+                .hasRole(BBackUserRole.GLOBAL_ADMINISTRATOR.name())
                 .anyRequest().authenticated()
 //            .and()
 //                .rememberMe()
@@ -49,6 +52,8 @@ public class BBackWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
 //                .authenticationEntryPoint()
             .and()
+                .formLogin()
+                .disable()
                 .logout()
                 .permitAll();
     }
