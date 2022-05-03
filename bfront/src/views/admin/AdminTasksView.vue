@@ -1,6 +1,11 @@
 <template>
   <GlobalHeader :is-needed-to-display-profile-info="true"/>
   <div class="content">
+    <a href="/admin/task/add">
+      <div class="add-button">
+        + Добавить
+      </div>
+    </a>
     <MainBackground>
       <div id="tasks-wrapper">
         <ShortTaskItem v-for="(task, index) in tasks"
@@ -23,23 +28,28 @@ export default {
   name: "AdminTasksView",
   components: {
     GlobalHeader,
-    ShortTaskItem
+    ShortTaskItem,
   },
   data() {
     return {
-      tasks: []
+      tasks: [],
+      isFormActive: false,
     }
   },
   created() {
-    if(!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
+    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
       router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
     }
     axios.get(Properties.BBACK_ADDRESS + '/')
-  }
+  },
+  methods: {},
+  computed: {}
 }
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -47,6 +57,10 @@ export default {
 
 template {
   background: #202020;
+}
+
+a {
+  text-decoration: none;
 }
 
 .content {
@@ -67,5 +81,39 @@ template {
 .task-item {
   margin: 8pt;
   align-self: center;
+}
+
+.add-button {
+  margin-top: 4pt;
+  padding: 10pt 10pt;
+  font-family: 'Russo One', sans-serif;
+  font-size: 19pt;
+  color: #e5e5e5;
+  background-color: #282828;
+  justify-self: center;
+  text-align: center;
+}
+
+.add-button:hover {
+  color: #f7a36a;
+  background-color: #202020;
+}
+
+.add-button:active {
+  color: #e36815;
+  background-color: #080808;
+}
+
+.fold-enter-active,
+.fold-leave-active {
+  /*transition: all 0.6s cubic-bezier(.42, 0, .77, 1.53);*/
+  height: 330pt;
+  transition: all 0.3s cubic-bezier(.23, .25, .23, 1);
+}
+
+.fold-enter-from,
+.fold-leave-to {
+  transform: translateY(-400pt);
+  height: 0;
 }
 </style>

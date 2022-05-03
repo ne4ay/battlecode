@@ -34,6 +34,14 @@ public class LanguageToTaskModel {
     @JoinColumn(name = "task_id")
     private TaskModel task;
 
+    public LanguageToTaskModel(BBackLanguage language, TaskModel task) {
+        this.language = language;
+        this.task = task;
+    }
+
+    public LanguageToTaskModel() {
+
+    }
 
     public BBackLanguage getLanguage() {
         return language;

@@ -36,19 +36,18 @@ export default {
   },
   created() {
     if (!this.isAuth) {
-      router.push('auth');
+      router.push('/auth');
     }
     axios.get(Properties.BBACK_ADDRESS + '/languages', {
       withCredentials: true,
     })
         .then(response => {
           this.langs = response.data.response.langs;
-          console.log(response.data.response.langs);
         })
         .catch(exception => {
           if (exception.response.status === 401) {
             authenticationMixin.methods.resetProfileInfo();
-            router.push('auth');
+            router.push('/auth');
           }
         })
   },

@@ -3,6 +3,8 @@ package ua.nechay.bback.domain;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,6 +41,10 @@ public class TaskModel {
     @Column
     private Integer cost;
 
+    @Enumerated(value= EnumType.STRING)
+    @Column
+    private BBackTaskStatus status;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "complexity_id")
     private ComplexityModel complexity;
@@ -65,13 +71,14 @@ public class TaskModel {
     public TaskModel() {
     }
 
-    public TaskModel(Integer version, String title, String description, Integer cost, ComplexityModel complexity,
+    public TaskModel(Integer version, String title, String description, BBackTaskStatus status, Integer cost, ComplexityModel complexity,
         Set<AttitudeChangeModel> attitudes, Set<LanguageToTaskModel> languages, Set<CategoryModel> categories,
         Set<TaskCompletionModel> taskCompletions)
     {
         this.version = version;
         this.title = title;
         this.description = description;
+        this.status = status;
         this.cost = cost;
         this.complexity = complexity;
         this.attitudes = attitudes;
@@ -106,6 +113,10 @@ public class TaskModel {
 
     public Set<LanguageToTaskModel> getLanguages() {
         return languages;
+    }
+
+    public BBackTaskStatus getStatus() {
+        return status;
     }
 
     public Set<CategoryModel> getCategories() {

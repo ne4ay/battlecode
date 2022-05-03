@@ -6,6 +6,7 @@ import TasksView from "@/views/TasksView";
 import ErrorView from "@/views/ErrorView";
 import AdminTasksView from "@/views/admin/AdminTasksView";
 import AdminPanelView from "@/views/AdminPanelView";
+import AdminTaskAddingView from "@/views/admin/AdminTaskAddingView";
 
 const routes = [
     {
@@ -35,6 +36,10 @@ const routes = [
     {
         path: '/admin/tasks',
         component: AdminTasksView
+    },
+    {
+        path: '/admin/task/add',
+        component: AdminTaskAddingView
     }
 ]
 

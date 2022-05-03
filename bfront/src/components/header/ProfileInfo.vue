@@ -45,7 +45,7 @@ export default {
               return;
             }
             authenticationMixin.methods.resetProfileInfo();
-            router.go('/');
+            router.push('/');
           })
           .catch(error => {
             console.log(error);

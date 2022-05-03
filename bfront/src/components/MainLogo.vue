@@ -18,11 +18,16 @@ export default {
 * {
   --size-of-logo: 28pt;
 }
+
 #label {
   font-family: 'Russo One', sans-serif;
   font-size: var(--size-of-logo);
   display: flex;
   align-items: center;
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently */
 }
 .bracket {
   color: #e36815;

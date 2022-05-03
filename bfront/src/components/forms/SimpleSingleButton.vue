@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 .btn {
   font-family: 'Ubuntu', sans-serif;
   font-size: 16pt;
@@ -20,7 +21,13 @@ export default {
   border-radius: 50pt;
   border: none;
   background: rgba(0, 0, 0, .2);
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently */
 }
+
+
 
 .btn:hover {
   color: #f7a36a;
