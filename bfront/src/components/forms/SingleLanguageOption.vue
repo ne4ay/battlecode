@@ -49,7 +49,7 @@ export default {
   font-family: 'Ubuntu', sans-serif;
   font-size: 17pt;
   background-color: #181818;
-  padding: 8pt;
+  padding: 8pt 14pt;
   color: #e5e5e5;
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
   -moz-user-select: none;      /* Firefox */
