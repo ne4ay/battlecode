@@ -9,7 +9,7 @@
 const baseCssClass = 'language-select ';
 
 export default {
-  name: "LanguageSelect",
+  name: "SingleLanguageOption",
   props: {
     languageName: {
       type: String
@@ -31,10 +31,10 @@ export default {
     toggleSelect() {
       if (this.isActive) {
         this.deactivationListener(this.languageName);
-        this.cssClass = baseCssClass + ' active ';
+        this.cssClass = baseCssClass;
       } else {
         this.activationListener(this.languageName);
-        this.cssClass = baseCssClass;
+        this.cssClass = baseCssClass + ' active ';
       }
       this.isActive = !this.isActive;
     }
