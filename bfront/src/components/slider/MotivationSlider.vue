@@ -93,7 +93,6 @@ export default {
   justify-content: space-between;
   height: 400pt;
   position: relative;
-  z-index: -3;
 }
 
 .button {

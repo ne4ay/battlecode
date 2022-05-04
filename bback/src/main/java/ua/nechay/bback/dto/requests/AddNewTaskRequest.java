@@ -1,8 +1,10 @@
 package ua.nechay.bback.dto.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ua.nechay.bback.dto.TaskTO;
 import ua.nechay.bback.dto.TestCaseTO;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -10,37 +12,29 @@ import java.util.List;
  * @since 04.05.2022
  */
 public class AddNewTaskRequest {
-    @JsonProperty private final String title;
-    @JsonProperty private final String description;
-    @JsonProperty private final int cost;
-    @JsonProperty private final List<String> languages;
-    @JsonProperty private final List<TestCaseTO> testCases;
+    @JsonProperty private final TaskTO task;
 
-    public AddNewTaskRequest(String title, String description, int cost, List<String> languages, List<TestCaseTO> testCases) {
-        this.title = title;
-        this.description = description;
-        this.cost = cost;
-        this.languages = languages;
-        this.testCases = testCases;
+    public AddNewTaskRequest(@Nonnull TaskTO task) {
+       this.task = task;
     }
 
     public String getTitle() {
-        return title;
+        return task.getTitle();
     }
 
     public String getDescription() {
-        return description;
+        return task.getDescription();
     }
 
     public int getCost() {
-        return cost;
+        return task.getCost();
     }
 
     public List<String> getLanguages() {
-        return languages;
+        return task.getLanguages();
     }
 
     public List<TestCaseTO> getTestCases() {
-        return testCases;
+        return task.getTestCases();
     }
 }

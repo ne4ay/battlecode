@@ -17,4 +17,6 @@ public interface LanguageToTaskRepo extends JpaRepository<LanguageToTaskModel, L
     List<LanguageToTaskModel> findAllByLanguage(BBackLanguage language);
 
     int countLanguageToTaskModelByLanguage(BBackLanguage language);
+
+    void deleteAllByTaskId(long taskId);
 }

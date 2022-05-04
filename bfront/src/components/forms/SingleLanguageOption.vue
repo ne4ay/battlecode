@@ -1,8 +1,8 @@
 <template>
-  <div :class="cssClass"
+  <button :class="cssClass"
       @click="toggleSelect">
     {{ languageName }}
-  </div>
+  </button>
 </template>
 
 <script>
@@ -46,6 +46,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 .language-select {
   border-radius: 15pt;
+  border: none;
   font-family: 'Ubuntu', sans-serif;
   font-size: 17pt;
   background-color: #181818;
@@ -69,5 +70,9 @@ export default {
 .language-select:active {
   color: #e36815;
   background: rgba(0, 0, 0, .4);
+}
+
+.language-select:focus {
+  outline: 1pt solid #f7a36a !important;
 }
 </style>

@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "SimpleAdminLinkItem",
+  name: "AdminSimpleLinkItem",
   props: {
     href: {
       type: String,

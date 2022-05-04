@@ -1,11 +1,13 @@
-package ua.nechay.bback.dto.responses;
+package ua.nechay.bback.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ua.nechay.bback.domain.CategoryModel;
+import ua.nechay.bback.domain.ComplexityModel;
 import ua.nechay.bback.domain.TaskModel;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,9 @@ public class ShortFormTaskTO {
         this.isDone = isDonePredicate.test(task);
         this.cost = task.getCost();
         this.title = task.getTitle();
-        this.complexity = task.getComplexity().getName();
+        this.complexity = Optional.ofNullable(task.getComplexity())
+            .map(ComplexityModel::getName)
+            .orElse(null);
         this.categories = task.getCategories().stream()
             .map(CategoryModel::getName)
             .collect(Collectors.toList());

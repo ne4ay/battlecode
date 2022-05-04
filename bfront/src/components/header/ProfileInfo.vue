@@ -45,7 +45,7 @@ export default {
               return;
             }
             authenticationMixin.methods.resetProfileInfo();
-            router.push('/');
+            router.push('/home');
           })
           .catch(error => {
             router.push('/error?error=' + error);
@@ -98,11 +98,12 @@ export default {
 .dropdown-content {
   position: fixed;
   width: max-content;
-  margin-top: 46pt;
+  margin-top: 45pt;
   background-color: #202020;
   display: flex;
   flex-direction: column;
   box-shadow: 0 5pt 5pt black;
+  z-index: 1;
 }
 
 .dropdown-item {

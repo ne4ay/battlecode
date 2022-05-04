@@ -61,6 +61,9 @@ public class TaskModel {
     @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
     private Set<LanguageToTaskModel> languages;
 
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    private Set<TestCaseModel> testCases;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "category_to_task",
@@ -124,6 +127,10 @@ public class TaskModel {
 
     public Set<CategoryModel> getCategories() {
         return categories;
+    }
+
+    public Set<TestCaseModel> getTestCases() {
+        return testCases;
     }
 
     public TaskModel setLanguages(Set<LanguageToTaskModel> languages) {

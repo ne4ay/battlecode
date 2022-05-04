@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import ua.nechay.bback.domain.user.UserModel;
-import ua.nechay.bback.dto.responses.LoginResponseException;
+import ua.nechay.bback.dto.responses.GeneralResponseException;
 import ua.nechay.bback.service.UserService;
 
 import java.util.Optional;
@@ -34,11 +34,11 @@ public class BBackAuthenticationManager implements AuthenticationManager {
         String password = authentication.getCredentials().toString();
         Optional<UserModel> maybeUser = userService.findByLogin(name);
         if (maybeUser.isEmpty()) {
-            throw new BadCredentialsException(LoginResponseException.WRONG_CREDENTIALS.name());
+            throw new BadCredentialsException(GeneralResponseException.WRONG_CREDENTIALS.name());
         }
         UserModel userModel = maybeUser.get();
         if (!userModel.getPassword().equals(password)) {
-            throw new BadCredentialsException(LoginResponseException.WRONG_CREDENTIALS.name());
+            throw new BadCredentialsException(GeneralResponseException.WRONG_CREDENTIALS.name());
         }
         return new UsernamePasswordAuthenticationToken(userModel, password, userModel.getAuthorities());
     }

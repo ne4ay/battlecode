@@ -1,6 +1,7 @@
 package ua.nechay.bback.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ua.nechay.bback.dto.LanguageTO;
 import ua.nechay.bback.dto.base.GenericResponse;
 import ua.nechay.bback.dto.base.ResponseTO;
 

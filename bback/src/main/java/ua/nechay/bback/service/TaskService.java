@@ -10,6 +10,7 @@ import ua.nechay.bback.repo.TaskRepo;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 
 import static ua.nechay.bback.service.BBackServiceUtils.getOffsetForRepo;
 
@@ -62,6 +63,10 @@ public class TaskService {
         return taskRepo.findAll(PageRequest.of(page, size)).toList();
     }
 
+    public Optional<TaskModel> getTaskById(long id) {
+        return taskRepo.findById(id);
+    }
+
     public long getCountOfAllTasks() {
         return taskRepo.count();
     }
@@ -73,5 +78,10 @@ public class TaskService {
     public void save(@Nonnull TaskModel taskModel) {
         taskRepo.save(taskModel);
         languageToTaskRepo.saveAll(taskModel.getLanguages());
+    }
+
+    public void delete(long id) {
+        taskRepo.deleteById(id);
+        languageToTaskRepo.deleteAllByTaskId(id);
     }
 }

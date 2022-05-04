@@ -14,8 +14,8 @@ import ua.nechay.bback.domain.user.BBackUserRole;
 import ua.nechay.bback.domain.user.UserModel;
 import ua.nechay.bback.dto.base.GenericResponse;
 import ua.nechay.bback.dto.requests.RegistrationRequest;
-import ua.nechay.bback.dto.responses.RegistrationResponseException;
-import ua.nechay.bback.dto.responses.RegistrationResponse;
+import ua.nechay.bback.dto.responses.GeneralResponseException;
+import ua.nechay.bback.dto.responses.SimpleCheckingResponse;
 import ua.nechay.bback.service.UserService;
 
 import java.util.Optional;
@@ -38,10 +38,11 @@ public class RegistrationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<RegistrationResponse, RegistrationResponseException> register(@RequestBody RegistrationRequest request) {
+    public @ResponseBody GenericResponse<SimpleCheckingResponse, GeneralResponseException>
+    register(@RequestBody RegistrationRequest request) {
         Optional<UserModel> existingUser = userService.findByLogin(request.getLogin());
         if (existingUser.isPresent()) {
-            return GenericResponse.fromException(RegistrationResponseException.USER_WITH_DUPLICATED_LOGIN);
+            return GenericResponse.fromException(GeneralResponseException.USER_WITH_DUPLICATED_LOGIN);
         }
         UserModel user = new UserModel.Builder()
             .setLogin(request.getLogin())
@@ -55,6 +56,6 @@ public class RegistrationController {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(user, request.getPassword(), user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return RegistrationResponse.createGenericResponse(true);
+        return SimpleCheckingResponse.createGenericResponse(true);
     }
 }

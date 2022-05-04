@@ -14,7 +14,7 @@
 
 <script>
 import GlobalHeader from "@/components/header/GlobalHeader";
-import SimpleAdminLinkItem from "@/components/tasks/SimpleAdminLinkItem";
+import SimpleAdminLinkItem from "@/components/admin/AdminSimpleLinkItem";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import Roles from "@/components/enums/Roles";
 import router from "@/router/router";
@@ -22,8 +22,9 @@ import router from "@/router/router";
 export default {
   name: "AdminPanel",
   components: {
+    GlobalHeader,
     SimpleAdminLinkItem,
-    GlobalHeader
+
   },
   mixins: [
       authenticationMixin

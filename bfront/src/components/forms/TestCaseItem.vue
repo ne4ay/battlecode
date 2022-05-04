@@ -25,11 +25,11 @@
 
       </div>
     </div>
-    <div id="minus-button" @click="removeButtonClickListener" v-if="isNecessaryToShowRemoveButton">
+    <button id="minus-button" @click="removeButtonClickListener" v-if="isNecessaryToShowRemoveButton">
         <span id="minus-text">
           -
         </span>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -144,8 +144,9 @@ export default {
 
 #minus-button {
   border-radius: 100%;
-  height: 30pt;
-  width: 30pt;
+  height: 50pt;
+  width: 50pt;
+  border: none;
   font-family: 'Russo One', sans-serif;
   font-size: 45pt;
   vertical-align: center;

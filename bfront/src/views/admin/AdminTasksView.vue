@@ -7,10 +7,23 @@
       </div>
     </a>
     <MainBackground>
+
       <div id="tasks-wrapper">
-        <ShortTaskItem v-for="(task, index) in tasks"
-                       :key="index" class="task-item"/>
+        <AdminBackLink />
+        <AdminShortTaskItem v-for="(task, index) in tasks"
+                            :key="index"
+                            class="task-item"
+                            :task-id="task.taskId"
+                            :title="task.title"
+                            :cost="task.cost"
+                            :status="task.status"
+                            :languages="task.languages"
+                            :remove-listener="() => tasks.splice(index, 1)"/>
       </div>
+      <RowPagination v-model:count-of-pages="countOfPages"
+                     v-model:active-page-num="activePage"
+                     :changing-listener="changePage"
+      />
     </MainBackground>
   </div>
 </template>
@@ -20,26 +33,64 @@ import GlobalHeader from "@/components/header/GlobalHeader";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import Roles from "@/components/enums/Roles";
 import router from "@/router/router";
-import ShortTaskItem from "@/components/tasks/ShortTaskItem";
+import axios from "axios";
+import Properties from "@/Properties";
+import AdminShortTaskItem from "@/components/admin/AdminShortTaskItem";
+import RowPagination from "@/components/pagination/RowPagination";
+import AdminBackLink from "@/components/admin/AdminBackLink";
 
 export default {
   name: "AdminTasksView",
   components: {
+    RowPagination,
     GlobalHeader,
-    ShortTaskItem,
+    AdminShortTaskItem,
+    AdminBackLink
   },
   data() {
     return {
       tasks: [],
+      pageSize: 20,
+      activePage: 1,
+      countOfPages: 1,
       isFormActive: false,
     }
   },
   created() {
     if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
       router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
+      return;
+    }
+    axios.get(Properties.BBACK_ADDRESS + '/admin/tasks/show', {
+          withCredentials: true,
+          params: {
+            size: this.pageSize,
+            page: this.activePage,
+          }
+        })
+        .then(response => {
+          console.log(response);
+          const respModel = response.data;
+          if (respModel.exception || !respModel.response) {
+            router.push('/error?error=' + respModel.exception);
+            return;
+          }
+          this.countOfPages = respModel.response.countOfPages;
+          this.tasks = respModel.response.tasks;
+        }).catch(exception => {
+      if (exception.response.status === 401) {
+        authenticationMixin.methods.resetProfileInfo();
+        router.push('/auth');
+        return;
+      }
+      router.push('/error?error=' + exception);
+    });
+  },
+  methods: {
+    changePage() {
+
     }
   },
-  methods: {},
   computed: {}
 }
 </script>
@@ -63,7 +114,7 @@ a {
 .content {
   position: absolute;
   z-index: -1;
-  height: calc(100% - 65pt);
+  height: 100%;
   width: 100%;
   background-color: #202020;
 }

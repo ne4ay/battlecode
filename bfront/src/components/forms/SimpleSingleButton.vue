@@ -38,4 +38,8 @@ export default {
   color: #e36815;
   background: rgba(0, 0, 0, .4);
 }
+
+.btn:focus {
+  outline: 1pt solid #f7a36a !important;
+}
 </style>

@@ -46,11 +46,11 @@
                     :remove-button-click-listener="() => removeTestCase(index)"
       />
     </div>
-    <div class="add-test-case-button" @click="addNewTestCase" v-if="task.testCases.length < 10">
+    <button class="add-test-case-button" @click="addNewTestCase" v-if="task.testCases.length < 10">
       Добавить тест-кейс
-    </div>
+    </button>
     <SimpleSingleButton type="submit" class="submit-button" @click="tryToSendNewTask">
-      Добавить
+      {{action}}
     </SimpleSingleButton>
   </form>
 </template>
@@ -65,17 +65,24 @@ import Properties from "@/Properties";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import TestCaseItem from "@/components/forms/TestCaseItem";
+import Operation from "@/components/enums/Operation";
 
 export default {
-  name: "AddNewTaskForm",
+  name: "TaskForm",
   components: {
     TestCaseItem,
     TextInput,
     SingleLanguageOption,
     SimpleSingleButton
   },
+  props: {
+    operation: {
+      type: String
+    }
+  },
   data() {
     return {
+      id: 0,
       task: {
         title: '',
         description: '',
@@ -119,7 +126,9 @@ export default {
       });
     },
     tryToSendNewTask() {
-      axios.post(Properties.BBACK_ADDRESS + '/admin/task/add', this.task, {
+      axios.post(Properties.BBACK_ADDRESS + '/admin/tasks/add', {
+        task: this.task
+      }, {
         withCredentials: true
       })
           .then(response => {
@@ -136,6 +145,15 @@ export default {
           return;
         }
       });
+    },
+    getUrlForPosting() {
+      if (this.operation === Operation.ADD) {
+        return '/admin/tasks/add';
+      }
+      if (this.operation === Operation.UPDATE) {
+        return '/admin/tasks/update/' + this.id;
+      }
+      router.push('/error?error=Произошла ошибка! Неизвестная операция!');
     },
     clearForm() {
       this.task.title = '';
@@ -177,6 +195,32 @@ export default {
           }
           router.push('/error?error=' + exception);
         })
+  },
+  computed: {
+    action() {
+      if (this.operation === Operation.UPDATE) {
+        return 'Изменить';
+      } else if (this.operation === Operation.ADD) {
+        return 'Добавить';
+      }
+      return '';
+    }
+  },
+  watch: {
+    'operation': val => {
+      if (val === Operation.ADD) {
+        this.clearForm();
+      } else if (val === Operation.UPDATE) {
+        const splitPath = this.$route.path.split('/');
+        const id = splitPath[splitPath.length - 1];
+        this.id = id;
+        axios.get(Properties.BBACK_ADDRESS + '/tasks/get/' + id, {
+          withCredentials: true
+        }).then(response => {
+          console.log(response);
+        })
+      }
+    }
   }
 }
 </script>
@@ -243,6 +287,7 @@ export default {
 
 .add-test-case-button {
   font-family: 'Russo One', sans-serif;
+  border: none;
   font-size: 17pt;
   padding: 10pt;
   border-radius: 15pt;

@@ -19,8 +19,8 @@ import MainBackground from "@/components/home/MainBackground";
 import ShortTaskItem from "@/components/tasks/ShortTaskItem";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import router from "@/router/router";
-// import axios from "axios";
-// import Properties from "@/Properties";
+import axios from "axios";
+import Properties from "@/Properties";
 import RowPagination from "@/components/pagination/RowPagination";
 
 export default {
@@ -38,7 +38,7 @@ export default {
     return {
       lang: '',
       pageSize: 20,
-      countOfPages: 6,
+      countOfPages: 1,
       activePage: 1,
       tasks: [],
     }
@@ -48,26 +48,28 @@ export default {
       router.push('/auth');
     }
     this.lang = this.$route.path.replace('/tasks/', '');
-    // axios.get(Properties.BBACK_ADDRESS + '/tasks/count/' + this.lang, {
-    //   withCredentials: true,
-    //   params: {
-    //     size: this.pageSize,
-    //   }
-    // }).then(response => {
-    //   const data = response.data;
-    //   if (response.exception) {
-    //     router.push('/error?error=' + response.exception);
-    //     return;
-    //   }
-    //   this.countOfPages = data.response.countOfPages;
-    // }).catch(exception => {
-    //   if (exception.response.status === 401) {
-    //     authenticationMixin.methods.resetProfileInfo();
-    //     router.push('auth');
-    //     return;
-    //   }
-    //   router.push('/error?error=' + exception);
-    // })
+    axios.get(Properties.BBACK_ADDRESS + '/tasks/' + this.lang, {
+      withCredentials: true,
+      params: {
+        size: this.pageSize,
+        page: this.activePage,
+      }
+    }).then(response => {
+      const data = response.data;
+      if (data.exception) {
+        router.push('/error?error=' + data.exception);
+        return;
+      }
+      this.countOfPages = data.response.countOfPages;
+      this.tasks = data.response.tasks;
+    }).catch(exception => {
+      if (exception.response.status === 401) {
+        authenticationMixin.methods.resetProfileInfo();
+        router.push('auth');
+        return;
+      }
+      router.push('/error?error=' + exception);
+    })
   },
   methods: {
     paginatorListener(page) {

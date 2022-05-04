@@ -1,4 +1,4 @@
-package ua.nechay.bback.dto.responses;
+package ua.nechay.bback.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

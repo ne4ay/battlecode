@@ -25,7 +25,7 @@ export default {
     },
     countOfPages: {
       type: Number,
-      default: 10
+      default: 1
     },
     changingListener: {
       type: Function
@@ -56,6 +56,7 @@ export default {
       }
       if (this.countOfPages <= 4) {
         this.pages = this.createOrderedArr(this.countOfPages);
+        return;
       }
       let arr = [];
       arr.push(1);
@@ -86,7 +87,7 @@ export default {
       if (page === '...') {
         return;
       }
-      this.$emit('update  :activePageNum', page);
+      this.$emit('update:activePageNum', page);
       this.changingListener(page);
 
     }

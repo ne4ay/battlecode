@@ -13,9 +13,7 @@ import ua.nechay.bback.domain.user.UserModel;
 import ua.nechay.bback.dto.base.GenericResponse;
 import ua.nechay.bback.dto.requests.LoginRequest;
 import ua.nechay.bback.dto.responses.GeneralResponseException;
-import ua.nechay.bback.dto.responses.LoginResponse;
-import ua.nechay.bback.dto.responses.LoginResponseException;
-import ua.nechay.bback.dto.responses.LogoutResponse;
+import ua.nechay.bback.dto.responses.SimpleCheckingResponse;
 import ua.nechay.bback.service.UserService;
 
 import javax.annotation.Nonnull;
@@ -38,28 +36,28 @@ public class LoginController {
     }
 
     @PostMapping(LOGIN_PATH)
-    public @ResponseBody GenericResponse<LoginResponse, LoginResponseException> login(@RequestBody LoginRequest request) {
+    public @ResponseBody GenericResponse<SimpleCheckingResponse, GeneralResponseException> login(@RequestBody LoginRequest request) {
         String login = request.getLogin();
         String password = request.getPassword();
         Optional<UserModel> maybeUser = userService.findByLogin(login);
         if (maybeUser.isEmpty()) {
-            return GenericResponse.fromException(LoginResponseException.WRONG_CREDENTIALS);
+            return GenericResponse.fromException(GeneralResponseException.WRONG_CREDENTIALS);
         }
         UserModel userModel = maybeUser.get();
         if (password == null || !password.equals(userModel.getPassword())) {
-            return GenericResponse.fromException(LoginResponseException.WRONG_CREDENTIALS);
+            return GenericResponse.fromException(GeneralResponseException.WRONG_CREDENTIALS);
         }
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(userModel, password, userModel.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return LoginResponse.createGenericResponse(true);
+        return SimpleCheckingResponse.createGenericResponse(true);
     }
 
     @PostMapping(LOGOUT_PATH)
-    public @ResponseBody GenericResponse<LogoutResponse, GeneralResponseException> logout() {
+    public @ResponseBody GenericResponse<SimpleCheckingResponse, GeneralResponseException> logout() {
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();
         context.setAuthentication(null);
-        return LogoutResponse.createGenericResponse(true);
+        return SimpleCheckingResponse.createGenericResponse(true);
     }
 }
