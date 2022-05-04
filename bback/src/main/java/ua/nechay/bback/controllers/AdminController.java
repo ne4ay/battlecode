@@ -36,7 +36,6 @@ public class AdminController {
     @PostMapping(value = "/task/add")
     public @ResponseBody GenericResponse<AddNewTaskResponse, GeneralResponseException>
     postNewTask(@RequestBody AddNewTaskRequest request) {
-        System.out.println(request); //TODO: clean
         List<String> langNames = request.getLanguages();
         if (langNames.size() == 0) {
             return GenericResponse.fromException(WRONG_REQUEST);
