@@ -15,7 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author anechaev
@@ -121,5 +124,53 @@ public class TaskModel {
 
     public Set<CategoryModel> getCategories() {
         return categories;
+    }
+
+    public TaskModel setLanguages(Set<LanguageToTaskModel> languages) {
+        this.languages = languages;
+        return this;
+    }
+
+    public static class Builder {
+        private String title;
+        private String description;
+        private Integer cost;
+        private BBackTaskStatus status;
+        private List<BBackLanguage> languages;
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setCost(Integer cost) {
+            this.cost = cost;
+            return this;
+        }
+
+        public Builder setStatus(BBackTaskStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setLanguages(List<BBackLanguage> languages) {
+            this.languages = languages;
+            return this;
+        }
+
+        public TaskModel build() {
+            TaskModel task = new TaskModel(0, title, description, status, cost, null,
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
+            Set<LanguageToTaskModel> langs = this.languages.stream()
+                .map(lang -> new LanguageToTaskModel(lang, task))
+                .collect(Collectors.toSet());
+            return task
+                .setLanguages(langs);
+        }
     }
 }

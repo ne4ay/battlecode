@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 
@@ -106,8 +106,7 @@ input {
 }
 
 input:focus {
-  outline: none !important;
-  border: 1pt solid #f7a36a;
+  outline: 1pt solid #f7a36a !important;
 }
 
 input::-webkit-outer-spin-button,

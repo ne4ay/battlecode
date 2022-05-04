@@ -12,12 +12,21 @@
 <script>
 import GlobalHeader from "@/components/header/GlobalHeader";
 import AddNewTaskForm from "@/components/forms/AddNewTaskForm";
+import authenticationMixin from "@/mixins/authenticationMixin";
+import Roles from "@/components/enums/Roles";
+import router from "@/router/router";
 
 export default {
   name: "AdminTaskAddingView",
   components: {
     GlobalHeader,
     AddNewTaskForm
+  },
+
+  created() {
+    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
+      router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
+    }
   }
 }
 </script>
@@ -29,13 +38,11 @@ export default {
 }
 
 template {
-  background: #202020;
 }
 
 .content {
   position: absolute;
   z-index: -1;
-  height: calc(100% - 65pt);
   width: 100%;
   background-color: #202020;
 }

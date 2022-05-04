@@ -2,6 +2,8 @@ package ua.nechay.bback.domain;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public enum BBackLanguage {
@@ -32,5 +34,13 @@ public enum BBackLanguage {
         return Arrays.stream(BBackLanguage.values())
             .filter(langName -> langName.getLanguageName().equals(name))
             .findFirst();
+    }
+
+    public static List<BBackLanguage> fromNamesCollection(@Nonnull Collection<String> names) {
+        return names.stream()
+            .map(BBackLanguage::fromName)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
     }
 }

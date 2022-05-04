@@ -48,7 +48,7 @@ export default {
             router.push('/');
           })
           .catch(error => {
-            console.log(error);
+            router.push('/error?error=' + error);
           })
     },
     toggleDropDown() {

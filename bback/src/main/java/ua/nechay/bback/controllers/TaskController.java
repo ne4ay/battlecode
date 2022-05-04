@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ua.nechay.bback.domain.BBackLanguage;
+import ua.nechay.bback.domain.BBackTaskStatus;
 import ua.nechay.bback.domain.TaskCompletionModel;
 import ua.nechay.bback.domain.TaskModel;
 import ua.nechay.bback.domain.user.UserModel;
@@ -52,7 +53,7 @@ public class TaskController {
         if (maybeLang.isEmpty()) {
             return GenericResponse.fromException(GeneralResponseException.WRONG_REQUEST);
         }
-        long countOfAllTasks = taskService.getCountOfAllTasks();
+        long countOfAllTasks = taskService.getCountOfTasksRelatedToStatus(BBackTaskStatus.APPROVED);
         long countOfPages = countOfAllTasks / size + 1;
         return PageCountResponse.createGenericResponse((int) countOfPages, size);
     }
@@ -75,7 +76,8 @@ public class TaskController {
             return GenericResponse.fromException(GeneralResponseException.UNAUTHORIZED);
         }
         UserModel user = maybeUser.get();
-        List<TaskModel> langRelatedTasks = taskService.getAllTasksRelatedToLanguage(language, page - 1, size);
+        List<TaskModel> langRelatedTasks =
+            taskService.getAllTasksRelatedToLanguageAndStatus(language, BBackTaskStatus.APPROVED, page - 1, size);
         Set<TaskModel> completedTasks =
             taskCompletionService.getAllTaskCompletionAccordingToLanguageAndUser(language, user, langRelatedTasks)
                 .stream()

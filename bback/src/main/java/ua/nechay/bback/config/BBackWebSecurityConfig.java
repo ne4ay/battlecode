@@ -40,7 +40,7 @@ public class BBackWebSecurityConfig extends WebSecurityConfigurerAdapter {
                     LoginController.LOGIN_PATH,
                     LoginController.LOGOUT_PATH)
                 .permitAll()
-                .antMatchers(AdminController.ADMIN_PATH + "/**")
+                .antMatchers(AdminController.ADMIN_PATH + "/*")
                 .hasRole(BBackUserRole.GLOBAL_ADMINISTRATOR.name())
                 .anyRequest().authenticated()
 //            .and()

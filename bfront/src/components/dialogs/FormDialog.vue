@@ -62,7 +62,7 @@ export default {
 
 .swim-enter-active,
 .swim-leave-active {
-  transition: all 0.6s cubic-bezier(.42, 0, .77, 1.53);
+  transition: all 0.45s cubic-bezier(.42, 0, .77, 1.53);
 }
 
 .swim-enter-from,

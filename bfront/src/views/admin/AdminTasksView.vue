@@ -20,8 +20,6 @@ import GlobalHeader from "@/components/header/GlobalHeader";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import Roles from "@/components/enums/Roles";
 import router from "@/router/router";
-import axios from "axios";
-import Properties from "@/Properties";
 import ShortTaskItem from "@/components/tasks/ShortTaskItem";
 
 export default {
@@ -40,7 +38,6 @@ export default {
     if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
       router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
     }
-    axios.get(Properties.BBACK_ADDRESS + '/')
   },
   methods: {},
   computed: {}

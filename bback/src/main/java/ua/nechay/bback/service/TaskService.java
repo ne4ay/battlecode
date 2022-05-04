@@ -1,14 +1,17 @@
 package ua.nechay.bback.service;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.nechay.bback.domain.BBackLanguage;
+import ua.nechay.bback.domain.BBackTaskStatus;
 import ua.nechay.bback.domain.TaskModel;
 import ua.nechay.bback.repo.LanguageToTaskRepo;
 import ua.nechay.bback.repo.TaskRepo;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+
+import static ua.nechay.bback.service.BBackServiceUtils.getOffsetForRepo;
 
 /**
  * @author anechaev
@@ -40,19 +43,35 @@ public class TaskService {
      * @return tasks
      */
     public List<TaskModel> getAllTasksRelatedToLanguage(BBackLanguage language, int page, int size) {
-        int offset = page * size;
+        int offset = getOffsetForRepo(page, size);
         return taskRepo.findAllByLanguage(language.name(), offset, size);
     }
 
+    public List<TaskModel> getAllTasksRelatedToLanguageAndStatus(BBackLanguage language, BBackTaskStatus status, int page, int size) {
+        int offset = getOffsetForRepo(page, size);
+        return taskRepo.findAllByLanguageAndStatus(language.name(), status.name(), offset, size);
+    }
+
+    @Nonnull
     public List<TaskModel> getAllTasks() {
         return taskRepo.findAll();
     }
 
+    @Nonnull
     public List<TaskModel> getAllTasks(int page, int size) {
         return taskRepo.findAll(PageRequest.of(page, size)).toList();
     }
 
     public long getCountOfAllTasks() {
         return taskRepo.count();
+    }
+
+    public long getCountOfTasksRelatedToStatus(@Nonnull BBackTaskStatus status) {
+        return taskRepo.countAllByStatusIs(status);
+    }
+
+    public void save(@Nonnull TaskModel taskModel) {
+        taskRepo.save(taskModel);
+        languageToTaskRepo.saveAll(taskModel.getLanguages());
     }
 }
