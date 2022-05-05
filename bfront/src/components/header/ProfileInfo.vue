@@ -126,7 +126,7 @@ export default {
 
 .fall-enter-active,
 .fall-leave-active {
-  transition: all 0.6s cubic-bezier(.32,.18,.3,.99);
+  transition: all 0.4s cubic-bezier(.32,.18,.3,.99);
 }
 
 .fall-enter-from,

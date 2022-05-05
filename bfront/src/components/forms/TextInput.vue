@@ -16,7 +16,7 @@ export default {
   name: "TextInput",
   props: {
     modelValue: {
-      type: String
+
     },
     placeholderText: {
       type: String

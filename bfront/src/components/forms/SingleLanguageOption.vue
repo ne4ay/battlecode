@@ -19,12 +19,14 @@ export default {
     },
     deactivationListener: {
       type: Function
+    },
+    isActive: {
+      type: Boolean
     }
   },
   data() {
     return {
       cssClass: 'language-select ',
-      isActive: false
     }
   },
   methods: {
@@ -36,7 +38,14 @@ export default {
         this.activationListener(this.languageName);
         this.cssClass = baseCssClass + ' active ';
       }
-      this.isActive = !this.isActive;
+      this.$emit('update:isActive', !this.isActive);
+    }
+  },
+  created() {
+    if (this.isActive) {
+      this.cssClass = baseCssClass + ' active ';
+    } else {
+      this.cssClass = baseCssClass;
     }
   }
 }
@@ -59,7 +68,7 @@ export default {
 }
 
 .active {
-  background-color: rgba(60, 210, 60, 0.3);
+  background-color: #1d5b98;
 }
 
 .language-select:hover {

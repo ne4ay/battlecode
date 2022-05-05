@@ -1,5 +1,7 @@
 package ua.nechay.bback.domain;
 
+import ua.nechay.bback.environment.TestCase;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +17,8 @@ import javax.persistence.Table;
  * @since 05.05.2022
  */
 @Entity
-@Table(name = "test_case")
-public class TestCaseModel {
+@Table(name = "test_cases")
+public class TestCaseModel implements TestCase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

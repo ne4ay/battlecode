@@ -7,6 +7,7 @@ import ua.nechay.bback.domain.BBackTaskStatus;
 import ua.nechay.bback.domain.TaskModel;
 import ua.nechay.bback.repo.LanguageToTaskRepo;
 import ua.nechay.bback.repo.TaskRepo;
+import ua.nechay.bback.repo.TestCaseRepo;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -23,10 +24,12 @@ public class TaskService {
 
     private final TaskRepo taskRepo;
     private final LanguageToTaskRepo languageToTaskRepo;
+    private final TestCaseRepo testCaseRepo;
 
-    public TaskService(TaskRepo taskRepo, LanguageToTaskRepo languageToTaskRepo) {
+    public TaskService(TaskRepo taskRepo, LanguageToTaskRepo languageToTaskRepo, TestCaseRepo testCaseRepo) {
         this.taskRepo = taskRepo;
         this.languageToTaskRepo = languageToTaskRepo;
+        this.testCaseRepo = testCaseRepo;
     }
 
     public int getCountOfTheTasksOnLanguage(BBackLanguage language) {
@@ -78,10 +81,12 @@ public class TaskService {
     public void save(@Nonnull TaskModel taskModel) {
         taskRepo.save(taskModel);
         languageToTaskRepo.saveAll(taskModel.getLanguages());
+        testCaseRepo.saveAll(taskModel.getTestCases());
     }
 
     public void delete(long id) {
-        taskRepo.deleteById(id);
         languageToTaskRepo.deleteAllByTaskId(id);
+        testCaseRepo.deleteAllByTaskId(id);
+        taskRepo.deleteById(id);
     }
 }

@@ -1,5 +1,7 @@
 package ua.nechay.bback.domain;
 
+import ua.nechay.bback.environment.TestCase;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +41,7 @@ public class TaskModel {
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     private String description;
 
     @Column
@@ -77,10 +80,11 @@ public class TaskModel {
     public TaskModel() {
     }
 
-    public TaskModel(Integer version, String title, String description, BBackTaskStatus status, Integer cost, ComplexityModel complexity,
+    public TaskModel(long id, Integer version, String title, String description, BBackTaskStatus status, Integer cost, ComplexityModel complexity,
         Set<AttitudeChangeModel> attitudes, Set<LanguageToTaskModel> languages, Set<CategoryModel> categories,
-        Set<TaskCompletionModel> taskCompletions)
+        Set<TaskCompletionModel> taskCompletions, Set<TestCaseModel> testCases)
     {
+        this.id = id;
         this.version = version;
         this.title = title;
         this.description = description;
@@ -91,6 +95,7 @@ public class TaskModel {
         this.languages = languages;
         this.categories = categories;
         this.taskCompletions = taskCompletions;
+        this.testCases = testCases;
     }
 
     public long getId() {
@@ -138,12 +143,24 @@ public class TaskModel {
         return this;
     }
 
+    public TaskModel setTestCases(Set<TestCaseModel> testCases) {
+        this.testCases = testCases;
+        return this;
+    }
+
     public static class Builder {
+        private long id;
         private String title;
         private String description;
         private Integer cost;
         private BBackTaskStatus status;
         private List<BBackLanguage> languages;
+        private Collection<? extends TestCase> testCases;
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder setTitle(String title) {
             this.title = title;
@@ -170,14 +187,23 @@ public class TaskModel {
             return this;
         }
 
+        public Builder setTestCases(Collection<? extends TestCase> testCases) {
+            this.testCases = testCases;
+            return this;
+        }
+
         public TaskModel build() {
-            TaskModel task = new TaskModel(0, title, description, status, cost, null,
-                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
+            TaskModel task = new TaskModel(id, 0, title, description, status, cost, null,
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
             Set<LanguageToTaskModel> langs = this.languages.stream()
                 .map(lang -> new LanguageToTaskModel(lang, task))
                 .collect(Collectors.toSet());
+            Set<TestCaseModel> testCaseModels = this.testCases.stream()
+                .map(testCase -> new TestCaseModel(task, testCase.getInputCase(), testCase.getExpectedOutput()))
+                .collect(Collectors.toSet());
             return task
-                .setLanguages(langs);
+                .setLanguages(langs)
+                .setTestCases(testCaseModels);
         }
     }
 }

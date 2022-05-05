@@ -6,8 +6,7 @@
         + Добавить
       </div>
     </a>
-    <MainBackground>
-
+    <MainBackground />
       <div id="tasks-wrapper">
         <AdminBackLink />
         <AdminShortTaskItem v-for="(task, index) in tasks"
@@ -24,7 +23,6 @@
                      v-model:active-page-num="activePage"
                      :changing-listener="changePage"
       />
-    </MainBackground>
   </div>
 </template>
 
@@ -38,6 +36,8 @@ import Properties from "@/Properties";
 import AdminShortTaskItem from "@/components/admin/AdminShortTaskItem";
 import RowPagination from "@/components/pagination/RowPagination";
 import AdminBackLink from "@/components/admin/AdminBackLink";
+import MainBackground from "@/components/home/MainBackground";
+import responseProcessingMixin from "@/mixins/commonUtilsMixin";
 
 export default {
   name: "AdminTasksView",
@@ -45,8 +45,13 @@ export default {
     RowPagination,
     GlobalHeader,
     AdminShortTaskItem,
-    AdminBackLink
+    AdminBackLink,
+    MainBackground
   },
+  mixins: [
+    authenticationMixin,
+    responseProcessingMixin
+  ],
   data() {
     return {
       tasks: [],
@@ -78,12 +83,7 @@ export default {
           this.countOfPages = respModel.response.countOfPages;
           this.tasks = respModel.response.tasks;
         }).catch(exception => {
-      if (exception.response.status === 401) {
-        authenticationMixin.methods.resetProfileInfo();
-        router.push('/auth');
-        return;
-      }
-      router.push('/error?error=' + exception);
+          responseProcessingMixin.methods.handleException(exception);
     });
   },
   methods: {

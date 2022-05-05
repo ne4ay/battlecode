@@ -7,6 +7,7 @@ import ErrorView from "@/views/ErrorView";
 import AdminTasksView from "@/views/admin/AdminTasksView";
 import AdminPanelView from "@/views/admin/AdminPanelView";
 import AdminTaskAddingView from "@/views/admin/AdminTaskAddingView";
+import SingleTaskView from "@/views/SingleTaskView";
 
 const routes = [
     {
@@ -45,7 +46,11 @@ const routes = [
     {
         path: '/admin/task/update/:id',
         component: AdminTaskAddingView
-    }
+    },
+    {
+        path: '/task/:id',
+        component: SingleTaskView
+    },
 ]
 
 const router = createRouter({

@@ -1,6 +1,6 @@
 <template>
 <div class="main">
-  <slot> </slot>
+
 </div>
 </template>
 
@@ -12,6 +12,10 @@ export default {
 
 <style scoped>
 .main {
+  position: fixed;
   height: 95%;
+  width: 100%;
+  background: #202020;
+  z-index: -3;
 }
 </style>

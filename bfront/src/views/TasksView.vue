@@ -1,15 +1,19 @@
 <template>
   <GlobalHeader :is-needed-to-display-profile-info="true"/>
   <div class="content">
-    <MainBackground>
+    <MainBackground />
       <div id="tasks-wrapper">
         <ShortTaskItem v-for="(task, index) in tasks"
-                       :key="index" class="task-item"/>
+                       :key="index"
+                       :title="task.title"
+                       :cost="task.cost"
+                       :task-id="task.taskId"
+                       :active-lang="lang"
+                       class="task-item"/>
       </div>
       <RowPagination v-model:active-page-num="activePage"
                     v-model:count-of-pages="countOfPages"
                       :changing-listener="paginatorListener"/>
-    </MainBackground>
   </div>
 </template>
 
@@ -91,7 +95,7 @@ template {
 }
 
 .content {
-  position: absolute;
+  position: fixed;
   z-index: -1;
   height: calc(100% - 65pt);
   width: 100%;

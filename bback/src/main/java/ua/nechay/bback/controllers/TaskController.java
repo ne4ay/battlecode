@@ -99,7 +99,7 @@ public class TaskController {
         return ParticularLanguageRelatedTasksResponse.createGenericResponse(taskTOs, countOfPages, size);
     }
 
-    @GetMapping(value = "/get/{id}", params = {"id"})
+    @GetMapping(value = "/get/{id}")
     public @ResponseBody GenericResponse<SingleTaskResponse, GeneralResponseException> getOneTask(@PathVariable long id) {
         return taskService.getTaskById(id)
             .map(SingleTaskResponse::createGenericResponse)

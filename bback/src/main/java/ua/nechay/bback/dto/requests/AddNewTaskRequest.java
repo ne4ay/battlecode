@@ -12,10 +12,14 @@ import java.util.List;
  * @since 04.05.2022
  */
 public class AddNewTaskRequest {
-    @JsonProperty private final TaskTO task;
+
+    @JsonProperty private TaskTO task;
 
     public AddNewTaskRequest(@Nonnull TaskTO task) {
-       this.task = task;
+        this.task = task;
+    }
+
+    public AddNewTaskRequest() {
     }
 
     public String getTitle() {

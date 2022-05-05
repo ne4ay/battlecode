@@ -1,7 +1,7 @@
 <template>
   <GlobalHeader :is-needed-to-display-profile-info="true"/>
   <div class="content">
-    <MainBackground>
+    <MainBackground />
       <div id="window">
       <span class="title">
         Ошибка!
@@ -13,7 +13,6 @@
           На главную
         </a>
       </div>
-    </MainBackground>
   </div>
 </template>
 

@@ -1,31 +1,43 @@
 <template>
   <GlobalHeader :is-needed-to-display-profile-info="true"/>
   <div class="content">
-    <MainBackground>
-      <div id="content-wrapper">
-       <TaskForm v-model:operation="operation"/>
-      </div>
-    </MainBackground>
+    <MainBackground />
+    <div id="content-wrapper">
+      <NewTaskForm v-model:operation="operation"
+                v-model:operation-action-name="operationAction"
+                v-model:process-url="processUrl"
+                v-model:id="id"/>
+    </div>
   </div>
 </template>
 
 <script>
 import GlobalHeader from "@/components/header/GlobalHeader";
-import TaskForm from "@/components/forms/TaskForm";
+import NewTaskForm from "@/components/forms/NewTaskForm";
+import MainBackground from "@/components/home/MainBackground";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import Roles from "@/components/enums/Roles";
 import router from "@/router/router";
 import Operation from "@/components/enums/Operation";
+import Properties from "@/Properties";
+import commonUtilsMixin from "@/mixins/commonUtilsMixin";
 
 export default {
   name: "AdminTaskAddingView",
   components: {
     GlobalHeader,
-    TaskForm
+    NewTaskForm,
+    MainBackground
   },
+  mixins: [
+      commonUtilsMixin
+  ],
   data() {
     return {
       operation: '',
+      operationAction: '',
+      processUrl: '',
+      id: 0,
     }
   },
   created() {
@@ -39,6 +51,11 @@ export default {
       router.push('/error?error=Не балуйся!');
       return;
     }
+    if (operation === Operation.UPDATE) {
+      this.id = this.determineId(operation);
+    }
+    this.operationAction = this.determineOperationAction(operation);
+    this.processUrl = this.determineProcessUrl(operation);
     this.operation = operation;
   },
   methods: {
@@ -50,6 +67,35 @@ export default {
         }
       });
       return operation;
+    },
+    determineOperationAction(operation) {
+      switch (operation) {
+        case Operation.UPDATE:
+          return 'Изменить';
+        case Operation.ADD:
+          return 'Добавить';
+        default:
+          return '';
+      }
+    },
+    determineId(operation) {
+      if (operation !== Operation.UPDATE) {
+        return 0;
+      }
+      return commonUtilsMixin.methods.determineId(this.$route.path);
+    },
+    determineProcessUrl(operation) {
+      switch (operation) {
+        case Operation.UPDATE: {
+          const id = this.determineId(operation);
+          return Properties.BBACK_ADDRESS + '/admin/tasks/update/' + id;
+        }
+        case Operation.ADD: {
+          return Properties.BBACK_ADDRESS + '/admin/tasks/add';
+        }
+        default:
+          return '';
+      }
     }
   }
 }
@@ -62,6 +108,7 @@ export default {
 }
 
 template {
+
 }
 
 .content {

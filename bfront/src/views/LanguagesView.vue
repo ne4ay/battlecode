@@ -1,14 +1,13 @@
 <template>
   <GlobalHeader :is-needed-to-display-profile-info="true"/>
   <div class="content">
-    <MainBackground>
+    <MainBackground />
       <div id="langs-wrapper">
         <LanguageItem v-for="(lang, index) in langs"
                       :key="index"
                       :language-name="lang.name"
                       :count-of-tasks="lang.countOfTasks" class="lang-item"/>
       </div>
-    </MainBackground>
   </div>
 </template>
 

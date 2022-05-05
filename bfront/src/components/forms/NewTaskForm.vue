@@ -12,7 +12,7 @@
                  class="form-member"/>
       <TextInput id="input-cost"
                  v-model="task.cost"
-                 v-model:input-css-class="cssClasses.description"
+                 v-model:input-css-class="cssClasses.cost"
                  v-model:is-correct-validation-predicate="isNotNegativeAndShorterThanFour"
                  :is-dark-background="true"
                  :input-type="'number'"
@@ -25,13 +25,16 @@
               v-model="task.description"
               class="form-member">
    </textarea>
+    <span class="error-label">
+      {{ errorMessage }}
+    </span>
     <div class="row-container">
-      <span class="form-member simple-label">Языки: </span>
-      <span class="form-member simple-label"></span>
+      <span :class="cssClasses.langLabel">Языки: </span>
     </div>
     <div class="form-member languages-container">
       <SingleLanguageOption v-for="(lang, index) in availableLangs"
                             :key="index"
+                            v-model:is-active="lang.isActive"
                             :language-name="lang.name"
                             :activation-listener="addLangToArr"
                             :deactivation-listener="removeLangFromArr"/>
@@ -50,7 +53,7 @@
       Добавить тест-кейс
     </button>
     <SimpleSingleButton type="submit" class="submit-button" @click="tryToSendNewTask">
-      {{action}}
+      {{ operationActionName }}
     </SimpleSingleButton>
   </form>
 </template>
@@ -66,23 +69,36 @@ import authenticationMixin from "@/mixins/authenticationMixin";
 import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import TestCaseItem from "@/components/forms/TestCaseItem";
 import Operation from "@/components/enums/Operation";
+import responseProcessingMixin from "@/mixins/commonUtilsMixin";
 
 export default {
-  name: "TaskForm",
+  name: "NewTaskForm",
   components: {
     TestCaseItem,
     TextInput,
     SingleLanguageOption,
     SimpleSingleButton
   },
+  mixins: [
+    authenticationMixin,
+    responseProcessingMixin
+  ],
   props: {
     operation: {
       type: String
+    },
+    operationActionName: {
+      type: String
+    },
+    processUrl: {
+      type: String
+    },
+    id: {
+      type: Number
     }
   },
   data() {
     return {
-      id: 0,
       task: {
         title: '',
         description: '',
@@ -102,8 +118,12 @@ export default {
       availableLangs: [],
       isNotEmpty: FormValidationUtils.fieldIsNotEmpty,
       cssClasses: {
-        title: ''
-      }
+        title: '',
+        cost: '',
+        description: '',
+        langLabel: 'form-member simple-label',
+      },
+      errorMessage: '',
     }
   },
   methods: {
@@ -114,7 +134,7 @@ export default {
       this.task.languages.push(lang);
     },
     removeLangFromArr(lang) {
-      this.task.languages = this.task.languages.filter(val => val === lang);
+      this.task.languages = this.task.languages.filter(val => val !== lang);
     },
     removeTestCase(index) {
       this.task.testCases.splice(index, 1);
@@ -126,7 +146,34 @@ export default {
       });
     },
     tryToSendNewTask() {
-      axios.post(Properties.BBACK_ADDRESS + '/admin/tasks/add', {
+      const wrongInputClass = 'wrong-input';
+      let isSomeFieldIsNotFilled = false;
+      if (FormValidationUtils.fieldIsEmpty(this.task.title)) {
+        this.cssClasses.title += wrongInputClass;
+        isSomeFieldIsNotFilled = true;
+      }
+      if (!this.isNotNegativeAndShorterThanFour(this.task.cost)) {
+        this.cssClasses.cost += wrongInputClass;
+        isSomeFieldIsNotFilled = true;
+      }
+      if (FormValidationUtils.fieldIsEmpty(this.task.description)) {
+        isSomeFieldIsNotFilled = true;
+      }
+      if (this.task.languages.length === 0) {
+        this.cssClasses.langLabel += ' error-label ';
+        isSomeFieldIsNotFilled = true;
+        setTimeout(() => {
+          this.cssClasses.langLabel.replace(' error-label ', '');
+        }, 800);
+      }
+      if (isSomeFieldIsNotFilled) {
+        this.errorMessage = 'Заполните все необходимые поля!';
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 2000);
+        return;
+      }
+      this.getRequestMethod()(this.processUrl, {
         task: this.task
       }, {
         withCredentials: true
@@ -137,23 +184,30 @@ export default {
               router.push('/error?error=' + respModel.exception);
               return;
             }
-            this.clearForm();
+            this. successfullySent();
           }).catch(exception => {
-        if (exception.response.status === 401 || exception.response.status === 403) {
-          authenticationMixin.methods.resetProfileInfo();
-          router.push('/auth');
-          return;
-        }
+        responseProcessingMixin.methods.handleException(exception);
       });
     },
-    getUrlForPosting() {
+    getRequestMethod() {
+      switch (this.operation) {
+        case Operation.UPDATE:
+          return axios.put;
+        case Operation.ADD:
+          return axios.post;
+        default:
+          return axios.post;
+      }
+    },
+    successfullySent() {
       if (this.operation === Operation.ADD) {
-        return '/admin/tasks/add';
+        this.clearForm();
+        return;
       }
       if (this.operation === Operation.UPDATE) {
-        return '/admin/tasks/update/' + this.id;
+        router.push('/admin/tasks');
+        return;
       }
-      router.push('/error?error=Произошла ошибка! Неизвестная операция!');
     },
     clearForm() {
       this.task.title = '';
@@ -175,53 +229,67 @@ export default {
           expectedOutput: ''
         }
       ];
+    },
+    unique(arr) {
+      let result = [];
+      for (let str of arr) {
+        if (!result.includes(str)) {
+          result.push(str);
+        }
+      }
+      return result;
     }
   },
   created() {
     if (!authenticationMixin.methods.getAuth()) {
       router.push('/auth');
     }
+    const allLangs = [];
     axios.get(Properties.BBACK_ADDRESS + '/languages', {
       withCredentials: true,
     })
         .then(response => {
-          this.availableLangs = response.data.response.langs;
+          response.data.response.langs.forEach(elem => {
+            allLangs.push({
+              name: elem.name,
+              isActive: false
+            });
+          })
+          if (this.operation === Operation.ADD) {
+            this.availableLangs = allLangs;
+          }
         })
         .catch(exception => {
-          if (exception.response.status === 401 || exception.response.status === 403) {
-            authenticationMixin.methods.resetProfileInfo();
-            router.push('/auth');
-            return;
-          }
-          router.push('/error?error=' + exception);
-        })
-  },
-  computed: {
-    action() {
-      if (this.operation === Operation.UPDATE) {
-        return 'Изменить';
-      } else if (this.operation === Operation.ADD) {
-        return 'Добавить';
-      }
-      return '';
+          responseProcessingMixin.methods.handleException(exception);
+        });
+    if (this.operation === Operation.UPDATE) {
+      axios.get(Properties.BBACK_ADDRESS + '/tasks/get/' + this.id, {
+        withCredentials: true
+      })
+          .then(response => {
+            const responseModel = response.data;
+            if (responseModel.exception) {
+              router.push('/error?error=' + responseModel.exception);
+              return;
+            }
+            const receivedTask = responseModel.response.task;
+            this.task.title = receivedTask.title;
+            this.task.cost = receivedTask.cost;
+            this.task.description = receivedTask.description;
+            this.task.languages = this.unique(receivedTask.languages);
+            this.task.testCases = receivedTask.testCases;
+            allLangs.forEach(elem => {
+              if ( this.task.languages.includes(elem.name)) {
+                elem.isActive = true;
+              }
+            });
+            this.availableLangs = allLangs;
+          }).catch(exception => {
+        responseProcessingMixin.methods.handleException(exception);
+      })
     }
+
   },
-  watch: {
-    'operation': val => {
-      if (val === Operation.ADD) {
-        this.clearForm();
-      } else if (val === Operation.UPDATE) {
-        const splitPath = this.$route.path.split('/');
-        const id = splitPath[splitPath.length - 1];
-        this.id = id;
-        axios.get(Properties.BBACK_ADDRESS + '/tasks/get/' + id, {
-          withCredentials: true
-        }).then(response => {
-          console.log(response);
-        })
-      }
-    }
-  }
 }
 </script>
 
@@ -246,6 +314,12 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.error-label {
+  color: #e84a4a;
+  font-family: 'Russo One', sans-serif;
+  font-size: 17pt;
 }
 
 #input-cost {

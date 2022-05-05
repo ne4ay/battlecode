@@ -2,9 +2,8 @@
   <div class="main">
     <GlobalHeader id="header" :is-needed-to-display-profile-info="false"/>
     <div class="content">
-      <MainBackground>
+      <MainBackground />
         <AuthWindow id="window" :tabs="tabs"/>
-      </MainBackground>
     </div>
   </div>
 </template>

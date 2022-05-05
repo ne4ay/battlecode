@@ -145,6 +145,7 @@ export default {
   font-size: 17pt;
   font-family: 'Russo One', sans-serif;
   text-decoration: none;
+  color: #4581fc;
 }
 
 a {

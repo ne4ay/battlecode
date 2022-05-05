@@ -1,8 +1,10 @@
 package ua.nechay.bback.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ua.nechay.bback.domain.BBackLanguage;
 import ua.nechay.bback.domain.CategoryModel;
 import ua.nechay.bback.domain.ComplexityModel;
+import ua.nechay.bback.domain.LanguageToTaskModel;
 import ua.nechay.bback.domain.TaskModel;
 
 import javax.annotation.Nonnull;
@@ -23,14 +25,18 @@ public class ShortFormTaskTO {
     @JsonProperty private final String title;
     @JsonProperty private final String complexity;
     @JsonProperty private final List<String> categories;
+    @JsonProperty private final List<String> languages;
 
-    public ShortFormTaskTO(long taskId, boolean isDone, int cost, String title, String complexity, List<String> categories) {
+    public ShortFormTaskTO(long taskId, boolean isDone, int cost, String title, String complexity,
+        List<String> categories, List<String> languages)
+    {
         this.taskId = taskId;
         this.isDone = isDone;
         this.cost = cost;
         this.title = title;
         this.complexity = complexity;
         this.categories = categories;
+        this.languages = languages;
     }
 
     public ShortFormTaskTO(@Nonnull TaskModel task, Predicate<TaskModel> isDonePredicate) {
@@ -43,6 +49,10 @@ public class ShortFormTaskTO {
             .orElse(null);
         this.categories = task.getCategories().stream()
             .map(CategoryModel::getName)
+            .collect(Collectors.toList());
+        this.languages = task.getLanguages().stream()
+            .map(LanguageToTaskModel::getLanguage)
+            .map(BBackLanguage::getLanguageName)
             .collect(Collectors.toList());
     }
 

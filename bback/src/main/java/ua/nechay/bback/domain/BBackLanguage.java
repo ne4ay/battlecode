@@ -41,6 +41,7 @@ public enum BBackLanguage {
             .map(BBackLanguage::fromName)
             .filter(Optional::isPresent)
             .map(Optional::get)
+            .distinct()
             .toList();
     }
 }

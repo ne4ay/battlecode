@@ -65,8 +65,8 @@ export default {
     return {
       dialogVisible: false,
       typeOfTheDialog: {
-        name: String,
-        title: String
+        name: '',
+        title: ''
       },
       dialogWrapperBackgroundClass: 'none-display',
       isAuthenticated: authenticationMixin.methods.getAuth(),
