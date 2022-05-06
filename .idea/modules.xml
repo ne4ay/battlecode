@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/bback/bback.iml" filepath="$PROJECT_DIR$/bback/bback.iml" />
       <module fileurl="file://$PROJECT_DIR$/bevaluator/bevaluator.iml" filepath="$PROJECT_DIR$/bevaluator/bevaluator.iml" />
       <module fileurl="file://$PROJECT_DIR$/bfront/bfront.iml" filepath="$PROJECT_DIR$/bfront/bfront.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bparent/bparent.iml" filepath="$PROJECT_DIR$/bparent/bparent.iml" />
       <module fileurl="file://$PROJECT_DIR$/internal-api/internal-api.iml" filepath="$PROJECT_DIR$/internal-api/internal-api.iml" />
     </modules>
   </component>

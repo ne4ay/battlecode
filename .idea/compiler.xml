@@ -14,6 +14,7 @@
     <bytecodeTargetLevel>
       <module name="bback" target="17" />
       <module name="bevaluator" target="17" />
+      <module name="bparent" target="17" />
       <module name="internal-api" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -21,6 +22,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="bback" options="-parameters" />
       <module name="bevaluator" options="-parameters" />
+      <module name="bparent" options="-parameters" />
+      <module name="internal-api" options="-parameters" />
     </option>
   </component>
 </project>
