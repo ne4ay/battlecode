@@ -1,7 +1,7 @@
 package ua.nechay.bback.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ua.nechay.bback.environment.TestCase;
+import ua.nechay.bback.api.TestCase;
 
 /**
  * @author anechaev

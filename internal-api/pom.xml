@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../bparent/pom.xml</relativePath>
     </parent>
-    <groupId>ua.nechay.bback</groupId>
+    <groupId>ua.nechay</groupId>
     <artifactId>internal-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 

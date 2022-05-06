@@ -1,12 +1,14 @@
 package ua.nechay.bback.domain;
 
+import ua.nechay.bback.api.ProgrammingLanguage;
+
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public enum BBackLanguage {
+public enum BBackLanguage implements ProgrammingLanguage {
     JAVA("Java", "JAVA_REST_PORT", 8091);
 
     private final String name;

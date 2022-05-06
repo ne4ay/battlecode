@@ -1,4 +1,4 @@
-package ua.nechay.bback.environment;
+package ua.nechay.bback.api;
 
 /**
  * @author anechaev

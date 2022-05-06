@@ -18,15 +18,43 @@ public class BBackProperties {
     @Value("${server.port}")
     private int port;
 
+    @Value("${rest.task-checker.api.connect-timeout-ms:20000}")
+    private int restTaskCheckerConnectTimeoutMs;
+
+    @Value("${rest.task-checker.api.read-timeout-ms:20000}")
+    private int restTaskCheckerReadTimeoutMs;
+
+    @Value("${rest.task-checker.base-url}")
+    private String baseUrl;
+
     @PostConstruct
     private void initialize() {
         log.info("SpectraBBackProperties: {}", this);
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public int getRestTaskCheckerConnectTimeoutMs() {
+        return restTaskCheckerConnectTimeoutMs;
+    }
+
+    public int getRestTaskCheckerReadTimeoutMs() {
+        return restTaskCheckerReadTimeoutMs;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
     @Override
     public String toString() {
         return "BBackProperties{" +
             "port=" + port +
+            ", restTaskCheckerConnectTimeoutMs=" + restTaskCheckerConnectTimeoutMs +
+            ", restTaskCheckerReadTimeoutMs=" + restTaskCheckerReadTimeoutMs +
+            ", baseUrl='" + baseUrl + '\'' +
             '}';
     }
 }

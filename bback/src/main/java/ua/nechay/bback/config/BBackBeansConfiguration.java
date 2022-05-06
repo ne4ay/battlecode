@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ua.nechay.bback.checkers.BBackRestEndpointTaskCheckerFactory;
+import ua.nechay.bback.checkers.TaskCheckerFactory;
 
 /**
  * @author anechaev
@@ -34,5 +36,10 @@ public class BBackBeansConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         return new BBackAuthenticationProvider();
+    }
+
+    @Bean
+    public TaskCheckerFactory taskCheckerFactory() {
+        return new BBackRestEndpointTaskCheckerFactory(properties());
     }
 }

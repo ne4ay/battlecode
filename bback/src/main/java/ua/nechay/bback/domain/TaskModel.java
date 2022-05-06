@@ -1,6 +1,6 @@
 package ua.nechay.bback.domain;
 
-import ua.nechay.bback.environment.TestCase;
+import ua.nechay.bback.api.TestCase;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
