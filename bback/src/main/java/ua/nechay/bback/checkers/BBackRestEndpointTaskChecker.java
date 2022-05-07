@@ -27,11 +27,13 @@ public class BBackRestEndpointTaskChecker implements RestTaskChecker {
 
     @Override
     public Optional<CheckedTaskSolution> check(AllegedTaskSolution allegedTaskSolution) {
-        ProgrammingLanguage language = allegedTaskSolution.getProgrammingLanguage();
-        if (!(language instanceof BBackLanguage bBackLanguage)) {
-            throw new IllegalStateException("Unknown programming language instance: "  + language);
+        String languageName = allegedTaskSolution.getProgrammingLanguage();
+        Optional<BBackLanguage> maybeLanguage = BBackLanguage.fromName(languageName);
+        if (maybeLanguage.isEmpty()) {
+            throw new IllegalStateException("Unknown programming language instance: "  + languageName);
         }
-        String url = baseUrl + bBackLanguage.getRestPort() + "/check";
+        BBackLanguage language = maybeLanguage.get();
+        String url = baseUrl + language.getRestPort() + "/check";
         ResponseEntity<? extends CheckedTaskSolution> response =
             restTemplate.postForEntity(url, allegedTaskSolution, CheckedTaskSolution.class);
         return response.getStatusCode().is2xxSuccessful()

@@ -2,6 +2,7 @@ package ua.nechay.bback;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ua.nechay.bback.api.CheckedTestCase;
+import ua.nechay.bback.api.TestCase;
 
 import javax.annotation.Nonnull;
 
@@ -41,5 +42,14 @@ public class BBackCheckedTestCase implements CheckedTestCase {
     @Override
     public boolean isCorrect() {
         return isCorrect;
+    }
+
+    public static BBackCheckedTestCase fromException(@Nonnull TestCase testCase, @Nonnull String exception) {
+        return new BBackCheckedTestCase(testCase.getInputCase(), testCase.getExpectedOutput(), exception, false);
+    }
+
+    public static BBackCheckedTestCase fromOutput(@Nonnull TestCase testCase, @Nonnull String output) {
+        boolean isSuccessful = testCase.getExpectedOutput().equals(output);
+        return new BBackCheckedTestCase(testCase.getInputCase(), testCase.getExpectedOutput(), output, isSuccessful);
     }
 }

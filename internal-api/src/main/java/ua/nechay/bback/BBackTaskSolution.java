@@ -16,10 +16,10 @@ import java.util.List;
 public class BBackTaskSolution implements AllegedTaskSolution {
 
     @JsonProperty private final String programText;
-    @JsonProperty private final ProgrammingLanguage programmingLanguage;
-    @JsonProperty private final Collection<TestCase> testCases;
+    @JsonProperty private final String programmingLanguage;
+    @JsonProperty private final Collection<BBackTestCase> testCases;
 
-    public BBackTaskSolution(String programText, @Nonnull ProgrammingLanguage programmingLanguage, @Nonnull Collection<TestCase> testCases) {
+    public BBackTaskSolution(String programText, @Nonnull String programmingLanguage, @Nonnull Collection<BBackTestCase> testCases) {
         this.programText = programText;
         this.programmingLanguage = programmingLanguage;
         this.testCases = testCases;
@@ -31,12 +31,12 @@ public class BBackTaskSolution implements AllegedTaskSolution {
     }
 
     @Override
-    public ProgrammingLanguage getProgrammingLanguage() {
+    public String getProgrammingLanguage() {
         return programmingLanguage;
     }
 
     @Override
-    public Collection<TestCase> getTestCases() {
+    public Collection<BBackTestCase> getTestCases() {
         return testCases;
     }
 }
