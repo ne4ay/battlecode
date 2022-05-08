@@ -133,6 +133,11 @@ public class UserModel implements UserDetails {
         return this;
     }
 
+    public UserModel increaseExperience(Integer experience) {
+        this.experience += experience;
+        return this;
+    }
+
     public Set<BBackUserRole> getRoles() {
         return roles;
     }
@@ -150,6 +155,8 @@ public class UserModel implements UserDetails {
         public Builder() {
 
         }
+
+
 
         public Builder setLogin(String login) {
             this.login = login;

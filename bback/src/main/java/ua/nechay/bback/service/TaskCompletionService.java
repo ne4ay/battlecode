@@ -29,4 +29,14 @@ public class TaskCompletionService {
     {
         return taskCompletionRepo.findAllByLanguageAndUserAndTaskIn(language, userModel, tasks);
     }
+
+    public List<TaskCompletionModel> getAllByLanguageAndUserAndTaskId(@Nonnull BBackLanguage language,
+        @Nonnull UserModel user, long taskId)
+    {
+        return taskCompletionRepo.findAllByLanguageAndUserAndTaskId(language, user, taskId);
+    }
+
+    public void save(@Nonnull TaskCompletionModel taskCompletion) {
+        taskCompletionRepo.save(taskCompletion);
+    }
 }

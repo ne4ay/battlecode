@@ -1,15 +1,15 @@
 package ua.nechay.bback.checkers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import ua.nechay.bback.api.AllegedTaskSolution;
 import ua.nechay.bback.api.CheckedTaskSolution;
-import ua.nechay.bback.api.ProgrammingLanguage;
 import ua.nechay.bback.domain.BBackLanguage;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author anechaev
@@ -26,11 +26,15 @@ public class BBackRestEndpointTaskChecker implements RestTaskChecker {
     }
 
     @Override
-    public Optional<CheckedTaskSolution> check(AllegedTaskSolution allegedTaskSolution) {
+    public CompletableFuture<Optional<CheckedTaskSolution>> check(AllegedTaskSolution allegedTaskSolution) {
+        return CompletableFuture.supplyAsync(() -> sendAndGetResponse(allegedTaskSolution));
+    }
+
+    private Optional<CheckedTaskSolution> sendAndGetResponse(AllegedTaskSolution allegedTaskSolution) {
         String languageName = allegedTaskSolution.getProgrammingLanguage();
         Optional<BBackLanguage> maybeLanguage = BBackLanguage.fromName(languageName);
         if (maybeLanguage.isEmpty()) {
-            throw new IllegalStateException("Unknown programming language instance: "  + languageName);
+            throw new IllegalStateException("Unknown programming language instance: " + languageName);
         }
         BBackLanguage language = maybeLanguage.get();
         String url = baseUrl + language.getRestPort() + "/check";

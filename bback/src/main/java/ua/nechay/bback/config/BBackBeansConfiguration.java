@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ua.nechay.bback.checkers.BBackRestEndpointTaskCheckerFactory;
+import ua.nechay.bback.checkers.TaskChecker;
 import ua.nechay.bback.checkers.TaskCheckerFactory;
 
 /**
@@ -41,5 +42,10 @@ public class BBackBeansConfiguration {
     @Bean
     public TaskCheckerFactory taskCheckerFactory() {
         return new BBackRestEndpointTaskCheckerFactory(properties());
+    }
+
+    @Bean(destroyMethod = "close")
+    public TaskChecker taskChecker(TaskCheckerFactory taskCheckerFactory) {
+        return taskCheckerFactory.createTaskChecker();
     }
 }

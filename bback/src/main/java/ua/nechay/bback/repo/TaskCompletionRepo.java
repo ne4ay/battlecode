@@ -20,4 +20,6 @@ public interface TaskCompletionRepo extends JpaRepository<TaskCompletionModel, L
     List<TaskCompletionModel> findAllByLanguageAndUserAndTaskIn(@Nonnull BBackLanguage language,
         @Nonnull UserModel user,
         @Nonnull List<TaskModel> tasks);
+
+    List<TaskCompletionModel> findAllByLanguageAndUserAndTaskId(@Nonnull BBackLanguage language, @Nonnull UserModel user, long taskId);
 }

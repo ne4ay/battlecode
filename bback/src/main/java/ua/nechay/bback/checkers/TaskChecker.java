@@ -4,6 +4,7 @@ import ua.nechay.bback.api.AllegedTaskSolution;
 import ua.nechay.bback.api.CheckedTaskSolution;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author anechaev
@@ -11,5 +12,5 @@ import java.util.Optional;
  */
 public interface TaskChecker {
 
-    Optional<CheckedTaskSolution> check(AllegedTaskSolution allegedTaskSolution);
+    CompletableFuture<Optional<CheckedTaskSolution>> check(AllegedTaskSolution allegedTaskSolution);
 }

@@ -13,5 +13,6 @@ public enum GeneralResponseException implements ResponsePlainExceptionTO {
     WRONG_REQUEST,
     WRONG_CREDENTIALS,
     USER_WITH_DUPLICATED_LOGIN,
-    NOT_FOUND
+    NOT_FOUND,
+    TIMEOUT,
 }

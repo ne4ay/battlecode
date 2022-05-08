@@ -2,7 +2,6 @@ package ua.nechay.bback;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ua.nechay.bback.api.CheckedTaskSolution;
-import ua.nechay.bback.api.CheckedTestCase;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

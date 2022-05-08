@@ -19,6 +19,11 @@ public class BBackTestCase implements TestCase {
         this.expectedOutput = expectedOutput;
     }
 
+    public BBackTestCase(@Nonnull TestCase testCase) {
+        this.inputCase = testCase.getInputCase();
+        this.expectedOutput = testCase.getExpectedOutput();
+    }
+
     @Override
     public String getInputCase() {
         return inputCase;

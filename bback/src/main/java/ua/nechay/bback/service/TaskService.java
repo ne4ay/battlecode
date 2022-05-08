@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.nechay.bback.domain.BBackLanguage;
 import ua.nechay.bback.domain.BBackTaskStatus;
 import ua.nechay.bback.domain.TaskModel;
+import ua.nechay.bback.domain.TestCaseModel;
 import ua.nechay.bback.repo.LanguageToTaskRepo;
 import ua.nechay.bback.repo.TaskRepo;
 import ua.nechay.bback.repo.TestCaseRepo;
@@ -68,6 +69,10 @@ public class TaskService {
 
     public Optional<TaskModel> getTaskById(long id) {
         return taskRepo.findById(id);
+    }
+
+    public List<TestCaseModel> getAllTestCasesByTaskId(long id) {
+        return testCaseRepo.findAllByTaskId(id);
     }
 
     public long getCountOfAllTasks() {
