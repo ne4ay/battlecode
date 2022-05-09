@@ -33,4 +33,12 @@ public class BBackTestCase implements TestCase {
     public String getExpectedOutput() {
         return expectedOutput;
     }
+
+    @Override
+    public String toString() {
+        return "BBackTestCase{" +
+            "inputCase='" + inputCase + '\'' +
+            ", expectedOutput='" + expectedOutput + '\'' +
+            '}';
+    }
 }

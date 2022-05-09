@@ -13,14 +13,17 @@ import java.util.Collection;
  */
 public class BBackCheckedSolution implements CheckedTaskSolution {
 
-    @JsonProperty private final boolean isSuccessful;
-    @JsonProperty private final String exception;
-    @JsonProperty private final Collection<BBackCheckedTestCase> testCases;
+    @JsonProperty private boolean isSuccessful;
+    @JsonProperty private String exception;
+    @JsonProperty private Collection<BBackCheckedTestCase> testCases;
 
     public BBackCheckedSolution(boolean isSuccessful, @Nullable String exception, @Nonnull Collection<BBackCheckedTestCase> testCases) {
         this.isSuccessful = isSuccessful;
         this.testCases = testCases;
         this.exception = exception;
+    }
+
+    public BBackCheckedSolution() {
     }
 
     @Override
@@ -37,5 +40,14 @@ public class BBackCheckedSolution implements CheckedTaskSolution {
     @Override
     public Collection<BBackCheckedTestCase> getTestCases() {
         return testCases;
+    }
+
+    @Override
+    public String toString() {
+        return "BBackCheckedSolution{" +
+            "isSuccessful=" + isSuccessful +
+            ", exception='" + exception + '\'' +
+            ", testCases=" + testCases +
+            '}';
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <!--  <a :href="'/task/' + taskId">-->
-  <div class="short-task-container">
+  <div :class="cssClasses.containerClass">
       <span id="task-title">
         {{ title }}
       </span>
@@ -55,6 +55,13 @@ export default {
     },
     activeLang: {
       type: String
+    }
+  },
+  data() {
+    return {
+      cssClasses: {
+        containerClass: this.isDone ? 'short-task-container done' : 'short-task-container',
+      }
     }
   }
 }
@@ -125,5 +132,8 @@ a {
 #link-button:active {
   color: #e36815;
   background-color: #111111;
+}
+.done {
+  background-color: #181818;
 }
 </style>

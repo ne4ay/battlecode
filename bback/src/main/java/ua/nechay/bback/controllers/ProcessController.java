@@ -83,7 +83,7 @@ public class ProcessController {
             return GenericResponse.fromException(GeneralResponseException.UNAUTHORIZED);
         }
         UserModel user = maybeUser.get();
-        BBackTaskSolution taskSolution = createSolution(request.getTextOfProgram(), language, testCases);
+        BBackTaskSolution taskSolution = createSolution(request.getProgramText(), language, testCases);
 
         CompletableFuture<Optional<CheckedTaskSolution>> futureSolution = taskChecker.check(taskSolution);
         List<TaskCompletionModel> completions = taskCompletionService.getAllByLanguageAndUserAndTaskId(language, user, taskId);

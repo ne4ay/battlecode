@@ -23,10 +23,13 @@ public class BBackProperties {
     private int restTaskCheckerReadTimeoutMs;
 
     @Value("${rest.task-checker.base-url}")
-    private String baseUrl;
+    private String checkerBaseUrl;
 
-    @Value("{task-checker.checking-timeout-ms}")
+    @Value("${task-checker.checking-timeout-ms}")
     private int checkingTimeoutMs;
+
+    @Value("${rest.task-checker.url-path}")
+    private String checkerUrlPath;
 
     @PostConstruct
     private void initialize() {
@@ -45,12 +48,16 @@ public class BBackProperties {
         return restTaskCheckerReadTimeoutMs;
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
+    public String getCheckerBaseUrl() {
+        return checkerBaseUrl;
     }
 
     public int getCheckingTimeoutMs() {
         return checkingTimeoutMs;
+    }
+
+    public String getCheckerUrlPath() {
+        return checkerUrlPath;
     }
 
     @Override
@@ -59,7 +66,9 @@ public class BBackProperties {
             "port=" + port +
             ", restTaskCheckerConnectTimeoutMs=" + restTaskCheckerConnectTimeoutMs +
             ", restTaskCheckerReadTimeoutMs=" + restTaskCheckerReadTimeoutMs +
-            ", baseUrl='" + baseUrl + '\'' +
+            ", checkerBaseUrl='" + checkerBaseUrl + '\'' +
+            ", checkingTimeoutMs=" + checkingTimeoutMs +
+            ", checkerUrlPath='" + checkerUrlPath + '\'' +
             '}';
     }
 }

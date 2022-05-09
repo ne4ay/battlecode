@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -39,11 +40,16 @@ public class BEvaluatorJavaChecker implements TaskEvaluator {
     private static final String OUTPUT_FILE_NAME = "output.txt";
     private static final long SINGLE_CASE_TIMEOUT_SEC = 5L;
     private static final long ALL_CASE_TIMEOUT_SEC = 12L;
+    private static final List<Character> TERMINAL_CHARACTERS = Arrays.asList('\r', '\n');
 
     public BBackCheckedSolution check(@Nonnull BBackTaskSolution taskSolution) {
         String language = taskSolution.getProgrammingLanguage();
         if (!BEvaluatorType.JAVA.getLanguageName().equals(language)) {
             throw new IllegalStateException("Incompatible programming language: " + language);
+        }
+        String programText = taskSolution.getProgramText();
+        if (programText == null) {
+            return new BBackCheckedSolution(false, EvaluatingException.PROGRAM_CODE_IS_NULL.name(), Collections.emptyList());
         }
         String trimmedProgramText = taskSolution.getProgramText().trim();
         int countOfPublicClassEntries = countOfEntries(trimmedProgramText, PUBLIC_CLASS_NAME);
@@ -124,10 +130,9 @@ public class BEvaluatorJavaChecker implements TaskEvaluator {
 
             AtomicReference<String> errors = new AtomicReference<>("");
             InputStreamGobbler streamGobbler =
-                new InputStreamGobbler(process.getErrorStream(), err -> errors.set(errors.get() + err));
+                new InputStreamGobbler(process.getErrorStream(), err -> errors.set(errors.get() + "\n" + err));
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(streamGobbler);
-
             PrintWriter stdin = new PrintWriter(process.getOutputStream());
             stdin.println("cd " + uuidString);
             stdin.println("javac " + fileName);
@@ -137,12 +142,14 @@ public class BEvaluatorJavaChecker implements TaskEvaluator {
             process.destroy();
             executorService.shutdown();
             String output = Files.readString(Path.of(uuidString, OUTPUT_FILE_NAME));
+            String adjustedOutput = adjustOutput(output);
             String errorString = errors.get();
             if (errorString.length() != 0) {
-                BBackCheckedTestCase.fromException(testCase, errorString);
+                return BBackCheckedTestCase.fromException(testCase, errorString);
             }
-            return BBackCheckedTestCase.fromOutput(testCase, output);
+            return BBackCheckedTestCase.fromOutput(testCase, adjustedOutput);
         } catch (Exception e) {
+            e.printStackTrace();
             return BBackCheckedTestCase.fromException(testCase, e.toString());
         } finally {
             try {
@@ -152,4 +159,23 @@ public class BEvaluatorJavaChecker implements TaskEvaluator {
             }
         }
     }
+
+    private static String adjustOutput(@Nonnull String output) {
+        String adjustedOutput = output;
+        for (int i = 0; i < 2; i++) {
+            if (isLastCharacterTerminal(adjustedOutput)) {
+                adjustedOutput = cutOffLastCharacter(adjustedOutput);
+            }
+        }
+        return adjustedOutput;
+    }
+
+    private static boolean isLastCharacterTerminal(@Nonnull String line) {
+        return line.length() > 0 && TERMINAL_CHARACTERS.contains(line.charAt(line.length() - 1));
+    }
+
+    private static String cutOffLastCharacter(@Nonnull String line) {
+        return line.length() > 0 ? line.substring(0, line.length() - 1) : line;
+    }
+
 }

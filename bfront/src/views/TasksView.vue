@@ -9,6 +9,7 @@
                        :cost="task.cost"
                        :task-id="task.taskId"
                        :active-lang="lang"
+                       :is-done="task.isDone"
                        class="task-item"/>
       </div>
       <RowPagination v-model:active-page-num="activePage"

@@ -1,5 +1,7 @@
 package ua.nechay.bback.dto.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -7,9 +9,9 @@ import javax.annotation.Nonnull;
  * @since 20.04.2022
  */
 public class RegistrationRequest {
-    private final String login;
-    private final String password;
-    private final String email;
+    @JsonProperty private final String login;
+    @JsonProperty private final String password;
+    @JsonProperty private final String email;
 
     public RegistrationRequest(@Nonnull String login, @Nonnull String password, @Nonnull String eMail) {
         this.login = login;

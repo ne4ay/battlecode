@@ -98,6 +98,7 @@ public class AdminController {
         return SimpleCheckingResponse.createGenericResponse(true);
     }
 
+    @Transactional
     @PutMapping(value = "/tasks/update/{id}")
     public @ResponseBody
     GenericResponse<SimpleCheckingResponse, GeneralResponseException> updateTask(@PathVariable long id,
@@ -114,7 +115,8 @@ public class AdminController {
         TaskModel task = fillBuilderFromRequest(request, languages)
             .setId(id)
             .build();
-        taskService.save(task);
+
+        taskService.update(task);
         return SimpleCheckingResponse.createGenericResponse(true);
     }
 

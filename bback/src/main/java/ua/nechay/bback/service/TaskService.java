@@ -89,6 +89,12 @@ public class TaskService {
         testCaseRepo.saveAll(taskModel.getTestCases());
     }
 
+    public void update(@Nonnull TaskModel taskModel) {
+        testCaseRepo.deleteAllByTaskId(taskModel.getId());
+        languageToTaskRepo.deleteAllByTaskId(taskModel.getId());
+        save(taskModel);
+    }
+
     public void delete(long id) {
         languageToTaskRepo.deleteAllByTaskId(id);
         testCaseRepo.deleteAllByTaskId(id);

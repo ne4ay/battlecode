@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ProcessTaskRequest {
 
     @JsonProperty private final long taskId;
-    @JsonProperty private final String textOfProgram;
+    @JsonProperty private final String programText;
     @JsonProperty private final String language;
 
-    public ProcessTaskRequest(long taskId, String textOfProgram, String language) {
+    public ProcessTaskRequest(long taskId, String programText, String language) {
         this.taskId = taskId;
-        this.textOfProgram = textOfProgram;
+        this.programText = programText;
         this.language = language;
     }
 
@@ -22,8 +22,8 @@ public class ProcessTaskRequest {
         return taskId;
     }
 
-    public String getTextOfProgram() {
-        return textOfProgram;
+    public String getProgramText() {
+        return programText;
     }
 
     public String getLanguage() {

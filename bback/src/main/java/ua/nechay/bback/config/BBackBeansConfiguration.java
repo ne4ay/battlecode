@@ -40,11 +40,11 @@ public class BBackBeansConfiguration {
     }
 
     @Bean
-    public TaskCheckerFactory taskCheckerFactory() {
-        return new BBackRestEndpointTaskCheckerFactory(properties());
+    public TaskCheckerFactory taskCheckerFactory(BBackProperties properties) {
+        return new BBackRestEndpointTaskCheckerFactory(properties);
     }
 
-    @Bean(destroyMethod = "close")
+    @Bean
     public TaskChecker taskChecker(TaskCheckerFactory taskCheckerFactory) {
         return taskCheckerFactory.createTaskChecker();
     }

@@ -26,7 +26,8 @@ public class BBackRestEndpointTaskCheckerFactory implements TaskCheckerFactory {
         httpRequestFactory.setConnectTimeout(properties.getRestTaskCheckerConnectTimeoutMs());
         httpRequestFactory.setReadTimeout(properties.getRestTaskCheckerReadTimeoutMs());
         RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
-        String baseUrl = properties.getBaseUrl();
-        return new BBackRestEndpointTaskChecker(restTemplate, baseUrl);
+        String checkerBaseUrl = properties.getCheckerBaseUrl();
+        String checkerUrlPath = properties.getCheckerUrlPath();
+        return new BBackRestEndpointTaskChecker(restTemplate, checkerBaseUrl, checkerUrlPath);
     }
 }

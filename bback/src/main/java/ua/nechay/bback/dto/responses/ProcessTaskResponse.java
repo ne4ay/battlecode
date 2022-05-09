@@ -33,6 +33,8 @@ public class ProcessTaskResponse implements ResponseTO {
     public static ProcessTaskResponse fromSolution(@Nonnull CheckedTaskSolution solution, int countOfExperience) {
         List<CheckedTestCaseTO> checkedTestCases = solution.getTestCases()
             .stream()
+            .filter(testCase -> solution.isSuccessful() || !testCase.isCorrect())
+            .limit(1)
             .map(CheckedTestCaseTO::fromTestCase)
             .toList();
         return new ProcessTaskResponse(

@@ -5,8 +5,7 @@
 
       </div>
       <pre>
-      <div id="editor">
-public class Main {
+      <div id="editor">public class Main {
   public static void main(String[] args) {
     System.out.println(1);
   }
@@ -43,6 +42,9 @@ export default {
     },
     activeLang: {
       type: String
+    },
+    responseHandler: {
+      type: Function
     }
   },
   data() {
@@ -60,13 +62,13 @@ export default {
     sendTask() {
       axios.post(Properties.BBACK_ADDRESS + '/process', {
         taskId: this.taskId,
-        textOfProgram: this.editor.getValue(),
+        programText: this.editor.getValue(),
         language: this.activeLang,
       }, {
         withCredentials: true
       })
       .then(response => {
-        console.log(response);
+        this.responseHandler(response);
       }).catch(exception => {
         commonUtilsMixin.methods.handleException(exception);
       });

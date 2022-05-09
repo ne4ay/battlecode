@@ -1,6 +1,8 @@
 package ua.nechay.bback.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ua.nechay.bback.domain.BBackLanguage;
 import ua.nechay.bback.domain.TaskCompletionModel;

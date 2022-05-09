@@ -19,7 +19,7 @@ import java.util.Optional;
  * @since 06.05.2022
  */
 @RestController
-@RequestMapping("/check1")
+@RequestMapping("/check")
 public class CheckController {
 
 
