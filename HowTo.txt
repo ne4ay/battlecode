@@ -1,5 +1,5 @@
 
-//run the docker compose
+//run the docker compose build
 docker-compose up -d --build
 
 docker-compose up

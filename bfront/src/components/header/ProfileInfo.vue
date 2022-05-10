@@ -1,17 +1,31 @@
 <template>
   <div class="profile-info-wrapper">
-    <a id="profile-label" @click="toggleDropDown">
-      {{ getName }}
-    </a>
+    <div class="profile-label-container">
+      <div id="profile-login-container">
+        <a id="profile-label" @click="toggleDropDown">
+          {{ getName }}
+        </a>
+      </div>
+      <div id="profile-exp-container">
+        <span class="exp-content level-number">
+          {{getLevel}}
+        </span>
+        <ExperienceBar class="exp-content"
+            id="experience-bar"
+            :value-in-percent="getValueInPercent"
+                       :height="30"
+                       :width="80"/>
+      </div>
+    </div>
     <transition name="fall">
-    <div v-if="isOpen" class="dropdown-content">
+      <div v-if="isOpen" class="dropdown-content">
         <a href="/admin" class="dropdown-item" v-if="isAdmin">
           Админ-панель
         </a>
         <a class="dropdown-item" @click="logout">
           Выйти
         </a>
-    </div>
+      </div>
     </transition>
   </div>
 </template>
@@ -22,9 +36,13 @@ import Properties from "@/Properties";
 import authenticationMixin from "@/mixins/authenticationMixin";
 import router from "@/router/router";
 import Roles from "@/components/enums/Roles";
+import ExperienceBar from "@/components/header/ExperienceBar";
 
 export default {
   name: "ProfileInfo",
+  components: {
+    ExperienceBar
+  },
   mixins: [
     authenticationMixin
   ],
@@ -34,17 +52,18 @@ export default {
       isAdmin: false,
     }
   },
+  props: {
+    unAuthListener: {
+      type: Function,
+    }
+  },
   methods: {
     logout() {
       const backAddress = Properties.BBACK_ADDRESS;
       axios.post(backAddress + '/getout', {})
-          .then(response => {
-            const respModel = response.data;
-            if (!respModel.response.isSuccessful) {
-              router.push('/error')
-              return;
-            }
+          .then(() => {
             authenticationMixin.methods.resetProfileInfo();
+            this.unAuthListener();
             router.push('/home');
           })
           .catch(error => {
@@ -58,13 +77,19 @@ export default {
   computed: {
     getName() {
       return authenticationMixin.methods.getProfileInfo().login;
+    },
+    getLevel() {
+      return authenticationMixin.methods.getProfileInfo().level;
+    },
+    getValueInPercent() {
+      return authenticationMixin.methods.getProfileInfo().percentValueToNextLevel;
     }
   },
   created() {
     this.isAdmin = authenticationMixin.methods
         .getProfileInfo()
         .roles
-        .includes(Roles.GLOBAL_ADMINISTRATOR);
+        .includes(Roles.GLOBAL_ADMINISTRATOR.id);
   }
 }
 </script>
@@ -79,12 +104,46 @@ export default {
   flex-direction: column;
 }
 
+#profile-login-container {
+  align-self: center;
+}
+
 #profile-label {
   font-family: 'Russo One', sans-serif;
   font-stretch: condensed;
   font-size: 22pt;
   color: #e5e5e5;
   margin: 0 10pt;
+}
+
+
+.profile-label-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#profile-exp-container {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+}
+
+#experience-bar {
+  width: 80pt;
+  height: 13pt;
+}
+
+.exp-content {
+  justify-self: center;
+  align-self: center;
+  margin: 0 3pt;
+}
+
+.level-number {
+  font-size: 16pt;
+  color: #e5e5e5;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 #profile-label:hover {
@@ -98,7 +157,7 @@ export default {
 .dropdown-content {
   position: fixed;
   width: max-content;
-  margin-top: 45pt;
+  margin-top: 55pt;
   background-color: #202020;
   display: flex;
   flex-direction: column;
@@ -126,7 +185,7 @@ export default {
 
 .fall-enter-active,
 .fall-leave-active {
-  transition: all 0.4s cubic-bezier(.32,.18,.3,.99);
+  transition: all 0.4s cubic-bezier(.32, .18, .3, .99);
 }
 
 .fall-enter-from,

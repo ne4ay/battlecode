@@ -30,7 +30,7 @@ export default {
       authenticationMixin
   ],
   created() {
-    if(!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
+    if(!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR.id)) {
       router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
     }
 

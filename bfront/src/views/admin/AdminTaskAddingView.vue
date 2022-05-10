@@ -41,7 +41,7 @@ export default {
     }
   },
   created() {
-    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
+    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR.id)) {
       router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
     }
     const upperCasePath = this.$route.path.toUpperCase();
@@ -114,6 +114,7 @@ template {
 .content {
   position: absolute;
   z-index: -1;
+  min-height: 100%;
   width: 100%;
   background-color: #202020;
 }

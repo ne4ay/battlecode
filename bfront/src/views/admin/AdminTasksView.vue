@@ -21,8 +21,7 @@
       </div>
       <RowPagination v-model:count-of-pages="countOfPages"
                      v-model:active-page-num="activePage"
-                     :changing-listener="changePage"
-      />
+                     :changing-listener="changePage"/>
   </div>
 </template>
 
@@ -62,33 +61,36 @@ export default {
     }
   },
   created() {
-    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR)) {
+    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR.id)) {
       router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
       return;
     }
-    axios.get(Properties.BBACK_ADDRESS + '/admin/tasks/show', {
-          withCredentials: true,
-          params: {
-            size: this.pageSize,
-            page: this.activePage,
-          }
-        })
-        .then(response => {
-          console.log(response);
-          const respModel = response.data;
-          if (respModel.exception || !respModel.response) {
-            router.push('/error?error=' + respModel.exception);
-            return;
-          }
-          this.countOfPages = respModel.response.countOfPages;
-          this.tasks = respModel.response.tasks;
-        }).catch(exception => {
-          responseProcessingMixin.methods.handleException(exception);
-    });
+    this.makeGetRequest(1);
   },
   methods: {
-    changePage() {
-
+    makeGetRequest(pageNum) {
+      axios.get(Properties.BBACK_ADDRESS + '/admin/tasks/show', {
+        withCredentials: true,
+        params: {
+          size: this.pageSize,
+          page: pageNum,
+        }
+      })
+          .then(response => {
+            const respModel = response.data;
+            if (respModel.exception || !respModel.response) {
+              router.push('/error?error=' + respModel.exception);
+              return;
+            }
+            this.countOfPages = respModel.response.countOfPages;
+            this.tasks = respModel.response.tasks;
+          }).catch(exception => {
+        responseProcessingMixin.methods.handleException(exception);
+      });
+    },
+    changePage(pageNum) {
+      this.activePage = pageNum;
+      this.makeRequest(pageNum);
     }
   },
   computed: {}
@@ -114,7 +116,6 @@ a {
 .content {
   position: absolute;
   z-index: -1;
-  height: 100%;
   width: 100%;
   background-color: #202020;
 }

@@ -84,7 +84,7 @@ export default {
       this.pages = arr;
     },
     changeThePage(page) {
-      if (page === '...') {
+      if (page === '...' || page === this.activePageNum) {
         return;
       }
       this.$emit('update:activePageNum', page);

@@ -2,7 +2,10 @@ package ua.nechay.bback.domain.user;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.validation.annotation.Validated;
 
+import javax.annotation.Nonnull;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,4 +33,11 @@ public enum BBackUserRole {
             .collect(Collectors.toSet());
     }
 
+    public static Optional<BBackUserRole> fromNameId(@Nonnull String nameId) {
+        try {
+            return Optional.of(valueOf(nameId));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
 }

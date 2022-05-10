@@ -33,6 +33,7 @@
     </div>
     <div class="form-member languages-container">
       <SingleLanguageOption v-for="(lang, index) in availableLangs"
+                            class="language-option"
                             :key="index"
                             v-model:is-active="lang.isActive"
                             :language-name="lang.name"
@@ -70,6 +71,7 @@ import SimpleSingleButton from "@/components/forms/SimpleSingleButton";
 import TestCaseItem from "@/components/forms/TestCaseItem";
 import Operation from "@/components/enums/Operation";
 import responseProcessingMixin from "@/mixins/commonUtilsMixin";
+import Roles from "@/components/enums/Roles";
 
 export default {
   name: "NewTaskForm",
@@ -244,6 +246,9 @@ export default {
     if (!authenticationMixin.methods.getAuth()) {
       router.push('/auth');
     }
+    if (!authenticationMixin.methods.getProfileInfo().roles.includes(Roles.GLOBAL_ADMINISTRATOR.id)) {
+      router.push('/error?error=Недостаточно прав для просмотра данной страницы!');
+    }
     const allLangs = [];
     axios.get(Properties.BBACK_ADDRESS + '/languages', {
       withCredentials: true,
@@ -353,6 +358,10 @@ export default {
 .languages-container {
   display: flex;
   justify-content: center;
+}
+
+.language-option {
+  margin: 0 5pt;
 }
 
 .test-case {

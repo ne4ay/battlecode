@@ -10,13 +10,14 @@
       <a href="/langs" class="header-link">
         Задачи
       </a>
-      <a class="header-link">
+      <a href="/rating" class="header-link">
         Рейтинг
       </a>
     </div>
     <div id="auth" v-if="isNeededToDisplayProfileInfo">
       <ProfileInfo v-if="isAuthenticated"
-                   class="content-wrapper"/>
+                   class="content-wrapper"
+                   :un-auth-listener="updateHeader"/>
       <UnAuthLinks v-else
                    class="content-wrapper"
                    :auth-listener="showAuthDialog"/>
@@ -97,6 +98,9 @@ export default {
         }, 380);
       }
     },
+    updateHeader() {
+      this.isAuthenticated = authenticationMixin.methods.getAuth();
+    }
   },
   computed: {
     dialogContentAuthComponent() {

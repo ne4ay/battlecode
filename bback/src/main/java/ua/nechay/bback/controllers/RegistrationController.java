@@ -50,7 +50,7 @@ public class RegistrationController {
             .setEMail(request.getEmail())
             .setExperience(0)
             .setLevel(1)
-            .setRoles(Set.of(BBackUserRole.DEFAULT_USER, BBackUserRole.GLOBAL_ADMINISTRATOR))
+            .setRoles(Set.of(BBackUserRole.DEFAULT_USER))
             .build();
         userService.save(user);
         Authentication authentication = authenticationManager.authenticate(

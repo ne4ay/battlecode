@@ -1,4 +1,10 @@
 export default {
-    GLOBAL_ADMINISTRATOR: 'GLOBAL_ADMINISTRATOR',
-    DEFAULT_USER: 'DEFAULT_USER'
+    GLOBAL_ADMINISTRATOR: {
+        id: 'GLOBAL_ADMINISTRATOR',
+        printableName: 'Администратор'
+    },
+    DEFAULT_USER: {
+        id: 'DEFAULT_USER',
+        printableName: 'Пользователь'
+    }
 }

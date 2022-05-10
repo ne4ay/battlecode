@@ -1,5 +1,6 @@
 import authenticationMixin from "@/mixins/authenticationMixin";
 import router from "@/router/router";
+import Roles from "@/components/enums/Roles";
 
 export default {
     methods: {
@@ -14,6 +15,9 @@ export default {
         determineId(path) {
             const splitPath = path.split('/');
             return parseInt(splitPath[splitPath.length - 1]);
+        },
+        convertToPrintable(roles = []) {
+            return roles.map(elem => Roles[elem].printableName).join(', ');
         }
     }
 }

@@ -8,6 +8,9 @@ import AdminTasksView from "@/views/admin/AdminTasksView";
 import AdminPanelView from "@/views/admin/AdminPanelView";
 import AdminTaskAddingView from "@/views/admin/AdminTaskAddingView";
 import SingleTaskView from "@/views/SingleTaskView";
+import AdminUsersView from "@/views/admin/AdminUsersView";
+import RatingView from "@/views/RatingView";
+import AdminUserChangingView from "@/views/admin/AdminUserChangingView";
 
 const routes = [
     {
@@ -51,6 +54,18 @@ const routes = [
         path: '/task/:id',
         component: SingleTaskView
     },
+    {
+        path: '/admin/users',
+        component: AdminUsersView
+    },
+    {
+        path: '/admin/user/:id',
+        component: AdminUserChangingView
+    },
+    {
+        path: '/rating',
+        component: RatingView
+    }
 ]
 
 const router = createRouter({

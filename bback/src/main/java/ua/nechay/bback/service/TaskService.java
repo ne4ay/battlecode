@@ -83,16 +83,17 @@ public class TaskService {
         return taskRepo.countAllByStatusIs(status);
     }
 
-    public void save(@Nonnull TaskModel taskModel) {
+    public TaskService save(@Nonnull TaskModel taskModel) {
         taskRepo.save(taskModel);
         languageToTaskRepo.saveAll(taskModel.getLanguages());
         testCaseRepo.saveAll(taskModel.getTestCases());
+        return this;
     }
 
-    public void update(@Nonnull TaskModel taskModel) {
+    public TaskService update(@Nonnull TaskModel taskModel) {
         testCaseRepo.deleteAllByTaskId(taskModel.getId());
         languageToTaskRepo.deleteAllByTaskId(taskModel.getId());
-        save(taskModel);
+        return save(taskModel);
     }
 
     public void delete(long id) {

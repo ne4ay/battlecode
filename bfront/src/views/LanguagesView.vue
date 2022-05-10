@@ -14,7 +14,7 @@
 <script>
 import GlobalHeader from "@/components/header/GlobalHeader";
 import MainBackground from "@/components/home/MainBackground";
-import LanguageItem from "@/components/tasks/LanguageItem";
+import LanguageItem from "@/components/items/LanguageItem";
 import axios from "axios";
 import router from "@/router/router";
 import Properties from "@/Properties";

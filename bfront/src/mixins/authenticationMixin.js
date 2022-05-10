@@ -15,6 +15,7 @@ export default {
             const responseModel = response.data.response;
             localStorage.setItem('login', responseModel.login);
             localStorage.setItem('experience', responseModel.experience);
+            localStorage.setItem('percentValueToNextLevel', responseModel.percentValueToNextLevel);
             localStorage.setItem('level', responseModel.level);
             localStorage.setItem('roles', JSON.stringify(responseModel.roles));
             localStorage.setItem('isAuth', true);
@@ -23,6 +24,7 @@ export default {
             localStorage.removeItem('login');
             localStorage.removeItem('experience');
             localStorage.removeItem('level');
+            localStorage.removeItem('percentValueToNextLevel');
             localStorage.removeItem('roles');
             localStorage.setItem('isAuth', false);
         },
@@ -30,6 +32,7 @@ export default {
             return {
                 login: localStorage.getItem('login'),
                 experience: localStorage.getItem('experience'),
+                percentValueToNextLevel: localStorage.getItem('percentValueToNextLevel'),
                 level: localStorage.getItem('level'),
                 roles: JSON.parse(localStorage.getItem('roles')),
             }

@@ -1,7 +1,8 @@
 <template>
   <div class="task-container">
     <div id="task-description" class="section-container">
-      <a :href="'/task/' + taskId" class="clickable title">
+      <a
+         class="clickable title">
         {{ title }}
       </a>
       <span class="description-label">

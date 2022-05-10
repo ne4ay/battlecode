@@ -9,9 +9,11 @@
         </span>
       </div>
       <div class="description-container">
-        <span class="description">
-          {{ description }}
-        </span>
+        <pre>
+          <span class="description">
+            {{ description }}
+          </span>
+        </pre>
       </div>
       <TaskCheckingForm id="form-editor"
                         v-model:active-lang="activeLang"
@@ -39,7 +41,7 @@
             Получено опыта: {{ receivedExperience }}
           </span>
           <div class="back-link">
-            <a :href="'/tasks/' + activeLang" >
+            <a :href="'/tasks/' + activeLang">
               ← К задачам
             </a>
           </div>
@@ -56,6 +58,7 @@ import commonUtilsMixin from "@/mixins/commonUtilsMixin";
 import Properties from "@/Properties";
 import router from "@/router/router";
 import TaskCheckingForm from "@/components/forms/TaskCheckingForm";
+import authenticationMixin from "@/mixins/authenticationMixin";
 
 export default {
   name: "SingleTaskView",
@@ -64,6 +67,7 @@ export default {
     GlobalHeader
   },
   mixins: [
+    authenticationMixin,
     commonUtilsMixin
   ],
   data() {
@@ -100,6 +104,16 @@ export default {
       this.resultTitle = result.isSuccessful ? 'Задание выполнено успешно!!' : 'Задание провалено: ';
       if (result.isSuccessful) {
         this.receivedExperience = result.countOfExperience;
+        authenticationMixin.methods.getBasicProfileInfo().then(response => {
+          if (response.data.exception) {
+            this.$store.state.isAuth = false;
+            return;
+          }
+          authenticationMixin.methods.updateProfileInfo(response);
+        })
+            .catch(exception => {
+              commonUtilsMixin.methods.handleException(exception);
+            })
       } else {
         this.testCase.inputCase = result.testCases[0].inputCase;
         this.testCase.expectedOutput = result.testCases[0].expectedOutput;
@@ -209,6 +223,7 @@ a:visited {
 .checking-result-title {
 
 }
+
 .error {
   color: #e84a4a;
 }
