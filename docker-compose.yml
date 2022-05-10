@@ -5,6 +5,7 @@ services:
     build: bback/
     environment:
       - JAVA_REST_PORT=8091
+      - PYTHON_REST_PORT=8092
     ports:
       - "8090:8090"
   bfront:
@@ -12,10 +13,21 @@ services:
     build: bfront/
     ports:
       - "8080:8080"
-  bevaluator:
+  bevaluator-java:
     image: bevaluator
-    build: bevaluator/
+    build:
+      context: bevaluator
+      dockerfile: Dockerfile-java
     environment:
       - REST_PORT=8091
     ports:
       - "8091:8091"
+  bevaluator-python:
+    image: bevaluator
+    build:
+      context: bevaluator
+      dockerfile: Dockerfile-python
+    environment:
+      - REST_PORT=8092
+    ports:
+      - "8092:8092"

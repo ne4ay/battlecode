@@ -2,13 +2,15 @@ package ua.nechay.bevaluator;
 
 import ua.nechay.bback.api.ProgrammingLanguage;
 import ua.nechay.bevaluator.checkers.BEvaluatorJavaChecker;
+import ua.nechay.bevaluator.checkers.BEvaluatorPythonChecker;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Optional;
 
 public enum BEvaluatorType implements ProgrammingLanguage {
-    JAVA("Java", new BEvaluatorJavaChecker());
+    JAVA("Java", new BEvaluatorJavaChecker()),
+    PYTHON("Python", new BEvaluatorPythonChecker());
 
     private final String name;
     private final TaskEvaluator taskEvaluator;

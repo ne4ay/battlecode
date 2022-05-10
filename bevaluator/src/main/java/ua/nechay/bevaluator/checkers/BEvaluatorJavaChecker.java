@@ -1,52 +1,33 @@
 package ua.nechay.bevaluator.checkers;
 
-import org.apache.commons.io.FileUtils;
 import ua.nechay.bback.BBackCheckedSolution;
 import ua.nechay.bback.BBackCheckedTestCase;
 import ua.nechay.bback.BBackTaskSolution;
 import ua.nechay.bback.BBackTestCase;
 import ua.nechay.bback.EvaluatingException;
 import ua.nechay.bevaluator.BEvaluatorType;
-import ua.nechay.bevaluator.InputStreamGobbler;
 import ua.nechay.bevaluator.TaskEvaluator;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author anechaev
  * @since 06.05.2022
  */
-public class BEvaluatorJavaChecker implements TaskEvaluator {
+public class BEvaluatorJavaChecker extends AbstractBEvaluatorChecker implements TaskEvaluator {
     private static final String CLASS_NAME = "Main";
     private static final String PUBLIC_CLASS_NAME = "public class " + CLASS_NAME;
     private static final String PUBLIC_METHOD_MAIN = "public static void main(String[] args) {";
-    private static final String INPUT_FILE_NAME = "input.txt";
-    private static final String OUTPUT_FILE_NAME = "output.txt";
-    private static final long SINGLE_CASE_TIMEOUT_SEC = 5L;
-    private static final long ALL_CASE_TIMEOUT_SEC = 12L;
-    private static final List<Character> TERMINAL_CHARACTERS = Arrays.asList('\r', '\n');
 
     public BBackCheckedSolution check(@Nonnull BBackTaskSolution taskSolution) {
-        String language = taskSolution.getProgrammingLanguage();
-        if (!BEvaluatorType.JAVA.getLanguageName().equals(language)) {
-            throw new IllegalStateException("Incompatible programming language: " + language);
-        }
+        getLanguageOrThrow(taskSolution);
         String programText = taskSolution.getProgramText();
         if (programText == null) {
             return new BBackCheckedSolution(false, EvaluatingException.PROGRAM_CODE_IS_NULL.name(), Collections.emptyList());
@@ -63,39 +44,16 @@ public class BEvaluatorJavaChecker implements TaskEvaluator {
         if (countOfMethodEntries != 1) {
             return new BBackCheckedSolution(false, EvaluatingException.TOO_MANY_PUBLIC_MAIN_CLASS.name(), Collections.emptyList());
         }
-        ExecutorService executor = Executors.newFixedThreadPool(3);
         List<Callable<BBackCheckedTestCase>> solutionCallables = taskSolution.getTestCases()
             .stream()
             .map(testCase -> getCaseCallable(testCase, trimmedProgramText))
             .toList();
-        List<BBackCheckedTestCase> checkedTestCases;
-        try {
-            checkedTestCases = executor.invokeAll(solutionCallables, ALL_CASE_TIMEOUT_SEC, TimeUnit.SECONDS)
-                .stream()
-                .map(future -> {
-                    try {
-                        return future.get();
-                    } catch (InterruptedException e) {
-                        return new BBackCheckedTestCase("", "", e.toString(), false);
-                    } catch (ExecutionException e) {
-                        return new BBackCheckedTestCase("", "", e.getCause().toString(), false);
-                    }
-                })
-                .toList();
-        } catch (InterruptedException e) {
-            return new BBackCheckedSolution(false, e.toString(), Collections.emptyList());
-        } finally {
-            executor.shutdown();
-        }
-        boolean isSuccessful = checkedTestCases.stream()
-            .allMatch(BBackCheckedTestCase::isCorrect);
-        return new BBackCheckedSolution(isSuccessful, null, checkedTestCases);
+        return handleTestCaseTasks(solutionCallables);
     }
 
     private static int countOfEntries(String str, String target) {
         return (str.length() - str.replace(target, "").length()) / target.length();
     }
-
 
     private Callable<BBackCheckedTestCase> getCaseCallable(@Nonnull BBackTestCase testCase, @Nonnull String trimmedProgramText) {
         return () -> testSingleCase(testCase, trimmedProgramText);
@@ -107,75 +65,35 @@ public class BEvaluatorJavaChecker implements TaskEvaluator {
             .replace("-", "");
         String className = CLASS_NAME + uuidString;
         String processedProgramText = trimmedProgramText.replace(PUBLIC_CLASS_NAME, PUBLIC_CLASS_NAME + uuidString);
-        Path dirPath = Path.of(uuidString);
-        try {
-            Files.createDirectories(dirPath);
-        } catch (Exception e) {
-            return BBackCheckedTestCase.fromException(testCase, e.toString());
-        }
-        try {
-            Path inputFilePath = Path.of(uuidString, INPUT_FILE_NAME);
-            try (OutputStream outputStream = Files.newOutputStream(inputFilePath)) {
-                outputStream.write(testCase.getInputCase().getBytes(StandardCharsets.UTF_8));
-            }
-            Path outputFilePath = Path.of(uuidString, OUTPUT_FILE_NAME);
-            Files.createFile(outputFilePath);
-            String fileName = className + ".java";
-            Path filePath = Path.of(uuidString, fileName);
-            try (OutputStream outputStream = Files.newOutputStream(filePath)) {
-                outputStream.write(processedProgramText.getBytes(StandardCharsets.UTF_8));
-            }
-            Process process = Runtime.getRuntime()
-                .exec("sh");
-
-            AtomicReference<String> errors = new AtomicReference<>("");
-            InputStreamGobbler streamGobbler =
-                new InputStreamGobbler(process.getErrorStream(), err -> errors.set(errors.get() + "\n" + err));
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.submit(streamGobbler);
-            PrintWriter stdin = new PrintWriter(process.getOutputStream());
-            stdin.println("cd " + uuidString);
-            stdin.println("javac " + fileName);
-            stdin.println("java -classpath . " + className + " < " + INPUT_FILE_NAME + " > " + OUTPUT_FILE_NAME);
-            stdin.close();
-            process.waitFor(SINGLE_CASE_TIMEOUT_SEC, TimeUnit.SECONDS);
-            process.destroy();
-            executorService.shutdown();
-            String output = Files.readString(Path.of(uuidString, OUTPUT_FILE_NAME));
-            String adjustedOutput = adjustOutput(output);
-            String errorString = errors.get();
-            if (errorString.length() != 0) {
-                return BBackCheckedTestCase.fromException(testCase, errorString);
-            }
-            return BBackCheckedTestCase.fromOutput(testCase, adjustedOutput);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BBackCheckedTestCase.fromException(testCase, e.toString());
-        } finally {
+        return tryToCheckTestCase(uuidString, testCase, () -> {
             try {
-                FileUtils.deleteDirectory(dirPath.toFile());
-            } catch (IOException e) {
+                return checkTestCase(uuidString, className, processedProgramText, testCase);
+            } catch (Exception e) {
                 e.printStackTrace();
+                return BBackCheckedTestCase.fromException(testCase, e.toString());
             }
-        }
+        });
     }
 
-    private static String adjustOutput(@Nonnull String output) {
-        String adjustedOutput = output;
-        for (int i = 0; i < 2; i++) {
-            if (isLastCharacterTerminal(adjustedOutput)) {
-                adjustedOutput = cutOffLastCharacter(adjustedOutput);
-            }
-        }
-        return adjustedOutput;
+    private BBackCheckedTestCase checkTestCase(@Nonnull String baseDirPath, @Nonnull String className,
+        @Nonnull String programText, @Nonnull BBackTestCase testCase) throws IOException, InterruptedException
+    {
+        String executableFileName = className + ".java";
+        Path outputFilePath = createOutputFile(baseDirPath);
+        createAndWriteInputFile(baseDirPath, testCase);
+        createExecutableFile(baseDirPath, executableFileName, programText);
+        String error = tryToWorkInSh(stdin -> {
+            stdin.println("cd " + baseDirPath);
+            stdin.println("javac " + executableFileName);
+            stdin.println("java -classpath . " + className + " < " + INPUT_FILE_NAME + " > " + OUTPUT_FILE_NAME);
+        });
+        String output = Files.readString(outputFilePath);
+        return handleOutput(testCase, output, error);
     }
 
-    private static boolean isLastCharacterTerminal(@Nonnull String line) {
-        return line.length() > 0 && TERMINAL_CHARACTERS.contains(line.charAt(line.length() - 1));
+    @Override
+    @Nonnull
+    BEvaluatorType getEvaluatorType() {
+        return BEvaluatorType.JAVA;
     }
-
-    private static String cutOffLastCharacter(@Nonnull String line) {
-        return line.length() > 0 ? line.substring(0, line.length() - 1) : line;
-    }
-
 }
