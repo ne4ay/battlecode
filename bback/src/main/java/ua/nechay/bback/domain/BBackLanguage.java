@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public enum BBackLanguage implements ProgrammingLanguage {
     JAVA("Java", "JAVA_REST_PORT", 8091),
-    PYTHON("Python", "PYTHON_REST_PORT", 8092);
+    PYTHON("Python", "PYTHON_REST_PORT", 8091);
 
     private final String name;
     private final String portEnvVariableName;
